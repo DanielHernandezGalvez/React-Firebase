@@ -28,6 +28,7 @@ function Login_cont() {
             const requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
+                mode: 'no-cors',
                 body: JSON.stringify({username: credentials.user, password: credentials.password}),
                 redirect: 'follow'
             };
