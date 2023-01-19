@@ -1,12 +1,18 @@
 import login from "../../styles/login.module.css";
 import { useState } from "react";
+import { setCookie, getCookie } from "cookies-next";
 import $ from "jquery";
+import { useRouter } from "next/router";
+
 
 function Login_cont() {
   const [credentials, setCredentials] = useState({
     user: "",
     password: "",
+    sessionhold: false,
   });
+
+  const router = useRouter();
 
   const handleChange = (event) => {
     if (!event) return;
@@ -17,6 +23,7 @@ function Login_cont() {
       [property]: value,
     });
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +35,7 @@ function Login_cont() {
       data: JSON.stringify({
         username: parseInt(credentials.user),
         password: credentials.password,
+        sessionhold: credentials.sessionhold,
       }),
       dataType: "json",
       timeout: 0,
@@ -36,14 +44,20 @@ function Login_cont() {
       },
     };
 
-    $.ajax(req).done((data, status, res) => {
-      if (res.status === 200) {
-        console.log(data.data)
-      } else alert("Usuario o contraseña incorrectos");
-    }).fail((err) => {
-      alert(err.responseJSON.message)
-      console.log(err.responseJSON.message_type)
-    });
+    $.ajax(req)
+      .done((data, status, res) => {
+        if (res.status === 200) {
+          let maxAge = 60 * 60 * 24;
+          if (credentials.sessionhold) {
+            maxAge = 60 * 60 * 24 * 30;
+          }
+          router.push("/home");
+        } else alert("Usuario o contraseña incorrectos");
+      })
+      .fail((err) => {
+        alert(err.responseJSON.message);
+        console.log(err.responseJSON.message_type);
+      });
   };
 
   return (
@@ -101,11 +115,12 @@ function Login_cont() {
                       <div className="col-12 d-flex justify-content-center">
                         <div className="form-check">
                           <input
-                            name="hold"
+                            name="sessionhold"
                             className="form-check-input"
                             type="checkbox"
                             value="true"
                             id="holdFrom"
+                            
                           />
                           <label
                             className="form-check-label"
@@ -136,5 +151,6 @@ function Login_cont() {
 }
 
 export default Login_cont;
+
 
 
