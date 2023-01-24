@@ -70,10 +70,10 @@ const Lotes = () => {
                     <>
                       <div key={index}>
                         <hr />
-                        <p>Clave: {producto.productoclave}</p>
+                        <p>Clave: <b>{producto.productoclave}</b></p>
                         <p>{producto.productoimagen}</p>
-                        <p>Cantidad: {producto.productocantidad}</p>
-                        <p>Descripción: {producto.productodescripcion}</p>
+                        <p>Cantidad: <b>{producto.productocantidad}</b></p>
+                        <p>Descripción: <b>{producto.productodescripcion}</b></p>
                       </div>
                     </>
                   );
@@ -93,4 +93,5 @@ const Lotes = () => {
 };
 
 export default Lotes;
+
 
