@@ -1,0 +1,42 @@
+{
+    "message_type": "message",
+    "message": "Ok",
+    "data": {
+        "lotedescripcion": "2524",
+        "lotefecha": "2023-01-17T09:35:21.8Z",
+        "lotesucuid": 12,
+        "loteactivo": true,
+        "lotefechainicio": "2023-01-17T09:34:46Z",
+        "lotefechhacierre": "2023-01-17T09:35:21.8Z",
+        "productos": [
+            {
+                "productoid": 11,
+                "productoclave": "VACUTL",
+                "productocantidad": 0,
+                "productodescripcion": "TUBO TAPON LILA",
+                "productoimagen": "TaponMorado.jpg"
+            },
+            {
+                "productoid": 34,
+                "productoclave": "LTUVS",
+                "productocantidad": 10,
+                "productodescripcion": "TUBO TAPON AZUL",
+                "productoimagen": "TaponMorado.jpg"
+            },
+            {
+                "productoid": 14,
+                "productoclave": "LGHTV",
+                "productocantidad": 4,
+                "productodescripcion": "TUBO TAPON ROSA",
+                "productoimagen": "TaponMorado.jpg"
+            },
+            {
+                "productoid": 44,
+                "productoclave": "BMWCD",
+                "productocantidad": 1,
+                "productodescripcion": "TUBO TAPON AMARILLO",
+                "productoimagen": "TaponMorado.jpg"
+            }
+        ]
+    }
+}
