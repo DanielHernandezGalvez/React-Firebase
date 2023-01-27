@@ -133,7 +133,4 @@ Lotes.getInitialProps = async ({ req, res }) => {
     requestOptions,
   };
 };
-
 export default Lotes;
-
-
