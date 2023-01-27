@@ -1,83 +1,101 @@
-import HeaderND from "../components/headerND.jsx"
-import styles from "../styles/home.module.css"
-import NavHome from "../components/navHome"
-import { useState } from "react"
-import SamplesLote from "../components/samplesLote.jsx"
-import axios from "axios"
+import HeaderND from "../../components/headerND.jsx";
+import styles from "../../styles/home.module.css";
+import NavHome from "../../components/navHome";
+import { useEffect, useState } from "react";
+import SamplesLote from "../../components/samplesLote.jsx";
 
-const home = () => {
+const api_route =
+  process.env.API_ROUTE || "https://dental.nucleodediagnostico.mx";
 
+const Home = ({ requestOptions }) => {
   const [lote, setLote] = useState("");
   const [isValid, setIsValid] = useState(false);
-  
-  var raw = "{\r\n    \"lote\": \"23FE011701\"\r\n}";
+  const [data, setData] = useState({});
 
-  var requestOptions = {
-    method: 'GET',
-    body: raw,
-    redirect: 'follow'
+  const getDataLote = async (id) => {
+    try {
+      let url =
+        api_route +
+        "/trace/web/findLote" +
+        `?Descripcion=${document.getElementById(id).value}`;
+
+      let data = await fetch(url, requestOptions).then();
+      data = (await data.json()).data;
+      console.log(data);
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const response = require("./api/fakeapi.json")
-
-  console.log(response.data.lotedescripcion)
-  
-  // fetch("http://192.168.0.46:8081/trace/web/findLote", requestOptions)
-  //   .then(response => response.text())
-  //   .then(result => console.log(result))
-  //   .catch(error => console.log('error', error));
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if(lote === response.data.lotedescripcion){
-      setIsValid(true)
-      console.log("lote correcto")
+  const handleSubmit = (e) => {
+    if (lote === data.lotedescripcion) {
+      setIsValid(true);
+      console.log("lote correcto");
     } else {
-      console.log("lote incorrecto")
+      console.log("lote incorrecto");
     }
-  }
+  };
 
   const handleChange = (e) => {
-    setLote(e.target.value)
-  }
+    setLote(e.target.value);
+  };
 
   return (
     <>
-      <HeaderND title="Recepción de Muestras" /> 
-        <NavHome />  
+      <HeaderND title="Recepción de Muestras" />
+      <NavHome />
       <div className={styles.box}>
         <div className={styles.contenedor}>
           <div className={styles.img}></div>
-            <h1 className={styles.title}>Recepción de muestras</h1>
-            <h2 className={styles.title2}>Ingresar un Lote</h2>
-          <div className="container"> 
-            <form onSubmit={handleSubmit} className="pt-xl-4 fLogin"> 
+          <h1 className={styles.title}>Recepción de muestras</h1>
+          <h2 className={styles.title2}>Ingresar un Lote</h2>
+          <div className="container">
+            <div className="pt-xl-4 fLogin">
               <div className="form-floating mb-3">
-                <input 
-                  type="text" 
-                  className={`${styles.inputLote} form-control`} 
-                  id="floatingInput" 
+                <input
+                  type="text"
+                  className={`${styles.inputLote} form-control`}
+                  id="loteInput"
                   placeholder="No. de lote"
-                  value={lote}
-                  autoComplete="off"
-                  onChange={handleChange}
+                  autoComplete="on" ////////////////////////cambiar a off /////////////////////////////
+                  name="lote"
                 />
-                  <label for="floatingInput">Numero de Lote</label>
-            </div>
-              <div className={styles.btnLote}>
-                <button 
-                  className="btn btn-primary btn-lg mb-5" 
-                  type="submit">Enviar</button>
+                <label htmlFor="lote">Numero de Lote</label>
               </div>
-            </form>
+              <div className={styles.btnLote}>
+                <button
+                  className="btn btn-primary btn-lg mb-5"
+                  onClick={() => {
+                    getDataLote("loteInput"), handleSubmit();
+                  }}
+                >
+                  Enviar
+                </button>
+              </div>
+            </div>
           </div>
-          
+          <SamplesLote data={data} isValid={isValid} />
         </div>
-          {isValid && <SamplesLote /> }
       </div>
     </>
-  )
-}
+  );
+};
 
-export default home
+Home.getInitialProps = async ({ req, res }) => {
+  if (req) {
+    var requestOptions = {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    };
+
+    return {
+      requestOptions,
+    };
+  } else return {};
+};
+
+export default Home;
