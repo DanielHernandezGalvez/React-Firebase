@@ -51,6 +51,7 @@ body {
   top: 0;
   left: 0;
   display: flex;
+  
   align-items: center;
   justify-content: center;
   scroll-snap-type: x mandatory;
@@ -59,6 +60,8 @@ body {
   transition: 0.3s ease all;
 }
 
+
+
 .contenedorModal {
   margin-top: auto;
   margin-bottom: auto;
@@ -66,9 +69,13 @@ body {
   height: auto;
   background-color: #fff;
   position: relative;
-  transition: 0.3s ease all;
   box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
   padding: 50px;
+  transition: 0.4s ease all;
+}
+
+.contenedorModal:hover{
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.5);
 }
 
 .encabezadoModal {
@@ -95,21 +102,22 @@ body {
 }
 
 .botonCerrarModal {
-  background: none;
+  background: #dc3545;
   border: none;
   padding: auto;
   font-weight: bolder;
   font-size: 20px;
-  color: #dc3545;
+  color: #fff;
   cursor: pointer;
   width: 40px;
-  height: 30px;
+  height: 40px;
   transition: 0.3s ease all;
-  border-radius: 5px;
+  border-radius: 50%;
+  margin-bottom: 16px;
 }
 
 .botonCerrarModal:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #d82335;
 }
 
 .contenidoModal {
@@ -125,8 +133,7 @@ body {
 }
 
 .contenidoModal p {
-  font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 0.5rem;
 }
 
 .contenidoModal img {
@@ -137,9 +144,7 @@ body {
 }
 
 .contenedorLista {
-  display: flex;
-  text-align: center;
-  margin: 10px 200px;
+  margin: 10px 10px;
 }
 
 @media screen and (max-width: 800px) {
@@ -169,6 +174,24 @@ body {
   background-color: #007dba;
   border-radius: 10px;
   color: #fff;
+}
+
+/*ANIMACION */
+.fade-enter{
+  opacity: 0;
+}
+.fade-exit{
+  opacity: 1;
+}
+.fade-enter-active{
+  opacity: 1;
+}
+.fade-exit-active{
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-exit-active{
+  transition: opacity 500ms;
 }
 
 /* === ========== === */
