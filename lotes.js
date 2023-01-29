@@ -1,7 +1,7 @@
 import HeaderND from "../../components/headerND";
 import NavHome from "../../components/navHome";
 import styles from "../../styles/lotes.module.css";
-import { useState } from "react";
+
 import Detalle from "../../components/detalle";
 import { getCookies } from "cookies-next";
 
