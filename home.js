@@ -1,7 +1,7 @@
 import HeaderND from "../../components/headerND.jsx";
 import styles from "../../styles/home.module.css";
 import NavHome from "../../components/navHome";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import SamplesLote from "../../components/samplesLote.jsx";
 
 const api_route =
@@ -23,8 +23,16 @@ const Home = ({ requestOptions }) => {
       data = (await data.json()).data;
       console.log(data);
       setData(data);
+      document.getElementById('loteInput').value = ""
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const inputRef = useRef(null);
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      inputRef.current.click();
     }
   };
 
@@ -47,35 +55,42 @@ const Home = ({ requestOptions }) => {
       <NavHome />
       <div className={styles.box}>
         <div className={styles.contenedor}>
-          <div className={styles.img}></div>
+          <div className={styles.img}>
+            <div className={styles.caja2}>
           <h1 className={styles.title}>Recepción de muestras</h1>
-          <h2 className={styles.title2}>Ingresar un Lote</h2>
+          <h3 className={styles.title2}><b>Ingresar un Lote</b></h3>
           <div className="container">
             <div className="pt-xl-4 fLogin">
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className={`${styles.inputLote} form-control`}
-                  id="loteInput"
-                  placeholder="No. de lote"
-                  autoComplete="on" ////////////////////////cambiar a off /////////////////////////////
-                  name="lote"
-                />
-                <label htmlFor="lote">Numero de Lote</label>
-              </div>
-              <div className={styles.btnLote}>
+              <div className="input-group shadow">
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    onKeyPress={handleKeyPress}
+                    className={`${styles.inputLote} form-control shadow-sm`}
+                    id="loteInput"
+                    placeholder="No. de lote"
+                    autoComplete="off" 
+                    name="lote"
+                    autoFocus
+                  />
+                  <label htmlFor="lote">Numero de Lote</label>
+                </div>
                 <button
-                  className="btn btn-primary btn-lg mb-5"
+                  className="btn btn-primary shadow-sm"
+                  ref={inputRef}
                   onClick={() => {
                     getDataLote("loteInput"), handleSubmit();
                   }}
                 >
-                  Enviar
+                  <i className="bi bi-search"></i>
                 </button>
               </div>
             </div>
           </div>
-          <SamplesLote data={data} isValid={isValid} />
+          </div>
+          </div>
+
+          <SamplesLote data={data} isValid={isValid} req={requestOptions} />
         </div>
       </div>
     </>
@@ -89,6 +104,7 @@ Home.getInitialProps = async ({ req, res }) => {
       credentials: "include",
       headers: {
         Cookie: req.headers.cookie,
+        'Content-Type': 'application/json'
       },
     };
 
