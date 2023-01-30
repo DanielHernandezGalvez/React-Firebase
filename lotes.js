@@ -1,136 +1,156 @@
 import HeaderND from "../../components/headerND";
 import NavHome from "../../components/navHome";
 import styles from "../../styles/lotes.module.css";
-
+import { useState } from "react";
 import Detalle from "../../components/detalle";
-import { getCookies } from "cookies-next";
+
+const api_route =
+  process.env.API_ROUTE || "https://dental.nucleodediagnostico.mx";
 
 const Lotes = ({ requestOptions }) => {
   const [data, setData] = useState([]);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
-  const [estadoModal, setEstadoModal] = useState(
-    Array(data.length).fill(false)
-  );
+  const [loteDetalle, setLoteDetalle] = useState({});
+  const [sactivar, setActivar] = useState(false);
 
-  const getDataLotes = async (e) => {
-    setFechaSeleccionada(e.target.value);
-    let _token = getCookies();
-    console.log(_token);
+  const getDataLotes = async () => {
+    setFechaSeleccionada(document.getElementById("fecha").value);
+
+    let ts = new Date(document.getElementById("fecha").value);
+    ts = ts.setHours(ts.getHours() + 6);
     try {
-      let url = "https://ms.nucleodediagnostico.com/trace/web/findLotes";
-      let fechaUnix = Math.floor(new Date(e.target.value).getTime() / 1000);
+      let url = api_route + "/trace/web/findLotes";
+      let fechaUnix = Math.floor(
+        new Date(document.getElementById("fecha").value).getTime() / 1000
+      );
       if (fechaUnix) {
         url += `?d=${fechaUnix}`;
       }
 
-      console.log(fechaUnix);
-      const response = await fetch(url, requestOptions);
-      const data = await response.json();
-      setData(data.data);
-      console.log(response);
+      let res = await fetch(url, requestOptions).then();
+      if (res.status === 200) {
+        let data = (await res.json()).data;
+        setData(data);
+      } else {
+        alert(await res.text());
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  
+
+  const getDataLote = async (e, lote) => {
+    try {
+      let url = api_route + "/trace/web/findLote" + `?Descripcion=${lote}`;
+
+      let data = await fetch(url, requestOptions).then();
+      data = (await data.json()).data;
+      console.log(data);
+      setLoteDetalle(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <HeaderND title="Recepción de Muestras" />
       <NavHome />
-      <div className={styles.bgImg}></div>
-      <h1 className={styles.titulo}>Lotes</h1>
-      <div className={styles.ingresarFecha}>
-        <h3>Filtrar por fecha</h3>
-        <input
-          className={styles.inputLote}
-          type="date"
-          onChange={(e) => getDataLotes(e)}
-        />
-      </div>
-      <hr />
-      {data.map((producto, index) => {
-        return (
-          <div key={index}>
-            <div className="contenedorLista">
-              <button
-                className="botonloteLista"
-                onClick={() => {
-                  let newEstadoModal = [...estadoModal];
-                  newEstadoModal[index] = !newEstadoModal[index];
-                  setEstadoModal(newEstadoModal);
-                }}
-              >
-                <h1>{producto.lotedescripcion}</h1>
-                <h3>{producto.lotefecha}</h3>
-              </button>
-            </div>
-            <Detalle
-              estado={estadoModal[index]}
-              cambiarEstado={() => {
-                let newEstadoModal = [...estadoModal];
-                newEstadoModal[index] = !newEstadoModal[index];
-                setEstadoModal(newEstadoModal);
-              }}
-              producto={producto}
-            >
-              <div className="contenidoModal">
-                <h1 className={styles.title}>
-                  Lote: {producto.lotedescripcion}
-                </h1>
-                <h5>fecha: {producto.lotefecha}</h5>
-                {producto.loteactivo === true ? (
-                  <h2 className={styles.activo}>Activo</h2>
-                ) : (
-                  <h2 className={styles.inactivo}>Inactivo</h2>
-                )}
-                <p>Feca de inicio: {producto.lotefechainicio}</p>
-                <p>Feca de cierre: {producto.lotefechhacierre}</p>
 
-                <h3 className={styles.title}>Productos:</h3>
-                {producto.productos.map((producto, index) => {
-                  return (
-                    <>
-                      <div key={index}>
-                        <hr />
-                        <p>
-                          Clave: <b>{producto.productoclave}</b>
-                        </p>
-                        <p>{producto.productoimagen}</p>
-                        <p>
-                          Cantidad: <b>{producto.productocantidad}</b>
-                        </p>
-                        <p>
-                          Descripción: <b>{producto.productodescripcion}</b>
-                        </p>
-                      </div>
-                    </>
-                  );
-                })}
+      <div className={styles.bgImg}>
+        <div className={styles.caja}>
+          <div className="row p-0">
+            <div className="col-12">
+              <h3 className={styles.titulo2}>Lotes</h3>
+            </div>
+            <div className="col-12">
+              <h4 className={styles.title3}>
+                <b>Filtrar por fecha</b>
+              </h4>
+            </div>
+            <div className="col-12">
+              <div className="input-group justify-content-center">
+                <input className={styles.inputLote} type="date" id="fecha" />
+                <button
+                  className={`btn btn-primary ${styles.inputLote}`}
+                  onClick={() => getDataLotes()}
+                >
+                  <i className="bi bi-search"></i>
+                </button>
               </div>
-            </Detalle>
+            </div>
           </div>
-        );
-      })}
-      <div className="pb-5 mb-5">
-        <div className="pb-5 mb-5">
-          <div className="pb-5 mb-5"></div>
         </div>
+      </div>
+      <div className="accordion" id="acordeon_lotes">
+        {data.map((lote, index) => {
+          return (
+            <div key={index} className="accordion-item">
+              <div className="accordion-header">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target={"#" + lote.lotedescripcion}
+                  aria-expanded="false"
+                  aria-controls={lote.lotedescripcion}
+                  onClick={(e) => getDataLote(e, lote.lotedescripcion)}
+                >
+                  <span className="h3 m-0">
+                    Lote: {lote.lotedescripcion}
+                    {lote.loteactivo === true ? (
+                      <p className={styles.activo + " m-0"}>Activo</p>
+                    ) : (
+                      <p className={styles.inactivo + " m-0"}>Inactivo</p>
+                    )}
+                    {lote.loteestatus === 5 ? (
+                      <p className="text-primary m-0">
+                        En traslado a laboratorio
+                      </p>
+                    ) : (
+                      <p className="text-secondary m-0">
+                        En laboratorio
+                      </p>
+                    )}
+                    {lote.loteestatus !== 5 && lote.loteestatus !== 6 && (
+                      <p className="text-danger m-0">
+                        Estatus indefinido
+                      </p>
+                    )}
+                    <h6 className="m-0">Fecha: {lote.lotefecha}</h6>
+                  </span>
+                </button>
+              </div>
+              <div
+                className="accordion-collapse collapse"
+                id={lote.lotedescripcion}
+                data-bs-parent="#acordeon_lotes"
+              >
+                <div className="accordion-body">
+                  <Detalle id={lote.lotedescripcion} lote={loteDetalle} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
 };
 
 Lotes.getInitialProps = async ({ req, res }) => {
-  var requestOptions = {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      Cookie: req.headers.cookie,
-    },
-  };
+  if (req) {
+    var requestOptions = {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    };
 
-  return {
-    requestOptions,
-  };
+    return {
+      requestOptions,
+    };
+  } else return {};
 };
+
 export default Lotes;
