@@ -1,0 +1,100 @@
+/* POSICONAMIENTO DEL FORMULARIO Y SUS ELEMENTOS */
+.margin {
+  padding-top: 30px;
+}
+
+.fLogin {
+  z-index: 100;
+}
+
+.red {
+  font-weight: bold;
+}
+
+.center {
+  margin: auto;
+}
+.form {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.bgImage {
+  background-image: url("../public/img/muestras.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.textCenter {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-left: -90%;
+  margin-right: -90%;
+}
+
+/* RESPONSIVIDAD EN DISPOSITIVOS MÓVILES */
+
+@media (orientation: landscape) and (max-height: 810px) {
+  .log {
+    height: auto;
+    overflow: hidden;
+  }
+
+  .red {
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 810px) {
+  .margin {
+    padding-top: -10%px;
+    margin-top: -6rem;
+  }
+}
+
+/* CAMBIA LA POSICIÓN DE LA IMAGEN A HORIZOTAL EN LA PARTE SUPERIOR */
+
+@media (orientation: landscape) and (min-height: 811px) {
+  .log {
+    height: 60vh;
+    overflow: hidden;
+  }
+
+  .margin {
+    padding-top: -20px;
+  }
+}
+
+@media (orientation: portrait) {
+  .nav_no_auth {
+    position: relative !important;
+  }
+
+  .log {
+    height: 100vh;
+    margin-top: -20rem;
+  }
+
+  .mtLog {
+    margin-top: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .h-p-70 {
+    height: 70%;
+  }
+
+  .h-p-30 {
+    height: 30%;
+  }
+
+  .login-h {
+    font-size: 3rem;
+  }
+
+  .login-h {
+    font-size: xx-large;
+    padding-top: 0 !important;
+  }
+}
