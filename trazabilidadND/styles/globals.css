@@ -41,7 +41,7 @@ body {
   border: 1px solid linear-gradient(180deg, #eaf1fa 0%, #f5f5f5 100%);
 }
 
-/* === DETALLE MODAL === */
+/* CONTENIDO Y FUNCIONALIDAD DEL MODAL */
 
 .detalleOverlay {
   width: 100vw;
@@ -51,7 +51,6 @@ body {
   top: 0;
   left: 0;
   display: flex;
-  
   align-items: center;
   justify-content: center;
   scroll-snap-type: x mandatory;
@@ -59,8 +58,6 @@ body {
   overflow-y: hidden;
   transition: 0.3s ease all;
 }
-
-
 
 .contenedorModal {
   margin-top: auto;
@@ -147,6 +144,8 @@ body {
   margin: 10px 10px;
 }
 
+/* RESPONSIVIDAD DEL MODAL */
+
 @media screen and (max-width: 800px) {
   .contenedorLista {
     margin: 10px;
@@ -176,22 +175,4 @@ body {
   color: #fff;
 }
 
-/*ANIMACION */
-.fade-enter{
-  opacity: 0;
-}
-.fade-exit{
-  opacity: 1;
-}
-.fade-enter-active{
-  opacity: 1;
-}
-.fade-exit-active{
-  opacity: 0;
-}
-.fade-enter-active,
-.fade-exit-active{
-  transition: opacity 500ms;
-}
 
-/* === ========== === */
