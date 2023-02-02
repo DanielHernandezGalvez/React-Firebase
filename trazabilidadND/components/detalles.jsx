@@ -30,7 +30,8 @@ export default function Detalles({ id, lote }) {
                   <p>
                     Clave: <b>{producto.productoclave} </b>
                   </p>
-                  <p>{producto.productoimagen}</p>
+
+{/*  <p>{producto.productoimagen}</p> */}
 
                   {producto.productocantidad !==
                   producto.productocantidadrecibido ? (
