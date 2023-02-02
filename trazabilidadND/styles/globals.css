@@ -175,4 +175,25 @@ body {
   color: #fff;
 }
 
+/** INDEX **/
+
+.indexCenter{
+  width: 90%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  text-align: center;
+}
+
+.azulPrimario{
+  color: #012639;
+  font-weight: bolder;
+}
+
+.azulSecundario{
+  color: #007dba;
+  font-weight: bold;
+}
 
