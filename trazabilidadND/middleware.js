@@ -64,7 +64,7 @@ export async function middleware(req, res) {
     }
   }
 
-  /* Check Login
+  /* Check Login.
    Este de código  se encarga de gestionar la autenticación de un usuario,
    si la ruta actual (indicada por la variable "pathname") es "/login" */
   else if (pathname === "/login") {
