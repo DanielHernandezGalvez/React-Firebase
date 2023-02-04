@@ -6,6 +6,7 @@ import Script from 'next/script'
 export const HeaderND = () => {
     return (
         <>
+        
         {/* El componente utiliza la librería NextSEO para establecer la descripción 
         los metadatos OpenGraph y los autores para la página. También carga los archivos CSS y JS de 
         bootstrap mediante el uso de etiquetas link y Script respectivamente. */}
