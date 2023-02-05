@@ -3,7 +3,7 @@ import HeaderND from "../../components/headerND";
 import NavHome from "../../components/navHome";
 import styles from "../../styles/lotes.module.css";
 import { useState } from "react";
-import Detalle from "../../components/detalle"
+import Detalle from "../../components/detalle";
 
 // Establece la variable que se usará como ruta
 const api_route =
