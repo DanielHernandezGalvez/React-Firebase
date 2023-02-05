@@ -22,6 +22,7 @@ const Lotes = ({ requestOptions, user }) => {
       buton.classList.remove("show");
     }
   }
+  
 
   /* Esta es una función getDataLotes en JavaScript que hace una petición GET a una 
   URL específica, utilizando fetch y las opciones de la solicitud previamente definidas 
