@@ -1,6 +1,6 @@
 //Este código es un componente de React que muestra los detalles de un "lote".
 import styles from "../styles/lotes.module.css";
-import React from "react"
+import React from "react";
 
 //El componente recibe dos propiedades: id: un identificador único y 
 //lote: un objeto que contiene información sobre un lote.
