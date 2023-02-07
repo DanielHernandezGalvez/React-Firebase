@@ -10,6 +10,7 @@ export async function middleware(req, res) {
   const { pathname } = req.nextUrl;
   let url = req.nextUrl.clone();
 
+
   /* Check Auth 
    Si la ruta de la solicitud comienza con "/home", se verifica si existe un token 
    de autenticación en la cookie de la solicitud */
