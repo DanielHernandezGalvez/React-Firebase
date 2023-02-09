@@ -6,16 +6,16 @@ import Swal from "sweetalert2";
 import Image from "next/image";
 
 /* La API a la que se hace la petición se especifica en la variable api_route, 
- que es establecida a "https://dental.nucleodediagnostico.mx" o a una ruta
+ que es establecida a "https://sian.nucleodediagnostico.mx" o a una ruta
  especificada en las variables de entorno */
 const api_route =
-  process.env.API_ROUTE || "https://dental.nucleodediagnostico.mx";
+  process.env.API_ROUTE || "https://sian.nucleodediagnostico.mx";
 
-export default function SamplesLote({ data, isValid, req }) {
+export default function SamplesLote({ data, isValid, req, user }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productos, setProductos] = useState();
 
-  /* incrementa el valor de la cantidad de un producto en 1. 
+  /* Incrementa el valor de la cantidad de un producto en 1. 
   Recibe un parámetro i que representa el índice del producto en la lista de productos*/
   function increment(i) {
     let e = document.getElementById("producto" + i + ".productocantidad");
@@ -23,7 +23,7 @@ export default function SamplesLote({ data, isValid, req }) {
     e.value = value;
   }
 
-  /*decrementa el valor de la cantidad de un producto en 1. Recibe un parámetro i que
+  /* Decrementa el valor de la cantidad de un producto en 1. Recibe un parámetro i que
   representa el índice del producto en la lista de*/ 
   function decrement(i) {
     let e = document.getElementById("producto" + i + ".productocantidad");
@@ -33,23 +33,26 @@ export default function SamplesLote({ data, isValid, req }) {
     } else e.value = value;
   }
 
-  //Recarga la página actual.
+  // Recarga la página actual.
   const reloading = () => {
     location.reload(true);
   };
 
-  /*Manejador de eventos para el envío del formulario. Recibe un parámetro event, 
+  /* Manejador de eventos para el envío del formulario. Recibe un parámetro event, 
   que representa el evento del submit del formulario */
   const handleSubmit = async (event) => {
+
     // Se ejecuta una acción para prevenir el comportamiento por defecto de submit del formulario 
     event.preventDefault(); 
-    //luego se crea un objeto row con los valores necesarios para la petición a la API
+
+    // Luego se crea un objeto row con los valores necesarios para la petición a la API
     let row = {     
       lotedescripcion: data.lotedescripcion,
-      usernomina: "",
+      usernomina: parseInt(user),
       productos: [],
     };
-   // se rellenan los datos de la petición req y se realiza una petición fetch a la API.
+
+   // Se rellenan los datos de la petición req y se realiza una petición fetch a la API.
     for (let i = 0; i < data.productos.length; i++) {
       let productoI = {
         productoclave: event.target["producto" + i + ".productoclave"].value,
@@ -60,25 +63,29 @@ export default function SamplesLote({ data, isValid, req }) {
     }
     req.body = JSON.stringify(row);
     req.method = "POST"
-    console.log(req)
     await fetch(api_route + "/trace/web/updLote", req)
       .then(async (response) => {
-        console.log(await response.text().then());
+
     // Si la respuesta es satisfactoria, se muestra una alerta de éxito y se recarga la página
         if (response.status === 200) {
+          // Sedespliega una alerta en caso de éxito al enviar  
+            Swal.fire({
+                  title: "Enviado Correctamente",
+                  icon: "success",
+                  confirmButtonText: "Aceptar",
+                  timer: 2000,
+                  confirmButtonColor: "rgb(13, 110, 253)",
+                });
+                setTimeout(reloading, 2000);
+        } else {
+          console.log(api_route + "/trace/web/updLote", req)
+          alert('Error'+ await response.text() )
         }
       })
-    //En caso de error, se muestra en la consola
-      .catch((error) => console.log("error", error));
-    // Sedespliega una alerta en caso de éxito al enviar  
-      Swal.fire({
-            title: "Enviado Correctamente",
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            timer: 2000,
-            confirmButtonColor: "rgb(13, 110, 253)",
-          });
-          setTimeout(reloading, 2000);
+
+    // En caso de error, se muestra en la consola
+      .catch((error) => console.error("error", error));
+
   };
 
   return (
@@ -93,12 +100,14 @@ export default function SamplesLote({ data, isValid, req }) {
           <form onSubmit={handleSubmit}>
             <div className='container mx-auto'>
               <p>Fecha: {data.lotefecha}</p>
+
     {/* determina si el lote está activo o no y muestra un mensaje correspondiente. */}
               {data.loteactivo === true ? (
                 <h2 className={styles.activo}>Activo</h2>
               ) : (
                 <h2 className={styles.inactivo}>Inactivo</h2>
               )}
+
     {/* determina el estatus del lote y muestra un mensaje correspondiente. 
     Si el estatus no es 5 ni 6, se muestra un mensaje de estatus indefinido. */}
               {data.loteestatus === 5 ? (
@@ -116,6 +125,7 @@ export default function SamplesLote({ data, isValid, req }) {
                 </h3>
               )}
               <hr />
+
     {/* Se renderiza una lista de productos asociados al lote: Clave, Descripción Cantidad e Imagen */}
               {data.productos.map((producto, index) => {
                 return (
@@ -134,8 +144,9 @@ export default function SamplesLote({ data, isValid, req }) {
                           {producto.productodescripcion}
                         </h5>
                       </div>
-                      <div>
+                      <div className={styles.box3}>
                         <div className={styles.countContainer}>
+
       {/* Se incluyen dos botones de incremento y decremento de la cantidad de cada producto,  
       que están habilitados solo si el lote está activo y su estatus es 5.*/}
                           <button
@@ -171,9 +182,9 @@ export default function SamplesLote({ data, isValid, req }) {
                           </button>
                         </div>
                       </div>
-                      <div className={styles.divPrueba}>
+                      <div className={styles.box3}>
                         <Image
-                          src={`/imgProductos/${producto.productoimagen}`}
+                          src={`/laboratorio/imgProductos/${producto.productoimagen}`}
                           alt='imagen del producto'
                           width={200}
                           height={130}
@@ -184,6 +195,7 @@ export default function SamplesLote({ data, isValid, req }) {
                 );
               })}
             </div>
+            
       {/* Finalmente, si el lote está activo y su estatus es 5, se muestra un botón para enviar la información */}
             {data.loteactivo === true &&
               (data.loteestatus === 5 ? (
@@ -208,5 +220,3 @@ export default function SamplesLote({ data, isValid, req }) {
     </>
   );
 }
-
-
