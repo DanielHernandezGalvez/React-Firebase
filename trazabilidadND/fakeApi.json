@@ -30,6 +30,13 @@
                 "productocantidad": 4,
                 "productodescripcion": "TUBO TAPON ROSA",
                 "productoimagen": "TaponMorado.jpg"
+            },
+            {
+                "productoid": 44,
+                "productoclave": "BMWCD",
+                "productocantidad": 1,
+                "productodescripcion": "TUBO TAPON AMARILLO",
+                "productoimagen": "TaponMorado.jpg"
             }
             
         ]
