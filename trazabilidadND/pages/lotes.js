@@ -26,6 +26,7 @@ const Lotes = ({ requestOptions, user }) => {
   /* Esta es una función getDataLotes en JavaScript que hace una petición GET a una 
   URL específica, utilizando fetch y las opciones de la solicitud previamente definidas 
   en requestOptions */
+  
   const getDataLotes = async () => {
     setFechaSeleccionada(document.getElementById("fecha").value);
     let ts = new Date(document.getElementById("fecha").value);
