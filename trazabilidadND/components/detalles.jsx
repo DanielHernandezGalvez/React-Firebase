@@ -5,6 +5,7 @@ import React from "react";
 //El componente recibe dos propiedades: id: un identificador único y 
 //lote: un objeto que contiene información sobre un lote.
 export default function Detalles({ id, lote }) {  
+  
   return (
     <>
       {lote.lotedescripcion && (
