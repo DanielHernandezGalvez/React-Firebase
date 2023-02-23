@@ -56,7 +56,7 @@
     </h2>
     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <ul >
+        <ul>
           <li  name='ADMINISTRACIÓN' id="Menu2">
               <a href='javascript: void(0)'  title='Administración'> <span class='drop-text'></span></a>
                   <li  id="SubMenu1020" >
@@ -103,20 +103,14 @@
           <li id="SubMenu8">
               <a href='/Puestos'  title='Puestos'> <span>Puestos</span> </a>
           </li>
-          <!-- @*<li class='dt-side-nav__item' >
-              <a href='/Insumos' class='dt-side-nav__link' title='Horarios'> <span class='dt-side-nav__text'>Horarios</span> </a>
-          </li>*@ -->
           <li id="SubMenu21">
               <a href='/Incidencias'  title='Incidencias'> <span>Incidencias</span> </a>
           </li>
           <li id="SubMenu1019">
               <a href='/Periodos'  title='Periodos'> <span>Periodos</span> </a>
           </li>
-          <!-- @*<li class='dt-side-nav__item'>
-              <a href='/Insumos' class='dt-side-nav__link' title='Festivos'> <span class='dt-side-nav__text'>Festivos</span> </a>
-          </li>*@ -->
-      </ul>     
-     </div>
+        </ul>     
+      </div>
     </div>
   </div>
 
@@ -156,24 +150,9 @@
     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
       <div class="accordion-body">
         <ul>
-          <!-- @*<li class='dt-side-nav__item'>
-              <a href='/PropuestaProduccion' class='dt-side-nav__link' title='Asistencia'> <span class='dt-side-nav__text'>Asistencias</span> </a>
-          </li>*@ -->
           <li id="SubMenu20">
               <a href='/Reportes' title='Incidencias'> <span>Reporte de permisos</span> </a>
           </li>
-          <!-- @*<li class='dt-side-nav__item'>
-              <a href='/Produccion' class='dt-side-nav__link' title='Cumpleaños'> <span class='dt-side-nav__text'>Cumpleaños</span> </a>
-          </li>
-          <li class='dt-side-nav__item'>
-              <a href='/Produccion' class='dt-side-nav__link' title='Incidencias'> <span class='dt-side-nav__text'>Incidencias</span> </a>
-          </li>
-          <li class='dt-side-nav__item'>
-              <a href='/Produccion' class='dt-side-nav__link' title='Ingresos'> <span class='dt-side-nav__text'>Ingresos</span> </a>
-          </li>
-          <li class='dt-side-nav__item'>
-              <a href='/Produccion' class='dt-side-nav__link' title='Antiguedad'> <span class='dt-side-nav__text'>Antiguedad</span> </a>
-          </li>*@ -->
       </ul>      
     </div>
     </div>
@@ -206,20 +185,19 @@
   </div>
 </div>
 </div>
-  <!-- fin de sidebar -->
+<!-- fin de sidebar -->
 
 <!-- CONTENEDOR PRINCIPAL -->
-
   <div class="col-md-10 bg p-5">
     <div class="main-container  shadow">
 
       <!-- BUSCADOR -->
-<div class="container col-md-11">
-  <div class="pt-xl-4 fLogin">
-    <div class="input-group d-flex  ">
+<div class="container-fluid col-md-11 mb-3 pt-4">
+  <div class=" fLogin">
+    <div class="input-group d-flex">
       <div class="form-floating flex-grow-1 ">
         <select
-        class="form-select fechas-imput "
+        class="form-select fechas-imput"
         id="inputCorte"
         placeholder="Fecha de corte"
         name="corte"
@@ -251,11 +229,10 @@
 <!-- buscador -->
 
 <!-- DATA TABLE -->
-
-<div class="container-fluid" id="tabla" hidden>
+<div class="container-fluid" data-bs-spy="scroll" data-bs-target="#contenido" id="tabla" style="height: 500px; overflow-y: auto;" hidden>
   <div class="row">
-    <div class="container-fluid my-4 col-sm-11 col-md-11 col-lg-11 col-xl-11">
-      <table id="dataTable" class="table table-sm align-middle">
+    <div class="container-fluid my-4 col-sm-11 col-md-11 col-lg-11 col-xl-11 " >
+      <table id="tableND" class="table table-sm align-middle" id="contenido">
         <thead>
           <tr>
             <th>Nómina</th>
@@ -272,13 +249,12 @@
         </thead>
         <tbody id="tablaBody">
           <!--Datos Generados-->
-          <button class="btn btn-dark mb-4" onclick="downloadFile()">Descargar archivo</button>
+          <button class="btn btn-dark mb-4" onclick="downloadPDF()">Descargar archivo</button>
         </tbody>
       </table>
     </div>
   </div>
 </div>
-
 <!-- data table -->
 
     </div>
@@ -293,8 +269,8 @@
             <div class="modal-body" id="modalbody">
               <!--data-->
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div id="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-printer"></i></button>
             </div>
           </div>
         </div>
@@ -308,10 +284,9 @@
 
 <footer class="pie bg-white">
   <div class="container ">
-  <p class="parrafo texto-chico pt-2"><b>© 2023 Análisis Clínicos y Rayos X de Occidente S. de R.L. de C.V.</b></p>
-</div>
+    <p class="parrafo texto-chico pt-2"><b>© 2023 Análisis Clínicos y Rayos X de Occidente S. de R.L. de C.V.</b></p>
+  </div>
 </footer>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 <!-- JQuery -->
@@ -321,10 +296,14 @@
 <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
 <!-- sweetAlert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Javascript -->
-<script src="main.js"></script>
-<script src="buscador.js"></script>
-<script src="buscadorSucursales.js"></script>
+<!-- jsPDF -->
+<script src="https://unpkg.com/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <!-- Javascript -->
+    <script src="main.js"></script>
+    <script src="buscador.js"></script>
+    <script src="buscadorSucursales.js"></script>
+    <script src="pdf.js"></script>
 </body>
 </html>
 
