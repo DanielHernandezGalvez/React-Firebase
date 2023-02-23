@@ -1,309 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pruebas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap.min.css"/>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pruebas</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap.min.css"
+    />
+  </head>
 
-<!-- NAVBAR -->
-<body>
-<div class="container-fluid">
+  <!-- NAVBAR -->
+  <body>
+    <header>
+      <nav
+        class="navbar bg-body-tertiary bg-white navbar-expand-lg header shadow"
+      >
+        <div class="container-fluid">
+          <img
+            src="https://files.nucleodediagnostico.mx/img/CapitalHumano.svg"
+            alt="Logo"
+            width="80"
+            height="50"
+            class="py-0 my-0"
+          />
 
-<header>
-  <nav class="navbar bg-body-tertiary bg-white navbar-expand-lg header shadow">
-    <div class="container-fluid">    
-        <img src="https://files.nucleodediagnostico.mx/img/CapitalHumano.svg" alt="Logo" width="80" height="50" class="py-0 my-0"> 
-    
-    <a href='@Url.Action("LogOut","ApiLogin")'>
-    <button class='btn btn-outline-danger me-md-2' type='button'>
-      <i class='bi bi-box-arrow-in-right'></i> Cerrar sesión
-    </button>
-  </a>
-  
-  </nav>
-</header> 
-<!-- NAVBAR -->
+          <a href='@Url.Action("LogOut","ApiLogin")'>
+            <button class="btn btn-outline-danger me-md-2" type="button">
+              <i class="bi bi-box-arrow-in-right"></i> Cerrar sesión
+            </button>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <div class="container-fluid">
+      <!-- NAVBAR -->
 
-  <div class="row">
+      <div class="row">
+        <!-- COMPONENTE SIDEBAR -->
+        <div class="col-md-2 shadow altura">
+          <!-- Sidevar header -->
+          <div id="escpacio" class="pt-5 pb-4"></div>
+          <div class="pt-5 mx-4"><hr /></div>
 
-  <!-- COMPONENTE SIDEBAR -->
-  <div class="col-md-2 shadow altura ">
-  <!-- Sidevar header -->
-  <div id="escpacio" class="pt-5 pb-4"></div>
-  <div class="pt-5 mx-4"><hr/></div>
-  
-  <p class="mx-4 my-5 pt-1 h5 parrafo" ><b>Daniel Alejandro Hernández Gálvez<font  class="mx-auto parrafo-azul" id="EmpleadoLogeado"></font><br /> <font class="mx-auto parrafo-azul" id="Nomina">2438</font></b></p>
-                        
-  <p class="mx-4 mb-1">
-      <span><b>Principal</b></span>
-  </p>
+          <p class="mx-4 my-5 pt-1 h5 parrafo">
+            <b
+              >Daniel Alejandro Hernández Gálvez<font
+                class="mx-auto parrafo-azul"
+                id="EmpleadoLogeado"
+              ></font
+              ><br />
+              <font class="mx-auto parrafo-azul" id="Nomina">2438</font></b
+            >
+          </p>
 
-<!-- Sidevar header -->
+          <p class="mx-4 mb-1">
+            <span><b>Principal</b></span>
+          </p>
 
-<div class="accordion" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-        <a href='javascript: void(0)' title='Administración'> <i class="bi bi-gear-wide-connected icon-derecha"></i> <span class='drop-text'>Administración</span></a>
-      </button>
-    </h2>
-    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <ul>
-          <li  name='ADMINISTRACIÓN' id="Menu2">
-              <a href='javascript: void(0)'  title='Administración'> <span class='drop-text'></span></a>
-                  <li  id="SubMenu1020" >
-                      <a href='/AltaUsuarios'  title='Gestión de Usuarios'> <span >Usuarios</span> </a>
-                  </li>
-                  <li  id="SubMenu1021">
-                      <a href='/RolesUsuarios'  title='Gestión de Perfiles de Usuario'> <span >Perfiles de usuario</span> </a>
-                  </li>
-                  <li  id="SubMenu15">
-                      <a href='/UsuariosPermisos'  title='Administración de Permisos'> <span >Permisos</span> </a>
-                  </li>
-                  <li id="SubMenu16">
-                      <a href='/Modulos'  title='Módulos'> <span >Módulos</span> </a>
-                  </li>
-                  <li id="SubModulos17">
-                      <a href='/SubModulos'  title='Submódulos'> <span>Submódulos</span> </a>
-                  </li>
-                  <li id="SubModulos2023">
-                      <a href='/EmpTrazabilidad'  title='Trazabilidad'> <span>Trazabilidad</span> </a>
-                  </li>
-              </ul>
-      </div>
-    </div>
-  </div>
+          <!-- Sidevar header -->
 
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        <a href='javascript: void(0)'  title='Catálogos'> <i class="bi bi-cart4 icon-derecha"></i><span class='drop-text'> Catálogos</span></a>
-      </button>
-    </h2>
-    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <ul>
-          <li id="SubMenu6">
-              <a href='/Departamentos'  title='Departamentos'> <span>Departamentos</span> </a>
-          </li>
-          <li id="SubMenu4">
-              <a href='/Areas' title='Areas'> <span>Áreas</span> </a>
-          </li>
-          <li id="SubMenu7">
-              <a href='/Sucursales'  title='Sucursales'> <span>Sucursales</span> </a>
-          </li>
-          <li id="SubMenu8">
-              <a href='/Puestos'  title='Puestos'> <span>Puestos</span> </a>
-          </li>
-          <li id="SubMenu21">
-              <a href='/Incidencias'  title='Incidencias'> <span>Incidencias</span> </a>
-          </li>
-          <li id="SubMenu1019">
-              <a href='/Periodos'  title='Periodos'> <span>Periodos</span> </a>
-          </li>
-        </ul>     
-      </div>
-    </div>
-  </div>
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="false"
+                  aria-controls="collapseOne"
+                >
+                  <a href="javascript: void(0)" title="Administración">
+                    <i class="bi bi-gear-wide-connected icon-derecha"></i>
+                    <span class="drop-text">Administración</span></a
+                  >
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <ul>
+                    <li name="ADMINISTRACIÓN" id="Menu2">
+                      <a href="javascript: void(0)" title="Administración">
+                        <span class="drop-text"></span
+                      ></a>
+                    </li>
 
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingThree">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-        <a href='javascript: void(0)' > <i class="bi bi-person-video2 icon-derecha"></i><span class='drop-text'> Empleados</span></a>
-      </button>
-    </h2>
-    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <ul>
-          <li id="SubMenu10">
-              <a href='/Empleados' title='Catálogo de Empleados'> <span>Catálogo de Empleados</span> </a>
-          </li>
-          <li id="SubMenu11">
-              <a href='/CatRegistroIncidencias' title='Registro de Incidencias'> <span>Registro de Incidencias</span> </a>
-          </li>
-  
-          <li id="SubMenu12">
-              <a href='/MovEmpleadosHorarios' title='Movimientos Horarios'> <span >Movimientos de Horarios</span> </a>
-          </li>
-          <li id="SubMenu13">
-              <a href='/HistorialVacaciones' title='Historial Vacaciones'> <span>Historial de Vacaciones</span> </a>
-          </li>
-      </ul>      
-    </div>
-    </div>
-  </div>
+                    <li id="SubMenu1020">
+                      <a href="/AltaUsuarios" title="Gestión de Usuarios">
+                        <span>Usuarios</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu1021">
+                      <a
+                        href="/RolesUsuarios"
+                        title="Gestión de Perfiles de Usuario"
+                      >
+                        <span>Perfiles de usuario</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu15">
+                      <a
+                        href="/UsuariosPermisos"
+                        title="Administración de Permisos"
+                      >
+                        <span>Permisos</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu16">
+                      <a href="/Modulos" title="Módulos">
+                        <span>Módulos</span>
+                      </a>
+                    </li>
+                    <li id="SubModulos17">
+                      <a href="/SubModulos" title="Submódulos">
+                        <span>Submódulos</span>
+                      </a>
+                    </li>
+                    <li id="SubModulos2023">
+                      <a href="/EmpTrazabilidad" title="Trazabilidad">
+                        <span>Trazabilidad</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingFour">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
-        <a href='javascript: void(0)' title='Produccion'> <i class="bi bi-file-earmark-spreadsheet-fill icon-derecha"></i> <span class='drop-text'>Reportes</span></a>
-      </button>
-    </h2>
-    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <ul>
-          <li id="SubMenu20">
-              <a href='/Reportes' title='Incidencias'> <span>Reporte de permisos</span> </a>
-          </li>
-      </ul>      
-    </div>
-    </div>
-  </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  <a href="javascript: void(0)" title="Catálogos">
+                    <i class="bi bi-cart4 icon-derecha"></i
+                    ><span class="drop-text"> Catálogos</span></a
+                  >
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <ul>
+                    <li id="SubMenu6">
+                      <a href="/Departamentos" title="Departamentos">
+                        <span>Departamentos</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu4">
+                      <a href="/Areas" title="Areas"> <span>Áreas</span> </a>
+                    </li>
+                    <li id="SubMenu7">
+                      <a href="/Sucursales" title="Sucursales">
+                        <span>Sucursales</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu8">
+                      <a href="/Puestos" title="Puestos">
+                        <span>Puestos</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu21">
+                      <a href="/Incidencias" title="Incidencias">
+                        <span>Incidencias</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu1019">
+                      <a href="/Periodos" title="Periodos">
+                        <span>Periodos</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingFive">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
-        <a href='javascript: void(0)' title='Capital Humano'> <i class="bi bi-people-fill icon-derecha"></i> <span class='drop-text'>Capital Humano</span></a>
-      </button>
-    </h2>
-    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <ul id="fondo-acordion">
-          <li>
-              <a href='/Plantilla' title='Administración de Plantillas'> <span>Plantillas</span> </a>
-          </li>
-          <li>
-              <a href='/RequisicionPersonal' title='Requisiciones de personal'> <span>Requisición de personal</span> </a>
-          </li>
-          <!-- @*<li class='dt-side-nav__item'>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  <a href="javascript: void(0)">
+                    <i class="bi bi-person-video2 icon-derecha"></i
+                    ><span class="drop-text"> Empleados</span></a
+                  >
+                </button>
+              </h2>
+              <div
+                id="collapseThree"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <ul>
+                    <li id="SubMenu10">
+                      <a href="/Empleados" title="Catálogo de Empleados">
+                        <span>Catálogo de Empleados</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu11">
+                      <a
+                        href="/CatRegistroIncidencias"
+                        title="Registro de Incidencias"
+                      >
+                        <span>Registro de Incidencias</span>
+                      </a>
+                    </li>
+
+                    <li id="SubMenu12">
+                      <a
+                        href="/MovEmpleadosHorarios"
+                        title="Movimientos Horarios"
+                      >
+                        <span>Movimientos de Horarios</span>
+                      </a>
+                    </li>
+                    <li id="SubMenu13">
+                      <a
+                        href="/HistorialVacaciones"
+                        title="Historial Vacaciones"
+                      >
+                        <span>Historial de Vacaciones</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFour">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseFour"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  <a href="javascript: void(0)" title="Produccion">
+                    <i
+                      class="bi bi-file-earmark-spreadsheet-fill icon-derecha"
+                    ></i>
+                    <span class="drop-text">Reportes</span></a
+                  >
+                </button>
+              </h2>
+              <div
+                id="collapseFour"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingFour"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <ul>
+                    <li id="SubMenu20">
+                      <a href="/Reportes" title="Incidencias">
+                        <span>Reporte de permisos</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFive">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseFive"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  <a href="javascript: void(0)" title="Capital Humano">
+                    <i class="bi bi-people-fill icon-derecha"></i>
+                    <span class="drop-text">Capital Humano</span></a
+                  >
+                </button>
+              </h2>
+              <div
+                id="collapseFive"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingFive"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <ul id="fondo-acordion">
+                    <li>
+                      <a href="/Plantilla" title="Administración de Plantillas">
+                        <span>Plantillas</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/RequisicionPersonal"
+                        title="Requisiciones de personal"
+                      >
+                        <span>Requisición de personal</span>
+                      </a>
+                    </li>
+                    <!-- @*<li class='dt-side-nav__item'>
               <a href='/Requisiciones/Cotizaciones' class='dt-side-nav__link' title='Gafete'> <span class='dt-side-nav__text'>Gafete</span> </a>
           </li>*@ -->
-          <li class='dt-side-nav__item' >
-              <a href='/Organigrama' title='Organigrama'> <span>Organigrama</span> </a>
-          </li>
-      </ul>     
-     </div>
-    </div>
-  </div>
-</div>
-</div>
-<!-- fin de sidebar -->
-
-<!-- CONTENEDOR PRINCIPAL -->
-  <div class="col-md-10 bg p-5">
-    <div class="main-container  shadow">
-
-      <!-- BUSCADOR -->
-<div class="container-fluid col-md-11 mb-3 pt-4">
-  <div class=" fLogin">
-    <div class="input-group d-flex">
-      <div class="form-floating flex-grow-1 ">
-        <select
-        class="form-select fechas-imput"
-        id="inputCorte"
-        placeholder="Fecha de corte"
-        name="corte"
-      >
-  </select>
-  <label htmlFor="corte">Fecha de corte</label>
-        </div>
-          <div class="form-floating flex-grow-1 ">
-            <select
-            class="form-select fechas-imput"
-            id="inputSucursal"
-            placeholder="Sucursal"
-            name="Sucursal"
-            >
-          </select>
-          <label htmlFor="Sucursal">Sucursal</label>
-      </div>
-      <button
-        type="submit"
-        id="buscar"
-        class="btn btn-primary shadow-sm"
-        onclick="initDataTable()"
-      >
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </div>
-</div>
-<!-- buscador -->
-
-<!-- DATA TABLE -->
-<div class="container-fluid" data-bs-spy="scroll" data-bs-target="#contenido" id="tabla" style="height: 500px; overflow-y: auto;" hidden>
-  <div class="row">
-    <div class="container-fluid my-4 col-sm-11 col-md-11 col-lg-11 col-xl-11 " >
-      <table id="tableND" class="table table-sm align-middle" id="contenido">
-        <thead>
-          <tr>
-            <th>Nómina</th>
-            <th>Nombre</th>
-            <th>Faltas</th>
-            <th>Permiso c/g</th>
-            <th>Permiso s/g</th>
-            <th>Vacaciones</th>
-            <th>Incapacidades</th>
-            <th>Retardos</th>
-            <th>N/VR</th>
-            <th>Detalle</th>
-          </tr>
-        </thead>
-        <tbody id="tablaBody">
-          <!--Datos Generados-->
-          <button class="btn btn-dark mb-4" onclick="downloadPDF()">Descargar archivo</button>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<!-- data table -->
-
-    </div>
-    <!-- MODALES -->
-      <div class="modal fade" id="globalmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="modaltitle"><!--titulo--></h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalbody">
-              <!--data-->
-            </div>
-            <div id="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-printer"></i></button>
+                    <li class="dt-side-nav__item">
+                      <a href="/Organigrama" title="Organigrama">
+                        <span>Organigrama</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <!-- fin de sidebar -->
+
+        <!-- CONTENEDOR PRINCIPAL -->
+        <div class="col-md-10 bg p-5">
+          <div class="main-container position-relative shadow">
+            <!-- BUSCADOR -->
+            <div class="container-fluid col-md-11 mb-3 pt-4">
+              <div class="fLogin">
+                <div class="input-group d-flex">
+                  <div class="form-floating flex-grow-1">
+                    <select
+                      class="form-select fechas-imput"
+                      id="inputCorte"
+                      placeholder="Fecha de corte"
+                      name="corte"
+                    ></select>
+                    <label htmlFor="corte">Fecha de corte</label>
+                  </div>
+                  <div class="form-floating flex-grow-1">
+                    <select
+                      class="form-select fechas-imput"
+                      id="inputSucursal"
+                      placeholder="Sucursal"
+                      name="Sucursal"
+                    ></select>
+                    <label htmlFor="Sucursal">Sucursal</label>
+                  </div>
+                  <button
+                    type="submit"
+                    id="buscar"
+                    class="btn btn-primary shadow-sm"
+                    onclick="initDataTable()"
+                  >
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- buscador -->
+            <!-- <button class="position-absolute bottom-0 end-0 btn btn-outline-primary m-5 btn-lg rounded-circle " onclick="downloadPDF()"><i class="bi bi-file-earmark-arrow-down-fill"></i></button> -->
+            <div id="container-floating">
+              <div class="nd4 nds ">
+                <img class="reminder" />
+                <button
+                  title="Descargar con Firma"
+                  class="letter2 btn"
+                  onclick="downloadPDF()"
+                >
+                  <i class="bi bi-journal-check"></i>
+                </button>
+              </div>
+
+              <button
+                title="Descargar sin Firma"
+                class="nd3 nds border-0 "
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                 
+                "
+                onclick="downloadPDFsinFirma()"
+              >
+                <svg
+                  style="margin-right: 6px"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="25"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-file-earmark-arrow-down"
+                  viewBox="0 0 12 16"
+                >
+                  <path
+                    d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"
+                  />
+                  <path
+                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"
+                  />
+                </svg>
+              </button>
+
+              <div title="Descargar con excel" class="nd1 nds">
+                <p class="letter">
+                  <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                </p>
+              </div>
+
+              <div id="floating-button">
+                <p class="plus">+</p>
+                <i class="bi bi-arrow-down edit letter3"></i>
+              </div>
+            </div>
+
+            <!-- DATA TABLE -->
+            <div
+              class="container-fluid"
+              data-bs-spy="scroll"
+              data-bs-target="#contenido"
+              id="tabla"
+              style="height: 500px; overflow-y: auto"
+              hidden
+            >
+              <div class="row">
+                <div
+                  class="container-fluid my-4 col-sm-11 col-md-11 col-lg-11 col-xl-11"
+                >
+                  <table
+                    id="tableND"
+                    class="table table-sm align-middle"
+                    id="contenido"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Nómina</th>
+                        <th>Nombre</th>
+                        <th>Faltas</th>
+                        <th>Permiso c/g</th>
+                        <th>Permiso s/g</th>
+                        <th>Vacaciones</th>
+                        <th>Incapacidades</th>
+                        <th>Retardos</th>
+                        <th>N/VR</th>
+                        <th>Detalle</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tablaBody">
+                      <!--Datos Generados-->
+                      <!-- <div class="position-absolute d-flex justify-content-end align-items-end  end-0 w-75 h-75 mx-5 mb-5 pb-5 px-5">
+          <button class="btn btn-primary  rounded-circle mx-3" onclick="downloadPDF()"><i class="bi bi-printer"></i></button>
+        </div> -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- data table -->
+          </div>
+          <!-- MODALES -->
+          <div
+            class="modal fade"
+            id="globalmodal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+            >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="modaltitle">
+                    <!--titulo-->
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body" id="modalbody">
+                  <!--data-->
+                </div>
+                <div id="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- modales -->
+        </div>
+        <!-- contenedor principal -->
       </div>
-    <!-- modales -->
-  </div>
-<!-- contenedor principal -->
+    </div>
 
-</div>
-</div>
+    <footer class="pie bg-white">
+      <div class="container">
+        <p class="parrafo texto-chico pt-2">
+          <b
+            >© 2023 Análisis Clínicos y Rayos X de Occidente S. de R.L. de
+            C.V.</b
+          >
+        </p>
+      </div>
+    </footer>
 
-<footer class="pie bg-white">
-  <div class="container ">
-    <p class="parrafo texto-chico pt-2"><b>© 2023 Análisis Clínicos y Rayos X de Occidente S. de R.L. de C.V.</b></p>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<!-- JQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<!-- DataTAble -->
-<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
-<!-- sweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- jsPDF -->
-<script src="https://unpkg.com/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- DataTAble -->
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    <!-- sweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- jsPDF -->
+    <script src="https://unpkg.com/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.js"></script>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <!-- Javascript -->
     <script src="main.js"></script>
     <script src="buscador.js"></script>
     <script src="buscadorSucursales.js"></script>
     <script src="pdf.js"></script>
-</body>
+    <script src="pdfS.js"></script>
+  </body>
 </html>
-
