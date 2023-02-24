@@ -35,7 +35,7 @@ const initDataTable = async () => {
     await getDataByPeriodoSucursal();
   }
 
-  dataTable = $("#dataTable").DataTable(dataTableOptions);
+  dataTable = $("#tableND").DataTable(dataTableOptions);
   document.getElementById("tabla").hidden = false;
   dataTableInicialized = true;
 };
@@ -71,6 +71,7 @@ const getDataByPeriodo = async () => {
 
       const user = empdata[index];
       console.log(user);
+      // Primera función
       // const horaEntrada = new Date(user.emphorario.horaentrada.Time);
       // const horaSalida = new Date(user.emphorario.horasalida.Time);
       // const horacomida = new Date(user.emphorario.horasalidacomer.Time);
@@ -92,8 +93,8 @@ const getDataByPeriodo = async () => {
 
       content += `
         <tr>
-          <td>${user.empnomina}</td>
-          <td>${user.empname}</td>
+          <td class="filtro">${user.empnomina}</td>
+          <td class="col-3">${user.empname}</td>
           ${
             incidencias.faltas > 0
               ? `<td style="background-color: #B54166; color: #fff; text-align:center;">${incidencias.faltas}</td>`
@@ -120,9 +121,11 @@ const getDataByPeriodo = async () => {
               : `<td style="text-align:center;">${incidencias.incapacidad}</td>`
           }
           ${
-            incidencias.retardos > 0
-              ? `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
-              : `<td style="text-align:center;">${incidencias.retardos}</td>`
+            incidencias.retardos > 20
+              ? `<td style="background-color: #B54166; color: #fff; text-align:center;">${incidencias.retardos}</td>`
+              : incidencias.retardos <= 0
+              ? `<td style="text-align:center; background-color: none;">${incidencias.retardos}</td>`
+              : `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
           }
           ${
             incidencias.n_vr > 0
@@ -176,6 +179,7 @@ const getDataByPeriodoSucursal = async () => {
 
       const user = empdata[index];
       console.log(user);
+      // Segunda Función
       // const horaEntrada = new Date(user.emphorario.horaentrada.Time);
       // const horaSalida = new Date(user.emphorario.horasalida.Time);
       // const horacomida = new Date(user.emphorario.horasalidacomer.Time);
@@ -225,9 +229,11 @@ const getDataByPeriodoSucursal = async () => {
               : `<td style="text-align:center;">${incidencias.incapacidad}</td>`
           }
           ${
-            incidencias.retardos > 0
-              ? `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
-              : `<td style="text-align:center;">${incidencias.retardos}</td>`
+            incidencias.retardos > 20
+              ? `<td style="background-color: #B54166; color: #fff; text-align:center;">${incidencias.retardos}</td>`
+              : incidencias.retardos <= 0
+              ? `<td style="text-align:center; background-color: none;">${incidencias.retardos}</td>`
+              : `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
           }
           ${
             incidencias.n_vr > 0
@@ -279,6 +285,7 @@ const getDataByPeriodoEmpleado = async () => {
 
       const user = empdata[index];
       console.log(user);
+      // Tercera Función
       // const horaEntrada = new Date(user.emphorario.horaentrada.Time);
       // const horaSalida = new Date(user.emphorario.horasalida.Time);
       // const horacomida = new Date(user.emphorario.horasalidacomer.Time);
@@ -328,9 +335,11 @@ const getDataByPeriodoEmpleado = async () => {
               : `<td style="text-align:center;">${incidencias.incapacidad}</td>`
           }
           ${
-            incidencias.retardos > 0
-              ? `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
-              : `<td style="text-align:center;">${incidencias.retardos}</td>`
+            incidencias.retardos > 20
+              ? `<td style="background-color: #B54166; color: #fff; text-align:center;">${incidencias.retardos}</td>`
+              : incidencias.retardos <= 0
+              ? `<td style="text-align:center; background-color: none;">${incidencias.retardos}</td>`
+              : `<td style="background-color: #BDFCBD; color: #677381; text-align:center;">${incidencias.retardos}</td>`
           }
           ${
             incidencias.n_vr > 0
@@ -351,14 +360,13 @@ const getDataByPeriodoEmpleado = async () => {
   }
 };
 
-
 const fillmodal = (nommina) => {
   let empdetalle = GlobalData.filter((emp) => {
     return emp.empnomina === nommina;
   })[0];
   // console.log(empdetalle)
   document.getElementById("modaltitle").innerText =
-    empdetalle.empname + " N. " + empdetalle.empnomina;
+    empdetalle.empname + "  n. " + empdetalle.empnomina;
   let modalbody = document.getElementById("modalbody");
   modalbody.innerHTML = "";
   // modalbody.innerHTML = JSON.stringify(empdetalle.empfechas);
@@ -447,8 +455,10 @@ const fillmodal = (nommina) => {
     row.appendChild(tdHorario);
 
     tdRetardos.innerText = rowData.minutosretardo;
-    if (rowData.minutosretardo > 0) {
+    if (rowData.minutosretardo > 0 && rowData.minutosretardo <= 20) {
       tdRetardos.className = "table-success";
+    } else if (rowData.minutosretardo >= 21) {
+      tdRetardos.className = "table-danger";
     }
 
     row.appendChild(tdRetardos);
@@ -495,7 +505,10 @@ const fillmodal = (nommina) => {
     tdObservaciones.innerText = rowData.observaciones;
     if (rowData.observaciones === "FALTA") {
       tdObservaciones.className = "table-danger";
+    } else if (rowData.observaciones === "FECHA POSTERIOR") {
+      tdObservaciones.className = "table-info";
     }
+
     // console.log(rowData.observaciones)
     row.appendChild(tdObservaciones);
 
@@ -503,18 +516,17 @@ const fillmodal = (nommina) => {
   }
 
   table.appendChild(tbody);
-  
-  const modalFooter = document.querySelector('.modal-footer');
-  let downloadButton = modalFooter.querySelector('.download-button');
-  
-  if (!downloadButton) {
-    downloadButton = document.createElement('button');
-    downloadButton.innerHTML = 'Descargar';
-    downloadButton.classList.add('btn', 'btn-dark', 'download-button');
-    downloadButton.addEventListener("click", downloadFile);
-    modalFooter.appendChild(downloadButton);
-  }
 
+  const modalFooter = document.querySelector("#modal-footer");
+  modalFooter.className = "d-blo mb-4 mx-3 pt-0";
+  let downloadButton = modalFooter.querySelector(".download-button");
+
+  if (downloadButton) modalFooter.removeChild(downloadButton);
+  downloadButton = document.createElement("button");
+  downloadButton.innerHTML = "Descargar";
+  downloadButton.classList.add("btn", "btn-dark", "download-button");
+  downloadButton.setAttribute("onclick", `downloadPDF([${nommina}])`);
+  modalFooter.appendChild(downloadButton);
 };
 
 function cancelarChecada(idchecada) {
@@ -572,15 +584,15 @@ const eliminarBoton = (e) => {
   }
 };
 
-const  downloadFile = () => {
-  const file = "ruta/archivo.pdf";
+// const  downloadFile = () => {
+//   const file = "ruta/archivo.pdf";
 
-  const a = document.createElement('a');
-  a.href = file;
-  a.download = file.split("/").pop();
+//   const a = document.createElement('a');
+//   a.href = file;
+//   a.download = file.split("/").pop();
 
-  document.body.appendChild(a);
-  a.click();
+//   document.body.appendChild(a);
+//   a.click();
 
-  document.body.removeChild(a);
-}
+//   document.body.removeChild(a);
+// }
