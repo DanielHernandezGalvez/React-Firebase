@@ -7,6 +7,7 @@ window.addEventListener("load", async () => {
     redirect: 'follow'
   };
 
+
   let url = "https://ms.nucleodediagnostico.com/caphumano/checador/GetAllPeriodos"
   const response = await fetch(url, requestOptions);
   const data = await response.json();
