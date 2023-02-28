@@ -15,9 +15,10 @@ form.addEventListener("submit", (event) => {
 
   const fecha = document.querySelector("#fechaInput").value;
   const hora = document.querySelector("#horaInput").value;
-  let fechaunix = parseInt(
-    (new Date(fecha + " " + hora).getTimezoneOffset() / 1000).toFixed(0)
-  );
+  let datetime = new Date(fecha + " " + hora)
+  datetime.setHours(datetime.getHours()- 6)
+
+  let fechaunix = Math.floor(datetime.getTime() / 1000)
   let nomina = parseInt(document.getElementById("numeroEmpleado").innerText)
   console.log(fechaunix)
   fetch(
@@ -30,22 +31,33 @@ form.addEventListener("submit", (event) => {
       },
     }
   )
+  // modificar el tipo de hora con la zona horaria en el fetch + 6 horas
     .then((response) => {
       if (response.ok) {
         console.log("Los datos se han enviado correctamente");
-        alert("¡Gracias por enviar los datos!");
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Recarga la página para ver los cambios',
+          showConfirmButton: false,
+          timer: 3000
+        })
       } else {
         console.error("Error en la respuesta del servidor:", response.status);
-        alert(
-          "Ha ocurrido un error al enviar los datos. Por favor, inténtalo de nuevo más tarde."
-        );
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal, inténtalo más tarde',
+        })
       }
     })
     .catch((error) => {
       console.error("Ha ocurrido un error al enviar los datos:", error);
-      alert(
-        "Ha ocurrido un error al enviar los datos. Por favor, inténtalo de nuevo más tarde."
-      );
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Algo salió mal, inténtalo más tarde',
+      })
     });
 });
 
@@ -67,3 +79,4 @@ myForm.addEventListener("submit", (event) => {
     );
   }
 });
+
