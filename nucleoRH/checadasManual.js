@@ -5,7 +5,7 @@
 // para agregar checada se avisa que se debe recargar la página
 // ✔ en el aviso de se recargaron correctamente poner aviso que que se debe recargar
 // ✔ la fecha de incerción no puede ser mayor a hoy
-// hacer filtro por año, agregar otro input del lado izquierdo para que se filtren los periodos
+// ✔ hacer filtro por año, agregar otro input del lado izquierdo para que se filtren los periodos
 // ✔ agregar un titulo para ver por hover el nombre de la sucursal en los check
 
 const form = document.querySelector("#myForm");
