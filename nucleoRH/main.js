@@ -25,7 +25,6 @@ const dataTableOptions = {
 
 let GlobalData = [];
 
-
 const initDataTable = async () => {
   if (dataTableInicialized) {
     dataTable.destroy();
