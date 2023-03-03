@@ -1,5 +1,3 @@
-// const response = await fetch("./fakeApi.json");
-// const user = await response.json();
 
 window.addEventListener("load", async () => {
   let requestOptions = {
