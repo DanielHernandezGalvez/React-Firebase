@@ -11,6 +11,7 @@ window.addEventListener("load", async () => {
 
   console.log(data)
 
+
   const option = document.getElementById("inputCorte");
   const options = { day: 'numeric', month: 'long', year: 'numeric' };
 
