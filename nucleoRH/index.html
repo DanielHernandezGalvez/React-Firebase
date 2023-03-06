@@ -15,15 +15,24 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <!-- <link href="https://cdn.datatables.net/v/bs5/dt-1.13.3/b-2.3.5/datatables.min.css"/> -->
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="styles.css" />
+
+    <link
+      href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css"
+    />
+    <link
+      href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.bootstrap5.min.css"
+    />
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap.min.css"
     />
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <!-- NAVBAR -->
@@ -350,6 +359,12 @@
             </div>
           </div>
         </div>
+
+        <!--
+          BOTÓN BOOTSTRAP 3
+          <div class="container mx-2 my-4 "> 
+          <a class="checadoresulr" href="/Checadores"><img src="https://cdn-icons-png.flaticon.com/512/8742/8742363.png" width="20px"/> Checadores</a>
+      </div> -->
         <!-- fin de sidebar -->
 
         <!-- CONTENEDOR PRINCIPAL -->
@@ -358,10 +373,26 @@
             <!-- BUSCADOR -->
             <div class="container-fluid col-md-11 mb-3 pt-4">
               <div class="fLogin">
-                <div class="input-group d-flex">
+                <div class="d-flex btn-group">
                   <div class="form-floating flex-grow-1">
                     <select
-                      class="form-select fechas-imput"
+                      class="form-select rounded-start"
+                      id="inputYear"
+                      placeholder="Año"
+                      name="año"
+                      onchange="fillCortes()"
+                    >
+                      <option class="yearFilter" value="sinFiltro">
+                        No Filtrar
+                      </option>
+                      <option class="yearFilter" value="2023">2023</option>
+                      <option class="yearFilter" value="2022">2022</option>
+                    </select>
+                    <label htmlFor="corte">Año</label>
+                  </div>
+                  <div class="form-floating flex-grow-1">
+                    <select
+                      class="form-select"
                       id="inputCorte"
                       placeholder="Fecha de corte"
                       name="corte"
@@ -370,7 +401,7 @@
                   </div>
                   <div class="form-floating flex-grow-1">
                     <select
-                      class="form-select fechas-imput"
+                      class="form-select"
                       id="inputSucursal"
                       placeholder="Sucursal"
                       name="Sucursal"
@@ -390,57 +421,6 @@
             </div>
             <!-- buscador -->
             <!-- <button class="position-absolute bottom-0 end-0 btn btn-outline-primary m-5 btn-lg rounded-circle " onclick="downloadPDF()"><i class="bi bi-file-earmark-arrow-down-fill"></i></button> -->
-            <div id="container-floating">
-              <div class="nd4 nds ">
-                <img class="reminder" />
-                <button
-                  title="Descargar con Firma"
-                  class="letter2 btn"
-                  onclick="downloadPDF()"
-                >
-                  <i class="bi bi-journal-check"></i>
-                </button>
-              </div>
-
-              <button
-                title="Descargar sin Firma"
-                class="nd3 nds border-0 "
-                style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                "
-                onclick="downloadPDFsinFirma()"
-              >
-                <svg
-                  style="margin-right: 6px"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="25"
-                  height="24"
-                  fill="currentColor"
-                  class="bi bi-file-earmark-arrow-down"
-                  viewBox="0 0 12 16"
-                >
-                  <path
-                    d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"
-                  />
-                  <path
-                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"
-                  />
-                </svg>
-              </button>
-
-              <div title="Descargar con excel" class="nd1 nds">
-                <p class="letter">
-                  <i class="bi bi-file-earmark-spreadsheet-fill"></i>
-                </p>
-              </div>
-
-              <div id="floating-button">
-                <p class="plus">+</p>
-                <i class="bi bi-arrow-down edit letter3"></i>
-              </div>
-            </div>
 
             <!-- DATA TABLE -->
             <div
@@ -448,7 +428,7 @@
               data-bs-spy="scroll"
               data-bs-target="#contenido"
               id="tabla"
-              style="height: 500px; overflow-y: auto"
+              style="height: 500px"
               hidden
             >
               <div class="row">
@@ -486,6 +466,69 @@
             </div>
             <!-- data table -->
           </div>
+          <div id="container-floating" style="display: none">
+            <div class="nd4 nds">
+              <img class="reminder" />
+              <button
+                id="btnpdf"
+                title="Descargar con Firma"
+                class="letter2 btn"
+                onclick="downloadPDF()"
+              >
+                <i class="bi bi-journal-check"></i>
+              </button>
+            </div>
+
+            <button
+              id="sinfirmabtn"
+              title="Descargar sin Firma"
+              class="nd3 nds border-0"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              onclick="downloadPDFsinFirma()"
+            >
+              <svg
+                style="margin-right: 6px"
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="24"
+                fill="currentColor"
+                class="bi bi-file-earmark-arrow-down"
+                viewBox="0 0 12 16"
+              >
+                <path
+                  d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"
+                />
+                <path
+                  d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"
+                />
+              </svg>
+            </button>
+
+            <div
+              id="excel-container"
+              title="Descargar con excel"
+              class="nd1 nds dt-buttons"
+            >
+              <button
+                id="excelbtn"
+                class="letter botonND rounded-circle buttons-excel buttons-html5"
+                tabindex="0"
+                aria-controls="tableND"
+                type="button"
+              >
+                <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+              </button>
+            </div>
+
+            <div id="floating-button">
+              <p class="plus">+</p>
+              <i class="bi bi-arrow-down edit letter3"></i>
+            </div>
+          </div>
           <!-- MODALES -->
           <div
             class="modal fade"
@@ -499,7 +542,7 @@
             <div
               class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
             >
-              <div class="modal-content">
+              <div id="TableToExport" class="modal-content">
                 <div class="modal-header">
                   <h1 class="modal-title fs-5" id="modaltitle">
                     <!--titulo-->
@@ -522,10 +565,80 @@
                   >
                     Cerrar
                   </button>
+                  <button
+                    class="btn btn-dark"
+                    id="sheetjsexport"
+                    onclick="exportToExcel()"
+                  >
+                    Excel
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- off canvas  -->
+          <div
+            style="z-index: 2000"
+            class="offcanvas offcanvas-end position-fixed"
+            tabindex="-1"
+            id="offcanvasRight"
+            aria-labelledby="offcanvasRightLabel"
+          >
+            <div class="offcanvas-header flex-wrap">
+              <h4 class="mx-auto my-3 mb-4" id="offcanvasRightLabel">
+                <b>Agregar checada manual</b>
+              </h4>
+              <div class="mx-auto my-4">
+                <b class="parrafo-azul" id="numeroEmpleado">h</b>
+                <b id="nombreEmpleado">h</b>
+              </div>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="myForm">
+              <div class="offcanvas-body">
+                <label for="fecha"><b class="mx-3">Introducir Fecha:</b></label>
+                <div class="input-group align-items-center mb-5 p-3">
+                  <input
+                    class="form-control p-3"
+                    type="date"
+                    name="fecha"
+                    id="fechaInput"
+                  />
+                </div>
+                <label for="hora"><b class="mx-3">Hora: </b></label>
+                <div class="input-group align-items-center mb-5 p-3">
+                  <input
+                    class="form-control p-3"
+                    type="time"
+                    name="hora"
+                    id="horaInput"
+                  />
+                </div>
+                <div class="container w-50">
+                  <button
+                    type="submit"
+                    id="horaId"
+                    class="btn btn-primary shadow-sm container"
+                  >
+                    Agregar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- off canvas  -->
+
+          <!-- excel -->
+          <!-- <table id="TableToExport">
+          <div id="output"></div> -->
+          <!-- excel -->
+
           <!-- modales -->
         </div>
         <!-- contenedor principal -->
@@ -550,9 +663,16 @@
     ></script>
     <!-- JQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script> -->
     <!-- DataTAble -->
-    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.3/b-2.3.5/b-colvis-2.3.5/b-html5-2.3.5/datatables.min.js"></script>    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
     <!-- sweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jsPDF -->
@@ -564,5 +684,10 @@
     <script src="buscadorSucursales.js"></script>
     <script src="pdf.js"></script>
     <script src="pdfS.js"></script>
+    <script src="checadaManual.js"></script>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+    <script src="excel.js"></script>
   </body>
 </html>
