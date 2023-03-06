@@ -1,10 +1,23 @@
 let dataTable;
 let open = false;
 let dataTableInicialized = false;
+let corte = "";
+
+let fecha = new Date();
+  let dia = fecha.getDate();
+  let mes = fecha.getMonth() + 1;
+  let anio = fecha.getFullYear();
+  if (dia < 10) {
+    dia = "0" + dia;
+  }
+  if (mes < 10) {
+    mes = "0" + mes;
+  }
+  let fechaCorta = dia + "-" + mes + "-" + anio;
 
 const dataTableOptions = {
-  lengthMenu: [1, 3, 5, 10],
-  pageLength: 3,
+  lengthMenu: [10, 20, 50],
+  pageLength: 50,
   destroy: true,
   language: {
     lengthMenu: "Mostrar _MENU_ registros por página",
@@ -21,7 +34,25 @@ const dataTableOptions = {
       previous: "Anterior",
     },
   },
+  dom: "Bfrtip",
+  buttons: [
+    {
+      extend: "excel",
+      text: "Ex",
+      title: "excel",
+      className: "rounded-circle",
+      visibility: false,
+      filename: fechaCorta + "_ReporteChecador"
+    },
+  ],
+  scrollY: "50vh",
+  scrollCollapse: true,
+  paging: false,
 };
+
+$("#excelbtn").click(function () {
+  table.buttons(".buttons-excel").trigger();
+});
 
 let GlobalData = [];
 
@@ -34,9 +65,13 @@ const initDataTable = async () => {
   } else {
     await getDataByPeriodoSucursal();
   }
+  $("#container-floating").show();
 
   dataTable = $("#tableND").DataTable(dataTableOptions);
   document.getElementById("tabla").hidden = false;
+
+  dataTable.buttons().container().appendTo($("#excel-container"));
+
   dataTableInicialized = true;
 };
 
@@ -46,14 +81,17 @@ const getDataByPeriodo = async () => {
       method: "GET",
       redirect: "follow",
     };
-    let id = document.getElementById("inputCorte").value;
+    let inputCortes = document.getElementById("inputCorte");
+    let id = inputCortes.value;
+    for (let q = 0; q < inputCortes.childNodes.length; q++) {
+      const child = inputCortes.childNodes[q];
+      if (child.value === inputCortes.value) corte = child.innerText;
+    }
 
     const url = `https://ms.nucleodediagnostico.com/caphumano/checador/CheckByPeriod?Id=${id}`;
     const response = await fetch(url, requestOptions).then();
     const users = await response.json();
 
-    // const response = await fetch("./fakeApi.json");
-    // const user = await response.json();
     let empdata = users.data;
     GlobalData = users.data;
     let content = ``;
@@ -62,7 +100,7 @@ const getDataByPeriodo = async () => {
       let incidencias = {
         faltas: 0,
         pcg: 0,
-        psg: 0, // jaja el parís y también tiene 0
+        psg: 0,
         vacaciones: 0,
         incapacidad: 0,
         retardos: 0,
@@ -71,18 +109,7 @@ const getDataByPeriodo = async () => {
 
       const user = empdata[index];
       console.log(user);
-      // Primera función
-      // const horaEntrada = new Date(user.emphorario.horaentrada.Time);
-      // const horaSalida = new Date(user.emphorario.horasalida.Time);
-      // const horacomida = new Date(user.emphorario.horasalidacomer.Time);
-      // const regresoComida = new Date(user.emphorario.horaregresocomer.Time);
-      // const observaciones = user.empfechas[0].observaciones;
-      // const entradaSabado = new Date(user.emphorario.horaentradasabado.Time);
-      // const salidaSabado = new Date(user.emphorario.horasalidasabado.Time);
-      // const comidaSabado = new Date(user.emphorario.horasalidacomersabado.Time);
-      // const regresocomidaSabado = new Date(
-      //   user.emphorario.horaregresocomersabado.Time
-      // );
+
       for (let j = 0; j < user.empfechas.length; j++) {
         const fecha = user.empfechas[j];
         if (fecha.observaciones === "FALTA") incidencias.faltas += 1;
@@ -364,6 +391,14 @@ const fillmodal = (nommina) => {
   let empdetalle = GlobalData.filter((emp) => {
     return emp.empnomina === nommina;
   })[0];
+  
+  document
+    .getElementById("sheetjsexport")
+    .setAttribute(
+      "onclick",
+      `exportToExcel('${fechaCorta}_${empdetalle.empnomina}')`
+    );
+
   // console.log(empdetalle)
   document.getElementById("modaltitle").innerText =
     empdetalle.empname + "  n. " + empdetalle.empnomina;
@@ -373,13 +408,28 @@ const fillmodal = (nommina) => {
 
   // aquí empieza
   const table = document.createElement("table");
+  table.id = "tableExcel";
   table.className = "table table-bordered";
   modalbody.appendChild(table);
+
+  //NAME
+  const headertrNAME = document.createElement("tr");
+  const headerRowNAME = document.createElement("thead");
+  headerRowNAME.className = "table-dark";
+  const headerCellNAME = document.createElement("th");
+  headerCellNAME.className = "col";
+  headerCellNAME.hidden = true;
+  headerCellNAME.innerText = empdetalle.empname + " - " + empdetalle.empnomina;
+
+  headertrNAME.appendChild(headerCellNAME);
+  headerRowNAME.appendChild(headertrNAME);
+  table.appendChild(headerRowNAME);
+  //NAME
 
   const headertr = document.createElement("tr");
   const headerRow = document.createElement("thead");
   headerRow.className = "table-dark";
-  const headers = ["Fecha", "Horario", "Retardos", "Checadas", "Observaciones"];
+  const headers = ["Fecha", `Horario`, "Retardos", "Checadas", "Observaciones"];
   for (let h = 0; h < headers.length; h++) {
     const headerCell = document.createElement("th");
     headerCell.className = "col";
@@ -396,14 +446,26 @@ const fillmodal = (nommina) => {
       icon.className = "bi bi-pencil-square";
       button.appendChild(icon);
       headerCell.appendChild(button);
-      // button.addEventListener("click", function () {
-      //   eliminarBoton(this.parentNode);
-      // });
+
+      // detalle
+      let buttonMas = `
+      <button class="mx-2 btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <i class="bi bi-plus-circle"></i>
+      </button>
+    `;
+      headerCell.insertAdjacentHTML("beforeend", buttonMas);
+      // detalle
     }
     headertr.appendChild(headerCell);
   }
   headerRow.appendChild(headertr);
   table.appendChild(headerRow);
+
+  const emplead = document.getElementById("nombreEmpleado");
+  emplead.innerHTML = empdetalle.empname;
+
+  const nEmple = document.getElementById("numeroEmpleado");
+  nEmple.innerHTML = empdetalle.empnomina;
 
   const tbody = document.createElement("tbody");
   for (let i = 0; i < empdetalle.empfechas.length; i++) {
@@ -411,6 +473,7 @@ const fillmodal = (nommina) => {
     const row = document.createElement("tr");
 
     let thfecha = document.createElement("th");
+    thfecha.id = "fechaDetalle";
     let tdHorario = document.createElement("td");
     let tdRetardos = document.createElement("td");
 
@@ -473,25 +536,27 @@ const fillmodal = (nommina) => {
         const button = status
           ? ""
           : `
-          <button id="cancel" class="btn-cancelar rounded-circle bt_c" onclick="cancelarChecada(${e.idchecada})" hidden>
+          <button id="cancel" class="btn-cancelar rounded-circle bt_c" onclick="cancelarChecada('${e.idchecada}')" hidden>
           <i class="bi bi-x"></i>
           </button>
           `;
 
         checadas += `
-        <td id="idX" class="text-center ${status}">${new Date(
-          e.check
-        ).getUTCHours()}:${
+          <td title="${e.sucursal}" id="idX" class="text-center ${status}">
+            ${new Date(e.check).getUTCHours()}:${
           new Date(e.check).getUTCMinutes() < 10 ? "0" : ""
-        }${new Date(e.check).getUTCMinutes()} 
-        ${button}
-
+        }${new Date(e.check).getUTCMinutes()}${
+          z === rowData.checadas.length - 1 ? "" : ","
+        } 
+            ${button} 
+          </td>
         `;
       }
+
       tdChecadas.innerHTML = `
     <table class="table table-sm m-0 table-borderless">
         <tbody >
-          <tr class="align-middle p-0">
+          <tr class="align-middle p-0 idsucursal">
             ${checadas}
           </tr>
         </tbody>
@@ -524,8 +589,12 @@ const fillmodal = (nommina) => {
   if (downloadButton) modalFooter.removeChild(downloadButton);
   downloadButton = document.createElement("button");
   downloadButton.innerHTML = "Descargar";
+  downloadButton.id = "descargadetalle";
   downloadButton.classList.add("btn", "btn-dark", "download-button");
-  downloadButton.setAttribute("onclick", `downloadPDF([${nommina}])`);
+  downloadButton.setAttribute(
+    "onclick",
+    `downloadPDFsinFirma([${empdetalle.empnomina}],'${fechaCorta}_${empdetalle.empnomina}')`
+  );
   modalFooter.appendChild(downloadButton);
 };
 
@@ -537,16 +606,13 @@ function cancelarChecada(idchecada) {
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "cancelar",
-    cancelButtonText: "volver",
+    confirmButtonText: "Cancelar checada",
+    cancelButtonText: "Volver",
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Cancelado!", "la checada ha sido cancelada.", "success");
-
       const data = {
         idchecada,
       };
-
       fetch(
         "https://ms.nucleodediagnostico.com/caphumano/checador/InvalidarChecada",
         {
@@ -556,14 +622,25 @@ function cancelarChecada(idchecada) {
           },
           body: JSON.stringify(data),
         }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Respuesta del servidor:", data);
-        })
-        .catch((error) => {
-          console.error("Error al enviar mensaje:", error);
-        });
+      ).then((response) => {
+        if (response.status === 200) {
+          Swal.fire(
+            "Cancelado!",
+            "la checada ha sido cancelada. Favor de actualizar la página",
+            "success"
+          );
+        } else {
+          Swal.fire("Ocurrió un error", "", "error");
+        }
+        response
+          .json()
+          .then((data) => {
+            console.log("Respuesta del servidor:", data);
+          })
+          .catch((error) => {
+            console.error("Error al enviar mensaje:", error);
+          });
+      });
     }
   });
 }
@@ -583,16 +660,3 @@ const eliminarBoton = (e) => {
     }
   }
 };
-
-// const  downloadFile = () => {
-//   const file = "ruta/archivo.pdf";
-
-//   const a = document.createElement('a');
-//   a.href = file;
-//   a.download = file.split("/").pop();
-
-//   document.body.appendChild(a);
-//   a.click();
-
-//   document.body.removeChild(a);
-// }
