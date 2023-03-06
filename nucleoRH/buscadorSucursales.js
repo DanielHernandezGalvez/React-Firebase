@@ -7,7 +7,6 @@ window.addEventListener("load", async () => {
     let urlSucursales = "https://ms.nucleodediagnostico.com/caphumano/checador/GetAllSucursales"
     const res = await fetch(urlSucursales, requestOptions);
     const data = await res.json();
-
     console.log(data)
 
     const option = document.getElementById("inputSucursal");
