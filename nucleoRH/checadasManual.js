@@ -21,7 +21,6 @@ form.addEventListener("submit", (event) => {
       },
     }
   )
-  // modificar el tipo de hora con la zona horaria en el fetch + 6 horas
     .then((response) => {
       if (response.ok) {
         console.log("Los datos se han enviado correctamente");
