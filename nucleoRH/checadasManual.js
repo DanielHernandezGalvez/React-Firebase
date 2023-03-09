@@ -3,6 +3,7 @@ form.addEventListener("submit", (event) => {
   console.log("Hola");
   event.preventDefault();
 
+  
   const fecha = document.querySelector("#fechaInput").value;
   const hora = document.querySelector("#horaInput").value;
   let datetime = new Date(fecha + " " + hora)
