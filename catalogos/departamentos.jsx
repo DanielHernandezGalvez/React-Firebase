@@ -102,12 +102,12 @@ function Departamentos() {
 
   return (
     <>
-      <div class='dt-card dt-card__full-height'>
-        <div class='dt-card__header' style='justify-self'>
-          <h4 class='mb--15'>Departamentos</h4>
+      <div className='dt-card dt-card__full-height'>
+        <div className='dt-card__header' style={{ justifySelf: "center" }}>
+          <h4 className='mb--15'>Departamentos</h4>
           <div>
             <button
-              class='btn btn-success'
+              className='btn btn-success'
               data-toggle='modal'
               data-target='#Add'
               id='btnAgregarDepartamentos'
@@ -116,12 +116,12 @@ function Departamentos() {
             </button>
           </div>
         </div>
-        <div class='card-body'>
-          <table class='table' id='table3'>
+        <div className='card-body'>
+          <table className='table' id='table3'>
             <thead>
               <tr>
                 <th scope='col'>Descripción</th>
-                <th class='accionesEnd'>Acciones</th>
+                <th className='accionesEnd'>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -140,135 +140,135 @@ function Departamentos() {
                         edit
                       </i>
                     </a>
-                    {/* <a href="" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="DeleteDepartamento(@ins.DepaId)">
-                    <i className="material-icons text-danger EliminarDepartamentos">delete</i>
-                  </a> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
-      @*Agregar YA MOSTRANDO EL MODAL*@
-      <div
-        class='modal fade'
-        id='Add'
-        tabindex='-1'
-        role='dialog'
-        aria-hidden='true'
-      >
-        <div class='modal-dialog' style='max-width:45em;' role='document'>
-          <div class='modal-content'>
-            <div class='modal-header'>
-              <h5 class='modal-title'>Agregar Departamento</h5>
-              <button
-                type='button'
-                class='close'
-                data-dismiss='modal'
-                aria-label='Close'
-              >
-                <span aria-hidden='true'>&times;</span>
-              </button>
-            </div>
-            <div class='modal-body'>
-              <form
-                id='AddDepartamento'
-                asp-controller='Departamentos'
-                asp-action='Add'
-                method='POST'
-              >
-                <div class='form-group row'>
-                  <label class='col-sm-2 col-form-label'>Descripcion</label>
-                  <div class='col-sm-10'>
-                    <input
-                      type='text'
-                      class='form-control col-sm-10 col-form-label'
-                      name='DepaDescripcion'
-                      id='DepaDescripcion'
-                      maxlength='50'
-                      placeholder='Descripcion'
-                      autocomplete='off'
-                      required
-                    />
+
+        {/* Agregar YA MOSTRANDO EL MODAL */}
+        <div
+          className='modal fade'
+          id='Add'
+          tabIndex='-1'
+          role='dialog'
+          aria-hidden='true'
+        >
+          <div
+            className='modal-dialog'
+            style={{ maxWidth: "45em" }}
+            role='document'
+          >
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Agregar Departamento</h5>
+                <button
+                  type='button'
+                  className='close'
+                  data-dismiss='modal'
+                  aria-label='Close'
+                >
+                  <span aria-hidden='true'>&times;</span>
+                </button>
+              </div>
+              <div className='modal-body'>
+                <form id='AddDepartamento' method='POST'>
+                  <div className='form-group row'>
+                    <label className='col-sm-2 col-form-label'>
+                      Descripcion
+                    </label>
+                    <div className='col-sm-10'>
+                      <input
+                        type='text'
+                        className='form-control col-sm-10 col-form-label'
+                        name='DepaDescripcion'
+                        id='DepaDescripcion'
+                        maxLength='50'
+                        placeholder='Descripcion'
+                        autoComplete='off'
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class='form-group float-right'>
-                  <button
-                    type='button'
-                    id='btnAddDepartamento'
-                    onclick='AddDepartamento()'
-                    class='btn btn-success'
-                  >
-                    Agregar
-                  </button>
-                  <button data-dismiss='modal' class='btn btn-danger'>
-                    Cancelar
-                  </button>
-                </div>
-              </form>
+                  <div className='form-group float-right'>
+                    <button
+                      type='button'
+                      id='btnAddDepartamento'
+                      onClick={addDepartamento}
+                      className='btn btn-success'
+                    >
+                      Agregar
+                    </button>
+                    <button data-dismiss='modal' className='btn btn-danger'>
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      @*Editar FORMULARIO YA EN MODAL*@
-      <div
-        class='modal fade'
-        id='Edit'
-        tabindex='-1'
-        role='dialog'
-        aria-hidden='true'
-      >
-        <div class='modal-dialog' style='max-width:45em;' role='document'>
-          <div class='modal-content'>
-            <div class='modal-header'>
-              <h5 class='modal-title'>Editar Departamento</h5>
-              <button
-                type='button'
-                class='close'
-                data-dismiss='modal'
-                aria-label='Close'
-              >
-                <span aria-hidden='true'>&times;</span>
-              </button>
-            </div>
-            <div class='modal-body'>
-              <form
-                id='EditDepartamento'
-                asp-controller='Departamentos'
-                asp-action='EditDepartamento'
-                method='POST'
-              >
-                <input type='hidden' />
-                <input type='hidden' id='Id' name='Id' />
-                <div class='form-group row'>
-                  <label class='col-sm-2 col-form-label'>Descripción</label>
-                  <div class='col-sm-10'>
-                    <input
-                      type='text'
-                      class='form-control col-sm-10 col-form-label'
-                      name='DepaDescripcionE'
-                      id='DepaDescripcionE'
-                      placeholder='Descripción'
-                      autocomplete='off'
-                      required
-                    />
+
+        {/* @*Editar FORMULARIO YA EN MODAL*@ */}
+        <div
+          class='modal fade'
+          id='Edit'
+          tabindex='-1'
+          role='dialog'
+          aria-hidden='true'
+        >
+          <div class='modal-dialog' style='max-width:45em;' role='document'>
+            <div class='modal-content'>
+              <div class='modal-header'>
+                <h5 class='modal-title'>Editar Departamento</h5>
+                <button
+                  type='button'
+                  class='close'
+                  data-dismiss='modal'
+                  aria-label='Close'
+                >
+                  <span aria-hidden='true'>&times;</span>
+                </button>
+              </div>
+              <div class='modal-body'>
+                <form
+                  id='EditDepartamento'
+                  asp-controller='Departamentos'
+                  asp-action='EditDepartamento'
+                  method='POST'
+                >
+                  <input type='hidden' />
+                  <input type='hidden' id='Id' name='Id' />
+                  <div class='form-group row'>
+                    <label class='col-sm-2 col-form-label'>Descripción</label>
+                    <div class='col-sm-10'>
+                      <input
+                        type='text'
+                        class='form-control col-sm-10 col-form-label'
+                        name='DepaDescripcionE'
+                        id='DepaDescripcionE'
+                        placeholder='Descripción'
+                        autocomplete='off'
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class='form-group float-right'>
-                  <button
-                    type='button'
-                    id='btnEditDepartamento'
-                    onclick='EditDepartamento()'
-                    class='btn btn-success'
-                  >
-                    Guardar
-                  </button>
-                  <button data-dismiss='modal' class='btn btn-danger'>
-                    Cancelar
-                  </button>
-                </div>
-              </form>
+                  <div class='form-group float-right'>
+                    <button
+                      type='button'
+                      id='btnEditDepartamento'
+                      onclick='EditDepartamento()'
+                      class='btn btn-success'
+                    >
+                      Guardar
+                    </button>
+                    <button data-dismiss='modal' class='btn btn-danger'>
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
