@@ -6,7 +6,6 @@ export function AddDepartamento() {
 
   let x = $("#AddDepartamento").valid(); // ATENCIÓN AQUÍ
 
-  
   if (x != false) {
     Swal.fire({
       title: "¿Desea Guardar?",
