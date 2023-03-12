@@ -4,6 +4,7 @@ import { Turret_Road } from "next/font/google";
 export function AddDepartamento() {
   event.preventDefault();
 
+  
   let x = $("#AddDepartamento").valid(); // ATENCIÓN AQUÍ
 
   if (x != false) {
