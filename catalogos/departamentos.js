@@ -1,5 +1,6 @@
 import { Turret_Road } from "next/font/google";
 
+
 // ------------ FUNCION AGREGAR ----------------
 export function AddDepartamento() {
   event.preventDefault();
