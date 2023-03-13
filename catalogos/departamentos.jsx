@@ -1,108 +1,32 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { useEffect, useRef } from "react";
+import $ from "jquery";
+import DataTable from "datatables.net-dt";
+import AddDepartameto from "./departamentos.js";
+import openModalEdit from "./openModalEdit.js";
+import EditDepartamento from "./EditDepartamento.js";
+import AsignarPermisosDepartamentos from "./AsignarPermisosDepartamentos.js";
 
-function Departamentos() {
-  const [departamentos, setDepartamentos] = useState([]);
-  const [modalAddOpen, setModalAddOpen] = useState(false);
-  const [modalEditOpen, setModalEditOpen] = useState(false);
-  const [editDepartamentoId, setEditDepartamentoId] = useState(null);
-  const [newDepartamento, setNewDepartamento] = useState({
-    DepaDescripcion: "",
-  });
-  const [editDepartamento, setEditDepartamento] = useState({
-    DepaId: null,
-    DepaDescripcionE: "",
-  });
+export default function Departamentos() {
+  const tableRef = useRef();
 
   useEffect(() => {
-    fetch("/departamentos") // replace with the actual API endpoint
-      .then((response) => response.json())
-      .then((data) => setDepartamentos(data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  function handleInputChange(event) {
-    const { name, value } = event.target;
-    setNewDepartamento((prevState) => ({ ...prevState, [name]: value }));
-  }
-
-  function handleEditInputChange(event) {
-    const { name, value } = event.target;
-    setEditDepartamento((prevState) => ({ ...prevState, [name]: value }));
-  }
-
-  function openAddModal() {
-    setModalAddOpen(true);
-  }
-
-  function closeAddModal() {
-    setModalAddOpen(false);
-    setNewDepartamento({ DepaDescripcion: "" });
-  }
-
-  function openEditModal(id) {
-    setModalEditOpen(true);
-    setEditDepartamentoId(id);
-    const departamento = departamentos.find((d) => d.DepaId === id);
-    setEditDepartamento({
-      DepaId: departamento.DepaId,
-      DepaDescripcionE: departamento.DepaDescripcion,
+    $(tableRef.current).DataTable({
+      searching: true,
+      lengthChange: false,
+      info: false,
     });
-  }
 
-  function closeEditModal() {
-    setModalEditOpen(false);
-    setEditDepartamentoId(null);
-    setEditDepartamento({ DepaId: null, DepaDescripcionE: "" });
-  }
-
-  function addDepartamento() {
-    fetch("/departamentos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newDepartamento),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setDepartamentos((prevState) => [...prevState, data]);
-        closeAddModal();
-      })
-      .catch((error) => console.error(error));
-  }
-
-  function editDepartamento() {
-    fetch(`/departamentos/${editDepartamento.DepaId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editDepartamento),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setDepartamentos((prevState) => {
-          const index = prevState.findIndex((d) => d.DepaId === data.DepaId);
-          const newDepartamentos = [...prevState];
-          newDepartamentos[index] = data;
-          return newDepartamentos;
-        });
-        closeEditModal();
-      })
-      .catch((error) => console.error(error));
-  }
-
-  function deleteDepartamento(id) {
-    fetch(`/departamentos/${id}`, {
-      method: "DELETE",
-    })
-      .then(() => {
-        setDepartamentos((prevState) =>
-          prevState.filter((d) => d.DepaId !== id)
-        );
-      })
-      .catch((error) => console.error(error));
-  }
+    return () => {
+      DataTable.destroy(true);
+    };
+  }, []);
 
   return (
     <>
+    <AsignarPermisosDepartamentos />
       <div className='dt-card dt-card__full-height'>
+        <AddDepartameto />
         <div className='dt-card__header' style={{ justifySelf: "center" }}>
           <h4 className='mb--15'>Departamentos</h4>
           <div>
@@ -117,7 +41,7 @@ function Departamentos() {
           </div>
         </div>
         <div className='card-body'>
-          <table className='table' id='table3'>
+          <table ref={tableRef} className='table' id='table3'>
             <thead>
               <tr>
                 <th scope='col'>Descripción</th>
@@ -173,44 +97,14 @@ function Departamentos() {
                 </button>
               </div>
               <div className='modal-body'>
-                <form id='AddDepartamento' method='POST'>
-                  <div className='form-group row'>
-                    <label className='col-sm-2 col-form-label'>
-                      Descripcion
-                    </label>
-                    <div className='col-sm-10'>
-                      <input
-                        type='text'
-                        className='form-control col-sm-10 col-form-label'
-                        name='DepaDescripcion'
-                        id='DepaDescripcion'
-                        maxLength='50'
-                        placeholder='Descripcion'
-                        autoComplete='off'
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className='form-group float-right'>
-                    <button
-                      type='button'
-                      id='btnAddDepartamento'
-                      onClick={addDepartamento}
-                      className='btn btn-success'
-                    >
-                      Agregar
-                    </button>
-                    <button data-dismiss='modal' className='btn btn-danger'>
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
+               <EditDepartamento />
               </div>
             </div>
           </div>
         </div>
 
-        {/* @*Editar FORMULARIO YA EN MODAL*@ */}
+        {/* Editar FORMULARIO YA EN MODAL */}
+        <openModalEdit />
         <div
           class='modal fade'
           id='Edit'
