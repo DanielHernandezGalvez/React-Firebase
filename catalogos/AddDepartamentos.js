@@ -19,7 +19,7 @@ const AddDepartamento = () => {
         confirmButtonText: "Aceptar",
       }).then((result) => {
         if (result.value) {
-          var depa = {
+          let depa = {
             DepaDescripcion: $("#DepaDescripcion").val(),
           };
           $.ajax({
