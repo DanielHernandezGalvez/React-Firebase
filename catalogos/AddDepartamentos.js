@@ -5,7 +5,7 @@ const AddDepartamento = () => {
   const addDepartamento = (event) => {
     event.preventDefault();
 
-    var x = $("#AddDepartamento").valid();
+    let x = $("#AddDepartamento").valid();
 
     if (x != false) {
       Swal.fire({
