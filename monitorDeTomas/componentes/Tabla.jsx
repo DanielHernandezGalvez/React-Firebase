@@ -8,7 +8,7 @@ export default function Tabla() {
   return (
     <>
       <div className="container-fluid">
-        <table class='table border'>
+        <table className='table border'>
           <thead>
             <tr >
               <th className="border" scope='col'>Orden de trabajo</th>
