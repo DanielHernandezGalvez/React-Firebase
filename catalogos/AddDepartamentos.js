@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 const AddDepartamento = () => {
   const addDepartamento = (event) => {
     event.preventDefault();
-
     let x = $("#AddDepartamento").valid();
     if (x != false) {
       Swal.fire({
