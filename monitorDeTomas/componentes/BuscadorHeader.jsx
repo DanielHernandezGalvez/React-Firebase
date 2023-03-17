@@ -1,19 +1,119 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const BuscadorHeader = ({ handleFilter }) => {
+/* Toma dos props, handleFilter y handleSucursal, que son funciones que se 
+ejecutarán cuando se cambie el texto del input y cuando se seleccione una 
+sucursal en el select, respectivamente. */
+const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
+  const [sucursales, setSucursales] = useState([]);
+
+  /* Utiliza el hook useEffect para realizar una petición GET a una API utilizando 
+  la función fetch. La respuesta se convierte a un objeto JSON utilizando .json() y 
+  luego se establece el valor del estado sucursales con los datos de la respuesta */
+  useEffect(() => {
+    fetch("http://localhost:8081/sian2/ms/monitor/GetAllSucursales")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setSucursales(data.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  /* El retorno del componente es un JSX que renderiza una sección de búsqueda 
+  que contiene un título, un input de búsqueda y un select de sucursales. 
+  También incluye un botón que activa un modal cuando se hace clic. El select 
+  de sucursales se rellena con opciones utilizando el estado sucursales */
   return (
-    <div className='text-end my-4 d-flex align-middle'>
-      <p className="me-4">Orden de Trabajo Historico</p>
-      <div className='w-50'>
-        <input
-          id='buscadorTabla'
-          className='form-control w-25 h-75'
-          type='text'
-          onChange={handleFilter}
-        />
-      </div>
-    </div>
-  );
-}
+    <>
+      <div
+        id='princilal'
+        className='container-fluid d-flex w-100 align-middle justify-content-between'
+      >
+        <div className=' my-auto d-flex w-50'>
+          {/* BUSCADOR */}
+          <h6 className='me-4 my-auto'>Orden de Trabajo Histórico</h6>
+          <div>
+            <input
+              id='buscadorTabla'
+              className='form-control w-100 h-100'
+              type='text'
+              onChange={handleFilter}
+            />
+          </div>
+        </div>
+        {/* SUCURSALES */}
+        <div className='my-4 d-flex align-middle w-25'>
+          <select
+            className='form-select h-100 w-100'
+            aria-label='Default select example'
+            onChange={handleSucursal}
+          >
+            <option className='text-sm' value=''>
+              Sucursales
+            </option>
 
-export default BuscadorHeader
+            {sucursales.map((sucursal) => (
+              <option key={sucursal.SucuId} value={sucursal.SucuNombre}>
+                {sucursal.SucuNombre}
+              </option>
+            ))}
+          </select>
+          <div className='ms-3 opacity-50'>
+            <button
+              type='button'
+              className='btn btn-outline-secondary'
+              data-bs-toggle='modal'
+              data-bs-target='#exampleModal'
+            >
+              <i className='bi bi-gear-fill'></i>
+            </button>
+          </div>
+          {/* MODAL */}
+          <div
+            class='modal fade'
+            id='exampleModal'
+            tabindex='-1'
+            aria-labelledby='exampleModalLabel'
+            aria-hidden='true'
+          >
+            <div class='modal-dialog'>
+              <div class='modal-content'>
+                <div class='modal-header'>
+                  <h5 class='modal-title' id='exampleModalLabel'>
+                    Título del modal
+                  </h5>
+                  <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                  ></button>
+                </div>
+                <div class='modal-body'>
+                  Aquí va el contenido del modal, sepa la bola que vaya a ser
+                  pero quedará mamalón
+                </div>
+                <div class='modal-footer'>
+                  <button
+                    type='button'
+                    class='btn btn-secondary'
+                    data-bs-dismiss='modal'
+                  >
+                    Cerrar
+                  </button>
+                  <button type='button' class='btn btn-primary'>
+                    Guardar cambios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* modal */}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default BuscadorHeader;
+
