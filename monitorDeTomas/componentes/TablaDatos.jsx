@@ -1,43 +1,76 @@
 import React from "react";
 import DataTable from "react-data-table-component";
+import { Accordion, Card } from "react-bootstrap";
+
+const DetalleFila = ({ data }) => {
+  
+  return (
+    <Accordion className='border' defaultActiveKey='0'>
+      <Card>
+        <Accordion.Toggle as={Card.Header} eventKey='0'>
+          Detalles
+        </Accordion.Toggle>
+        <Accordion.Collapse eventKey='0'>
+          <Card.Body>
+            <tr>
+              <td>Estudio</td>
+              <td>{data.Estudio}</td>
+            </tr>
+            <tr>
+              <td>Muestra</td>
+              <td>{data.Muestra}</td>
+            </tr>
+            <tr>
+              <td>Contenedor</td>
+              <td>{data.Contenedor}</td>
+            </tr>
+            <tr>
+              <td>Etiquetas</td>
+              <td>{data.CantidadEtiquetas}</td>
+            </tr>
+            <tr>
+              <td>Tiempo Estimado</td>
+              <td>{data.TiempoEstimado}</td>
+            </tr>
+            <tr>
+              <td>Fecha Estimada</td>
+              <td>{data.FechaEstimada}</td>
+            </tr>
+            <tr>
+              <td>Urgencia</td>
+              <td>{data.Urgente}</td>
+            </tr>
+            <tr>
+              <td>Área</td>
+              <td>{data.Área}</td>
+            </tr>
+            <tr>
+              <td>Observaciones</td>
+              <td>{data.Observaciones.String}</td>
+            </tr>
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>
+    </Accordion>
+  );
+};
 
 const TablaDatos = ({ columns, data }) => {
+  
   return (
-    <div className="table-responsive">
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          {columns.map((column) => (
-            <th key={column.selector} className={column.className}>
-              {column.name}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, index) => (
-          <React.Fragment key={row.id}>
-            <tr>
-              {columns.map((column) => (
-                <td key={`${row.id}-${column.selector}`} className={column.className}>
-                  {column.cell ? column.cell(row) : row[column.selector]}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <td colSpan={columns.length}>
-                <div className="collapse" id={`row-${row.id}-${index}`}>
-                  <div className="card card-body">
-                    <p>Detalles de la fila {row.id} aquí</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </React.Fragment>
-        ))}
-      </tbody>
-    </table>
-  </div>
+    <div className='container-fluid'>
+      <DataTable
+        columns={columns}
+        data={data}
+        pagination
+        highlightOnHover
+        responsive
+        fixedHeader
+        expandableRows
+        className='border-top border-start'
+        expandableRowsComponent={<DetalleFila />}
+      ></DataTable>
+    </div>
   );
 };
 export default TablaDatos;
