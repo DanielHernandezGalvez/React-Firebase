@@ -1,42 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+// import data from "../../api/api.json";
+import BuscadorHeader from "./BuscadorHeader";
+import TablaDatos from "./TablaDatos";
+import { TABLE_COLUMNS } from "./funciones/columns";
+import { filterData, filterSucursal } from "./funciones/filtrar";
 
 export default function Tabla() {
+  const [filtrado, setFiltrado] = useState([]);
 
-    const response = require("../api/api.json")
-    const data = response
+  useEffect(() => {
+    const fetchData = async () => {
+      let requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+      let url = "http://localhost:8081/sian2/ms/monitor/GetAllTomas?Id=12";
+      const response = await fetch(url, requestOptions);
+      const data = await response.json();
+      setFiltrado(data.data);
+    };
+    fetchData();
+  }, []);
+
+  const handleFilter = (event) => {
+    const newData = filterData(event, filtrado);
+    setFiltrado(newData);
+    // console.log(newData)
+  };
+
+  const handleSucursal = (event) => {
+    const selected = event.target.value;
+    const newData = filterSucursal(selected, filtrado);
+    setFiltrado(newData);
+  };
 
   return (
     <>
-      <div className="container-fluid">
-        <table className='table border'>
-          <thead>
-            <tr >
-              <th className="border" scope='col'>Orden de trabajo</th>
-              <th className="border" scope='col'>Nombre del Paciente</th>
-              <th className="border" scope='col'>Fecha</th>
-              <th className="border" scope='col'>Fecha Esperada</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th className="border" scope='row'>1</th>
-              <td className="border">Mark</td>
-              <td className="border">Otto</td>
-              <td className="border">@mdo</td>
-            </tr>
-            <tr>
-              <th className="border" scope='row'>2</th>
-              <td className="border">Jacob</td>
-              <td className="border">Thornton</td>
-              <td className="border">@fat</td>
-            </tr>
-            <tr>
-              <th className="border" scope='row'>3</th>
-              <td className="border" >Larry the Bird</td>
-              <td className="border">@twitter</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className='container-fluid'>
+        <BuscadorHeader
+          handleFilter={handleFilter}
+          handleSucursal={handleSucursal}
+        />
+        <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
       </div>
     </>
   );
