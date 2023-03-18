@@ -6,6 +6,7 @@ const AddDepartamento = () => {
     event.preventDefault();
     let x = $("#AddDepartamento").valid();
     if (x != false) {
+      
       Swal.fire({
         title: "¿Desea Guardar?",
         text: "¡No se podrá revertir!",
