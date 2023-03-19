@@ -10,6 +10,7 @@ export const TABLE_COLUMNS = [
     className: "border",
   },
   {
+    // Formateo de fechas
     name: "Fecha",
     selector: "fecha",
     className: "border",
