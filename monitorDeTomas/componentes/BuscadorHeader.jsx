@@ -19,10 +19,10 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
       .catch((error) => console.log(error));
   }, []);
 
-  /* El retorno del componente es un JSX que renderiza una sección de búsqueda 
-  que contiene un título, un input de búsqueda y un select de sucursales. 
-  También incluye un botón que activa un modal cuando se hace clic. El select 
-  de sucursales se rellena con opciones utilizando el estado sucursales */
+  /* Renderiza una sección de búsqueda que contiene un título, un input de 
+  búsqueda y un select de sucursales. También incluye un botón que activa un 
+  modal cuando se hace clic. El select de sucursales se rellena con opciones
+  utilizando el estado sucursales */
   return (
     <>
       <div
@@ -70,38 +70,38 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
           </div>
           {/* MODAL */}
           <div
-            class='modal fade'
+            className='modal fade'
             id='exampleModal'
             tabindex='-1'
             aria-labelledby='exampleModalLabel'
             aria-hidden='true'
           >
-            <div class='modal-dialog'>
-              <div class='modal-content'>
-                <div class='modal-header'>
-                  <h5 class='modal-title' id='exampleModalLabel'>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
+                <div className='modal-header'>
+                  <h5 className='modal-title' id='exampleModalLabel'>
                     Título del modal
                   </h5>
                   <button
                     type='button'
-                    class='btn-close'
+                    className='btn-close'
                     data-bs-dismiss='modal'
                     aria-label='Close'
                   ></button>
                 </div>
-                <div class='modal-body'>
+                <div className='modal-body'>
                   Aquí va el contenido del modal, sepa la bola que vaya a ser
                   pero quedará mamalón
                 </div>
-                <div class='modal-footer'>
+                <div className='modal-footer'>
                   <button
                     type='button'
-                    class='btn btn-secondary'
+                    className='btn btn-secondary'
                     data-bs-dismiss='modal'
                   >
                     Cerrar
                   </button>
-                  <button type='button' class='btn btn-primary'>
+                  <button type='button' className='btn btn-primary'>
                     Guardar cambios
                   </button>
                 </div>
@@ -116,4 +116,3 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
 };
 
 export default BuscadorHeader;
-
