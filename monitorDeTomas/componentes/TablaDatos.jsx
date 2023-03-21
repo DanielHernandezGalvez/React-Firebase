@@ -73,5 +73,4 @@ const TablaDatos = ({ columns, data }) => {
     </div>
   );
 };
-
 export default TablaDatos;
