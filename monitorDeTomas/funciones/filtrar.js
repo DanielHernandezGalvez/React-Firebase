@@ -21,5 +21,6 @@ export const filterSucursal = (selected, data) => {
   const newData = data.filter((row) => {
     return row.SucuNombre.toLowerCase().includes(selected.toLowerCase());
   });
+  
   return newData;
 };
