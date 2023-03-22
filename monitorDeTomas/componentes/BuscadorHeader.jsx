@@ -113,5 +113,4 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
     </>
   );
 };
-
 export default BuscadorHeader;
