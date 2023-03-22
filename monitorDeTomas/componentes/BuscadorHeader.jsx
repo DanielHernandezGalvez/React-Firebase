@@ -51,7 +51,6 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
             <option className='text-sm' value=''>
               Sucursales
             </option>
-
             {sucursales.map((sucursal) => (
               <option key={sucursal.SucuId} value={sucursal.SucuNombre}>
                 {sucursal.SucuNombre}
