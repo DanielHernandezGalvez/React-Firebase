@@ -1,6 +1,5 @@
-// Este código exporta dos funciones
-
-/* El parámetro event representa el evento que se produce cuando se introduce texto en un campo 
+/* Este código exporta dos funciones
+El parámetro event representa el evento que se produce cuando se introduce texto en un campo 
 de búsqueda y data es un arreglo de objetos que contiene los datos que se van a filtrar.
 La función utiliza el método filter para crear un nuevo arreglo que contiene sólo los objetos
 cuya propiedad NombrePaciente incluye el texto ingresado en el campo de búsqueda
