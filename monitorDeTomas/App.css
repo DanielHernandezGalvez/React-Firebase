@@ -1,0 +1,88 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#headingOne{
+  color: aqua;
+}
+
+#headingOne:hover{
+  color: white;
+}
+
+.data-table-extensions-filter{
+  border: 1px solid rgba(57, 57, 57, 0.2);
+  margin-top: -50px;
+  margin-left: -19px;
+  border-radius: 4px;
+}
+
+.icon{
+  margin-top: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#impresionesAuto{
+  margin-top: 12px;
+}
+
+#buscadorTabla{
+  margin-top: 9px;
+}
+
+.data-table-extensions-action{
+  margin-top: -69px;
+  margin-bottom: 20px;
+  margin-right: 24%;
+  width: 7vw;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.dropdown{
+  margin-top: -69px;
+  margin-bottom: 20px;
+  width: 130px;
+}
+
+button.download{
+  color: red;
+  background-color: red;
+  border: 1px solid red;
+}
