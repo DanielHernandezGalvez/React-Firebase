@@ -260,13 +260,8 @@ body {
 .dropdown{
   margin-top: -69px;
   margin-bottom: 20px;
-  width: 130px;
-  background-color: red;
+  width: 75px;
 }
-
-/* button.download{
-
-} */
 
 .poster-imagen-buscador{
   background-image: url("../public/laboratorio/img/tomas3.jpg");
@@ -288,4 +283,65 @@ body {
 .container-fluid{
   padding-right: 0;
   padding-left: 0;
+}
+
+/* IMAGEN TABLA */
+
+.tabla-img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 6px;
+  transition: 0.2s ease-in all;
+}
+
+.tabla-img:hover{
+  transform: scale(1.5);
+}
+
+/* ====== DETALLES DE TABLA ====== */
+
+/* fila oscura */
+.hMXdVY{
+  background-color: #f9f3df !important;
+}
+
+/* fila clara */
+.cpxBoR{
+  background-color: #eaecef !important;
+}
+
+/* header */
+.rdt_TableHeadRow{
+  background-color: #3b7794 !important;
+  color: #fff;
+  font-size: medium;
+}
+
+.cOhUY{
+  background-color: rgba(50, 50, 50, 0.01) !important;
+  color: #fff;
+}
+
+/* celdas expandibles */
+.ifWazN{
+  background-color: #007cba23 !important;
+  border-bottom: solid #0126393c 1px !important;
+}
+
+.bnLuHU{
+  background-color: #d1e7ddbf !important;
+  border-bottom: solid #0126393c 1px !important;
+}
+
+.shadow-lg{
+  box-shadow: -50px 0px 0px 900px rgba(0, 0, 0, 0.19) !important;
+}
+
+.text-center{
+  margin: auto !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center !important;
 }
