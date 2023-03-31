@@ -46,7 +46,6 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
               </div>
             </div>
             {/* SUCURSALES */}
-
             <div className='my-4 d-flex align-middle w-25'>
               <select
                 className='form-select h-100 w-100'
@@ -123,3 +122,7 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
 };
 
 export default BuscadorHeader;
+
+
+
+
