@@ -24,7 +24,7 @@ export const TABLE_COLUMNS = [
     sortable: true,
     /* La función "cell" se usa en las dos últimas columnas para formatear las 
     fechas a la forma deseada, en caso de que el número sea menor a 10, se le 
-    agrega un cero anes del número */
+    agrega un cero antes del número */
     cell: (row) => {
       const fecha = new Date(row.Fecha);
       const dia = fecha.getDate().toString().padStart(2, "0");
@@ -34,6 +34,7 @@ export const TABLE_COLUMNS = [
       return <div>{fechaConFormato}</div>;
     },
   },
+
   {
     name: "Fecha Esperada",
     selector: "FechaEstimada.Time",
@@ -97,14 +98,79 @@ export const TABLA_PRINCIPAL_COLUMNS = [
     name: "Imprimir",
     cell: (row) => (
       <button
-        className='btn btn-secondary'
+        className='btn btn-outline-secondary'
         onClick={() => console.log(`Imprimir ${row.ProductoDescripcion}`)}
       >
-        Imprimir
+        <i class='bi bi-printer'></i>
       </button>
     ),
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
+  },
+];
+
+export const COLUNS_DETAILS_TABLE = [
+  {
+    name: "Estudio",
+    selector: "Estudio",
+    sortable: true,
+  },
+  {
+    name: "Muestra",
+    selector: "Muestra",
+    sortable: true,
+  },
+  {
+    name: "Contenedor",
+    selector: "Contenedor",
+    sortable: true,
+  },
+  {
+    name: "Etiquetas",
+    selector: "CantidadEtiquetas",
+    sortable: true,
+  },
+  {
+    name: "T. Estimado",
+    selector: "TiempoEstimado",
+    sortable: true,
+    format: (row) => {
+      return row.TiempoEstimado !== 1
+        ? `${row.TiempoEstimado} Días`
+        : `${row.TiempoEstimado} Día`;
+    },
+  },
+  {
+    name: "F. Estimada",
+    selector: "FechaEstimada",
+    sortable: true,
+    format: (row) => {
+      return new Date(row.FechaEstimada)
+        .toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+        .replace(/\//g, "/");
+    },
+  },
+  {
+    name: "Urgente",
+    selector: "Urgente",
+    sortable: true,
+    format: (row) => {
+      return row.Urgente ? "Urgente" : "No Urgente";
+    },
+  },
+  {
+    name: "Área",
+    selector: "Área",
+    sortable: true,
+  },
+  {
+    name: "Observaciones",
+    selector: "Estatus",
+    sortable: true,
   },
 ];
