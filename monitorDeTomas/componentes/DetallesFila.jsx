@@ -4,7 +4,8 @@ import { COLUNS_DETAILS_TABLE } from "./funciones/columns";
 
 const DetalleFila = ({ data }) => {
   const [detalle, setDetalle] = useState([]);
-  const [filaExpandibe, setFilaExpandible] = useState(null);
+  const [filaExpandible, setFilaExpandible] = useState(null);
+  const [ultimaFilaExpandida, setUltimaFilaExpandida] = useState(null)
 
   useEffect(() => {
     const fetchOrdenesTrabajo = async () => {
@@ -31,58 +32,50 @@ const DetalleFila = ({ data }) => {
     fetchOrdenesTrabajo();
   }, []);
 
-  const PREPARACION = [
-    {
-      name: "Preparación",
-      selector: "Preparación.String",
-      sortable: true,
-    },
-  ];
-  const expandableRowsComponent = ({ data, rowIndex }) => {
-    // const preparacionData = detalle.filter(
-    //   (d) => d.ProductoId === data.ProductoId
-    // );
-
-    if (rowIndex === filaExpandibe) {
-      return null;
-    }
-
+ 
+  const expandableRowsComponent = ({ data }) => {
     const preparacionData = detalle.filter(
       (d) => d.ProductoId === data.ProductoId
     );
-
     return (
-      <div>
-        <DataTable
-          columns={PREPARACION}
-          data={preparacionData}
-          className='shadow-lg bg-body text-center'
-          noHeader
-          highlightOnHover
-          striped
-          responsive
-        />
+      <div className="p-2 bg-body">
+        {data.Preparación.String}
       </div>
     );
   };
 
-  /* compara si existe igualdad con la función anterior para descartar si ya 
-  hay un expandible abierto, toma el rowIndex como parametro principal */
   const handleRowExpand = (rowIndex) => {
-    setFilaExpandible(filaExpandibe === rowIndex ? null : rowIndex);
+    // const newFilaExpandible = filaExpandible === rowIndex ? null : rowIndex;
+    // setFilaExpandible(newFilaExpandible);
+    if(filaExpandible !== rowIndex) {
+      setFilaExpandible(rowIndex)
+      if (ultimaFilaExpandida !== null && ultimaFilaExpandida !== rowIndex){
+        setFilaExpandible(null)
+      }
+      setUltimaFilaExpandida(rowIndex)  
+    } else {
+      setFilaExpandible(null)
+      setUltimaFilaExpandida(null)
+    }
   };
+
+  const dataTable = {
+    columns: COLUNS_DETAILS_TABLE,
+    data: detalle,
+    expandableRows: true,
+    expandableRowsComponent: expandableRowsComponent,
+    expandOnRowClicked: true,
+    onRowExpandToggled: handleRowExpand,
+    
+  }
 
   return (
     <>
       <DataTable
-        columns={COLUNS_DETAILS_TABLE}
-        data={detalle}
-        expandableRows
-        expandableRowsComponent={expandableRowsComponent}
-        expandableRowExpanded={(row) =>
-          row.ProductoId === detalle[filaExpandibe]?.ProductoId
-        }
-        onRowExpandToggled={handleRowExpand}
+        {...dataTable}
+        expandableRowExpanded={(row) => row === filaExpandible}
+        onRowClicked={(row) => setFilaExpandible(row)}
+        onRowExpandToggled={(bool, row) => setFilaExpandible(row)}
         highlightOnHover
         striped
         responsive
