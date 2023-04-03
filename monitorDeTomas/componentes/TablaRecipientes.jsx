@@ -9,7 +9,7 @@ export default function TablaPrincipal({ columns, data }) {
   const [recipientes, setRecipientes] = useState([]);
   const [filaExpandible, setFilaExpandible] = useState({});
   const [filaActual, setFilaActual] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null); ////////////////////////
+  const [selectedRow, setSelectedRow] = useState(null); 
 
   useEffect(() => {
     const fetchRecipientes = async () => {
@@ -32,7 +32,7 @@ export default function TablaPrincipal({ columns, data }) {
     const filaExpandibleCopia = { ...filaExpandible };
     filaExpandibleCopia[row.index] = expanded;
     setFilaExpandible(filaExpandibleCopia);
-    setSelectedRow(expanded ? row.index : null); //////////////////////////////////
+    setSelectedRow(expanded ? row.index : null); 
   };
 
   const rowClass = (row) => {
