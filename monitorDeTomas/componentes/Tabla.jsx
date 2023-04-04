@@ -30,9 +30,7 @@ export default function Tabla() {
     setFiltrado(newData);
   };
 
-  /* Filtra los datos por sucursales desde el componente BuscadorHeader 
-  toma un onChange de un collapse de bootstrap y usa la función filterSucursal
-  desde la carpeta funciones */
+
   const handleSucursal = async (event) => {
     const selected = event.target.value;
     if (selected !== "null") {
