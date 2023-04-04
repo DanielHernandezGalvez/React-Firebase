@@ -30,7 +30,6 @@ export default function Tabla() {
     setFiltrado(newData);
   };
 
-
   const handleSucursal = async (event) => {
     const selected = event.target.value;
     if (selected !== "null") {
