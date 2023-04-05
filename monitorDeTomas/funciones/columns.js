@@ -168,9 +168,5 @@ export const COLUNS_DETAILS_TABLE = [
     selector: "Área",
     sortable: true,
   },
-  {
-    name: "Observaciones",
-    selector: "Estatus",
-    sortable: true,
-  },
+
 ];
