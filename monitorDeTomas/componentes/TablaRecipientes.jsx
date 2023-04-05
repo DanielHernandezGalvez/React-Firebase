@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 import DetalleFila from "./DetalleFila";
 import { TABLA_PRINCIPAL_COLUMNS } from "./funciones/columns";
@@ -85,8 +84,10 @@ export default function TablaPrincipal({ columns, data }) {
   );
 }
 
-/*  **************** CAMBIOS Y REQUERIMENTOS *******************
--resalrtar texto al momento de abrir cada expandible ✔
--cerrar cada expandble al abrir otro ✔
--al abrir un desplegable agrandar el intervalo de tiempo de 15 a 90 segundos
+/*  
+          **************** CAMBIOS Y REQUERIMENTOS *******************
+pasar al fetch el folio, el recpiente id
+se debe desplegar el modal con un input numerico que no baje de 1 que indique cuantas 
+se van a imprimir
+boton imprimir y cancelar.
 */
