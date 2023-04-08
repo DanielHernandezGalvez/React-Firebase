@@ -3,19 +3,22 @@ import DataTable from "react-data-table-component";
 import "react-data-table-component-extensions/dist/index.css";
 import DetalleFila from "./DetalleFila";
 import { TABLA_PRINCIPAL_COLUMNS } from "./funciones/columns";
+import ModalImprimir from "./ModalImprimir";
 
 export default function TablaPrincipal({ columns, data }) {
-  const [recipientes, setRecipientes] = useState([]);
-  const [filaExpandible, setFilaExpandible] = useState({});
-  const [filaActual, setFilaActual] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null); 
+  const [ recipientes, setRecipientes ] = useState([]);
+  const [ filaExpandible, setFilaExpandible ] = useState({});
+  const [ filaActual, setFilaActual ] = useState(null);
+  const [ selectedRow, setSelectedRow ] = useState(null);
+  const [ selectedData, setSelectedData ] = useState(null);
+  const  [isPrintModalOpen, setIsPrintModalOpen ] = useState(false);
 
   useEffect(() => {
     const fetchRecipientes = async () => {
       let url = `http://localhost:8081/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
       const response = await fetch(url);
       const data_r = await response.json();
-      console.log(data_r)
+      console.log(data_r);
       setRecipientes(
         data_r.filter((r) => {
           r.OrdenTrabajoId = data.OrdenTrabajoId;
@@ -31,7 +34,7 @@ export default function TablaPrincipal({ columns, data }) {
     const filaExpandibleCopia = { ...filaExpandible };
     filaExpandibleCopia[row.index] = expanded;
     setFilaExpandible(filaExpandibleCopia);
-    setSelectedRow(expanded ? row.index : null); 
+    setSelectedRow(expanded ? row.index : null);
   };
 
   const rowClass = (row) => {
@@ -41,8 +44,39 @@ export default function TablaPrincipal({ columns, data }) {
     return "";
   };
 
+  const handleRowClick = (row) => {
+    setSelectedData(row);
+  };
+
+  const handlePrintModalOpen = () => {
+    setIsPrintModalOpen(true);
+  };
+
+  const handlePrintModalClose = () => {
+    setIsPrintModalOpen(false);
+  };
+
   const dataTable = {
-    columns: TABLA_PRINCIPAL_COLUMNS,
+    ///////////////////////////////////////
+    // columns: TABLA_PRINCIPAL_COLUMNS, //
+    ///////////////////////////////////////
+    columns: [
+      ...TABLA_PRINCIPAL_COLUMNS,
+      {
+        name: "Imprimir",
+        cell: (row) => (
+          <button
+            className='btn btn-outline-secondary'
+            onClick={() => handleImprimirClick(row)}
+          >
+            <i className='bi bi-printer'></i>
+          </button>
+        ),
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+      },
+    ],
     data: recipientes,
     expandableRows: true,
     expandableRowsComponent: DetalleFila,
@@ -63,7 +97,7 @@ export default function TablaPrincipal({ columns, data }) {
         // striped
         // responsive
         // fixedHeader
-        // expandableRows
+        // expandableRows    
         className='shadow-lg bg-body'
         expandableRowExpanded={(row) => row === filaActual}
         expandOnRowClicked
@@ -79,6 +113,22 @@ export default function TablaPrincipal({ columns, data }) {
         ]}
         rowClass={rowClass}
         // expandableRowsComponent={DetalleFila}
+      />
+      {selectedData && (
+        <div className='d-grid gap-2'>
+          <button
+            className='btn btn-primary'
+            type='button'
+            onClick={handlePrintModalOpen}
+          >
+            Imprimir
+          </button>
+        </div>
+      )}
+      <ModalImprimir
+        show={isPrintModalOpen}
+        handleClose={handlePrintModalClose}
+        rowData={selectedData}
       />
     </>
   );
