@@ -16,9 +16,6 @@ const ModalImprimir = ({ show, handleClose, rowData }) => {
               onClick={handleClose}
             ></button>
           </div>
-       
-      
- 
             <button type='button' className='btn btn-primary'>
               Imprimir
             </button>
