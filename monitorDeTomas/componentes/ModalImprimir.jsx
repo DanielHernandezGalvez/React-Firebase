@@ -16,10 +16,7 @@ const ModalImprimir = ({ show, handleClose, rowData }) => {
               onClick={handleClose}
             ></button>
           </div>
-          <div className='modal-body'>
-            <p>{rowData.Estudio}</p>
-            <p>{rowData.Fecha}</p>
-          </div>
+       
           <div className='modal-footer'>
             <button
               type='button'
