@@ -112,7 +112,7 @@ export default function TablaPrincipal({ columns, data }) {
           },
         ]}
         rowClass={rowClass}
-        // expandableRowsComponent={DetalleFila}
+        // expandableRowsComponent={DetalleFila} 
       />
       {selectedData && (
         <div className='d-grid gap-2'>
@@ -134,3 +134,10 @@ export default function TablaPrincipal({ columns, data }) {
   );
 }
 
+/*  
+          **************** CAMBIOS Y REQUERIMENTOS *******************
+pasar al fetch el folio, el recpiente id
+se debe desplegar el modal con un input numerico que no baje de 1 que indique cuantas 
+se van a imprimir
+boton imprimir y cancelar.
+*/
