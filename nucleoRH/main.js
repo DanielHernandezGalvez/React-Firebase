@@ -1,4 +1,4 @@
-let dataTable;
+Const dataTable;
 let open = false;
 let dataTableInicialized = false;
 let corte = "";
