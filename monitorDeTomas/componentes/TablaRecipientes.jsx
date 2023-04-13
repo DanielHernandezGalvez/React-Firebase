@@ -62,20 +62,7 @@ export default function TablaPrincipal({ columns, data }) {
     ///////////////////////////////////////
     columns: [
       ...TABLA_PRINCIPAL_COLUMNS,
-      {
-        name: "Imprimir",
-        cell: (row) => (
-          <button
-            className='btn btn-outline-secondary'
-            onClick={() => handleImprimirClick(row)}
-          >
-            <i className='bi bi-printer'></i>
-          </button>
-        ),
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
-      },
+  
     ],
     data: recipientes,
     expandableRows: true,
@@ -112,7 +99,7 @@ export default function TablaPrincipal({ columns, data }) {
           },
         ]}
         rowClass={rowClass}
-        // expandableRowsComponent={DetalleFila} 
+        // expandableRowsComponent={DetalleFila}  
       />
       {selectedData && (
         <div className='d-grid gap-2'>
@@ -136,8 +123,15 @@ export default function TablaPrincipal({ columns, data }) {
 
 /*  
           **************** CAMBIOS Y REQUERIMENTOS *******************
-pasar al fetch el folio, el recpiente id
-se debe desplegar el modal con un input numerico que no baje de 1 que indique cuantas 
+-pasar al fetch el folio, el recpiente id
+-se debe desplegar el modal con un input numerico que no baje de 1 que indique cuantas 
 se van a imprimir
-boton imprimir y cancelar.
+-boton imprimir y cancelar.
+
+-La barra de busqueda debe estar siempre estática en la parte de arriba
+-ampliar el bottom para que al desplegarse una tabla, se deje un espacio
+para que no se quede fuera de la imagen
+-si en observaciones está pendiente, poner un modal para explicar por qué
+-arreglar el filtro para que también pueda usarse por orden de trabajo
+-si se está buscando en el filtro, hacer que no se actualice
 */
