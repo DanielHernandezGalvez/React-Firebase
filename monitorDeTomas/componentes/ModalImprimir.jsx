@@ -11,7 +11,6 @@ const ModalImprimir = ({ show, handleClose, rowData }) => {
           <div className='modal-header'>
             <h5 className='modal-title'>{rowData.ProductoDescripcion}</h5>
             <button
-              type='button'
               className='btn-close'
               onClick={handleClose}
             ></button>
