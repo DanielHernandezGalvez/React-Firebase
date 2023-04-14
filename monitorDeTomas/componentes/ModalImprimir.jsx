@@ -2,6 +2,7 @@ import React from "react";
 import ReactDom from "react-dom";
 
 const ModalImprimir = ({ show, handleClose, rowData }) => {
+  const showHideClassName = show ? "modal d-block" : "modal d-none";
 
   return ReactDOM.createPortal(
     <div className={showHideClassName}>
