@@ -2,9 +2,25 @@
 import styles from "../styles/lotes.module.css";
 import React from "react";
 
+
+interface DetallesProps {
+id: string;
+lote: {
+lotedescripcion: string;
+lotefechainicio: string;
+lotefechhacierre: string;
+productos?: {
+productoclave: string;
+productocantidad: number;
+productocantidadrecibido: number;
+productodescripcion: string;
+}[];
+};
+}
+
 //El componente recibe dos propiedades: id: un identificador único y 
 //lote: un objeto que contiene información sobre un lote.
-export default function Detalles({ id, lote }) {  
+export default function Detalles({ id, lote }: DetallesProps): JSX.Element {
   return (
     <>
       {lote.lotedescripcion && (
