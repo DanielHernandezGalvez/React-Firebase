@@ -1,137 +1,78 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
-import "react-data-table-component-extensions/dist/index.css";
-import DetalleFila from "./DetalleFila";
-import { TABLA_PRINCIPAL_COLUMNS } from "./funciones/columns";
-import ModalImprimir from "./ModalImprimir";
+import ReactDom from "react-dom";
 
-export default function TablaPrincipal({ columns, data }) {
-  const [ recipientes, setRecipientes ] = useState([]);
-  const [ filaExpandible, setFilaExpandible ] = useState({});
-  const [ filaActual, setFilaActual ] = useState(null);
-  const [ selectedRow, setSelectedRow ] = useState(null);
-  const [ selectedData, setSelectedData ] = useState(null);
-  const  [isPrintModalOpen, setIsPrintModalOpen ] = useState(false);
+const ModalImprimir = ({ show, handleClose, data }) => {
+  const showHideClassName = show ? "modal d-block" : "modal d-none";
+  const [ data, setData ] = useState(null);
+  const [ params, setParams ] = useState({ f: "", Ip: "", P: "" })
+  // useEffect(() => {
+  //   const fetchModal = async () => {
+  //     const data_array = await fetch(
+  //       "http://192.168.0.14:8081/sian2/ms/monitor/MandarPdfAImprimir?f=3FE0323032&Ip=192.168.0.46&P=Etiquetas"
+  //     );
+  //     const data_modal = await data_array.json();
+  //     console.log(data_modal);
+  //     setFetchModal(data_modal.data);
+  //   };
+  // }); 
 
   useEffect(() => {
-    const fetchRecipientes = async () => {
-      let url = `http://localhost:8081/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
-      const response = await fetch(url);
-      const data_r = await response.json();
-      console.log(data_r);
-      setRecipientes(
-        data_r.filter((r) => {
-          r.OrdenTrabajoId = data.OrdenTrabajoId;
-          return true;
-        })
-      );
-    };
-    fetchRecipientes();
-    console.log(recipientes);
-  }, []);
-
-  const handleExpand = (row, expanded) => {
-    const filaExpandibleCopia = { ...filaExpandible };
-    filaExpandibleCopia[row.index] = expanded;
-    setFilaExpandible(filaExpandibleCopia);
-    setSelectedRow(expanded ? row.index : null);
-  };
-
-  const rowClass = (row) => {
-    if (selectedRow === row.index) {
-      return "selected-row";
+    async function fetchData() {
+      try {
+        const url = `http://192.168.0.14:8081/sian2/ms/monitor/MandarPdfAImprimir?f=${params.f}&Ip=${params.Ip}&P=${params.P}`;
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow'
+        };
+        const response = await fetch(url, requestOptions);
+        const result = await response.text();
+        setData(result);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    return "";
-  };
 
-  const handleRowClick = (row) => {
-    setSelectedData(row);
-  };
+    fetchData();
+  }, [params]);
 
-  const handlePrintModalOpen = () => {
-    setIsPrintModalOpen(true);
-  };
-
-  const handlePrintModalClose = () => {
-    setIsPrintModalOpen(false);
-  };
-
-  const dataTable = {
-    ///////////////////////////////////////
-    // columns: TABLA_PRINCIPAL_COLUMNS, //
-    ///////////////////////////////////////
-    columns: [
-      ...TABLA_PRINCIPAL_COLUMNS,
-  
-    ],
-    data: recipientes,
-    expandableRows: true,
-    expandableRowsComponent: DetalleFila,
-    expandOnRowClicked: true,
-    onRowExpandToggled: handleExpand,
-    expandedRows: filaExpandible,
-    fileName: "document",
-  };
+  const handleDataClick = (data) => {
+    // checar los valores de IpValue y Etiquetas
+    setParams({ f: data.Folio, Ip: data.IpValue, P: data.Etiquetas })
+  }
 
   return (
-    <>
-      <DataTable
-        {...dataTable}
-        // highlightOnHover
-        // columns={ TABLA_PRINCIPAL_COLUMNS }
-        // data={ recipientes }
-        // highlightOnHover
-        // striped
-        // responsive
-        // fixedHeader
-        // expandableRows    
-        className='shadow-lg bg-body'
-        expandableRowExpanded={(row) => row === filaActual}
-        expandOnRowClicked
-        onRowClicked={(row) => setFilaActual(row)}
-        onRowExpandToggled={(bool, row) => setFilaActual(row)}
-        conditionalRowStyles={[
-          {
-            when: (row) => selectedRow === row.index,
-            style: {
-              backgroundColor: "#f0f0f0 !important",
-            },
-          },
-        ]}
-        rowClass={rowClass}
-        // expandableRowsComponent={DetalleFila}  
-      />
-      {selectedData && (
-        <div className='d-grid gap-2'>
-          <button
-            className='btn btn-primary'
-            type='button'
-            onClick={handlePrintModalOpen}
-          >
-            Imprimir
-          </button>
+    <div className={showHideClassName}>
+      <div className='modal-dialog modal-dialog-centered'>
+        <div className='modal-content'>
+          <div className='modal-header'>
+            <h5 className='modal-title'>{data.ProductoDescripcion}</h5>
+            <button
+              type='button'
+              className='btn-close'
+              onClick={handleClose}
+            ></button>
+          </div>
+          <div className='modal-body'>
+            <p>{data.Estudio}</p>
+            <p>{data.Fecha}</p>
+          </div>
+          <div className='modal-footer'>
+            <button
+              type='button'
+              className='btn btn-secondary'
+              onClick={handleClose}
+            >
+              Cerrar
+            </button>
+            <button type='button' className='btn btn-primary'>
+              Imprimir
+            </button>
+          </div>
         </div>
-      )}
-      <ModalImprimir
-        show={isPrintModalOpen}
-        handleClose={handlePrintModalClose}
-        rowData={selectedData}
-      />
-    </>
+      </div>
+    </div>
   );
-}
+};
 
-/*  
-          **************** CAMBIOS Y REQUERIMENTOS *******************
--pasar al fetch el folio, el recpiente id
--se debe desplegar el modal con un input numerico que no baje de 1 que indique cuantas 
-se van a imprimir
--boton imprimir y cancelar.
-
--La barra de busqueda debe estar siempre estática en la parte de arriba
--ampliar el bottom para que al desplegarse una tabla, se deje un espacio
-para que no se quede fuera de la imagen
--si en observaciones está pendiente, poner un modal para explicar por qué
--arreglar el filtro para que también pueda usarse por orden de trabajo
--si se está buscando en el filtro, hacer que no se actualice
-*/
+export default ModalImprimir;
