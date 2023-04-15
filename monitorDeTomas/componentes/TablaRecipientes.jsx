@@ -6,16 +6,6 @@ const ModalImprimir = ({ show, handleClose, data }) => {
   const showHideClassName = show ? "modal d-block" : "modal d-none";
   const [ data, setData ] = useState(null);
   const [ params, setParams ] = useState({ f: "", Ip: "", P: "" })
-  // useEffect(() => {
-  //   const fetchModal = async () => {
-  //     const data_array = await fetch(
-  //       "http://192.168.0.14:8081/sian2/ms/monitor/MandarPdfAImprimir?f=3FE0323032&Ip=192.168.0.46&P=Etiquetas"
-  //     );
-  //     const data_modal = await data_array.json();
-  //     console.log(data_modal);
-  //     setFetchModal(data_modal.data);
-  //   };
-  // }); 
 
   useEffect(() => {
     async function fetchData() {
