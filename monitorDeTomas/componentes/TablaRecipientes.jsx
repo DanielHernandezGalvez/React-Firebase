@@ -51,7 +51,7 @@ const ModalImprimir = ({ show, handleClose, data }) => {
             <button
               type='button'
               className='btn btn-secondary'
-              onClick={handleDataClick}
+       
             >
               Cerrar
             </button>
