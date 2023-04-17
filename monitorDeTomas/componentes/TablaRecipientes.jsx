@@ -99,7 +99,6 @@ export default function TablaPrincipal({ columns, data }) {
           },
         ]}
         rowClass={rowClass}
-        //expandableRowsComponent={DetalleFila}  
       />
       {selectedData && (
         <div className='d-grid gap-2'>
