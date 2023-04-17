@@ -57,9 +57,7 @@ export default function TablaPrincipal({ columns, data }) {
   };
 
   const dataTable = {
-    ///////////////////////////////////////
-    // columns: TABLA_PRINCIPAL_COLUMNS, //
-    ///////////////////////////////////////
+
     columns: [
       ...TABLA_PRINCIPAL_COLUMNS,
   
