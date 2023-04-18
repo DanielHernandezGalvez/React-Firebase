@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import BuscadorHeader from "./BuscadorHeader";
 import TablaDatos from "./TablaDatos";
 import { TABLE_COLUMNS } from "./funciones/columns";
+import ModalImprimir from "./ModalImprimir";
 import { filterData, filterSucursal } from "./funciones/filtrar";
 
 export default function Tabla() {
   // EL estado filtrado inicia como array vacío que se actualiza por la función setFiltrado
   const [filtrado, setFiltrado] = useState([]);
-  const [sucuId, setSucuId] = useState(null);
-  const [cronExpression, setCronExpression] = useState("* * * * * *");
-  const [selected, setSelected] = useState(null);
+  // const [timer, setTimer] = useState("");
+  const [is_open, setIsOpen] = useState(true);
+  // const [time, setTime] = useState(3000);
+  // const [selected, setSelected] = useState(null);
 
   const fetchData = async (suc) => {
+    let time = 1;
+    if (is_open) time = 1500;
+
     let requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -19,7 +24,6 @@ export default function Tabla() {
     let url = "http://localhost:8081/sian2/ms/monitor/GetAllTomas?Id=" + suc;
     const response = await fetch(url, requestOptions);
     const data = await response.json();
-    console.log(data.data);
     setFiltrado(data.data);
   };
 
@@ -31,13 +35,20 @@ export default function Tabla() {
   };
 
   const handleSucursal = async (event) => {
+    console.log(":( ");
     const selected = event.target.value;
+
     if (selected !== "null") {
+      setIsOpen(!is_open);
       await fetchData(selected);
       setTimeout(() => {
         handleSucursal(event);
-      }, 90000); // REGRESAR A 15 SEGUNDOS
+      }, 100000); // REGRESAR A 30 SEGUNDOS
     } else setFiltrado([]);
+  };
+
+  const awaitT = () => {
+
   };
 
   return (
@@ -49,6 +60,7 @@ export default function Tabla() {
         />
         {/* trae por props el contenido de las columnas y convierte data en el estado filtrado */}
         <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
+        <ModalImprimir />
       </div>
     </>
   );
