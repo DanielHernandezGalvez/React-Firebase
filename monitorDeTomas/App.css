@@ -8,7 +8,6 @@
   font-family: "Work Sans", sans-serif;
 }
 
-
 html,
 body {
   max-width: 100vw;
@@ -199,7 +198,6 @@ body {
   font-weight: bold;
 }
 
-
 /* TABLA */
 
 .rdt_TableCell{
@@ -249,8 +247,7 @@ body {
 }
 
 .data-table-extensions-action{
-  margin-top: -54px;
-  margin-bottom: 20px;
+  margin-top: -3%;
   height: 3vh;
   width: 7vw;
   display: flex;
@@ -302,6 +299,12 @@ body {
 
 /* ====== DETALLES DE TABLA ====== */
 
+  .rdt_TableBody{ 
+  max-height: 55vh;
+  margin: 0;
+  overflow: scroll-x;
+}  
+
 /* fila oscura */
 .hMXdVY{
   background-color: #f9f3df !important;
@@ -345,4 +348,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center !important;
+}
+
+.rdt_Pagination {
+  margin-top: 40px;
 }
