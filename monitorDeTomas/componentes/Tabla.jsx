@@ -38,18 +38,33 @@ export default function Tabla() {
     console.log(":( ");
     const selected = event.target.value;
 
+    const filter = document.getElementsByClassName("filter-text")[0];
+    if (filter.value.length > 0) {
+      console.log("El input tiene algo escrito.");
+    } else {
+      console.log("El input está vacío.");
+    }
+
     if (selected !== "null") {
       setIsOpen(!is_open);
       await fetchData(selected);
-      setTimeout(() => {
-        handleSucursal(event);
-      }, 100000); // REGRESAR A 30 SEGUNDOS
-    } else setFiltrado([]);
+
+      if (filter.value.length < 1) {
+        setTimeout(() => {
+          handleSucursal(event);
+        }, 30000);
+      } if (filter.value.length > 1) {
+        setTimeout(() => {
+          handleSucursal(event);
+        }, 90000);
+      }// REGRESAR A 30 SEGUNDOS
+
+    } else {
+      setFiltrado([]);
+    }
   };
 
-  const awaitT = () => {
-
-  };
+  // const awaitT = () => {};
 
   return (
     <>
