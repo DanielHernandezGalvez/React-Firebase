@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BuscadorHeader from "./BuscadorHeader";
 import TablaDatos from "./TablaDatos";
 import { TABLE_COLUMNS } from "./funciones/columns";
@@ -12,6 +12,8 @@ export default function Tabla() {
   const [is_open, setIsOpen] = useState(true);
   // const [time, setTime] = useState(3000);
   // const [selected, setSelected] = useState(null);
+  /** */ const [observaciones, setObservaciones] = useState("");
+  /** */ const observacionesRef = useRef(null);
 
   const fetchData = async (suc) => {
     let time = 1;
@@ -52,16 +54,24 @@ export default function Tabla() {
       if (filter.value.length < 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 30000);
-      } if (filter.value.length > 1) {
+        }, 300000);
+      }
+      if (filter.value.length > 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 90000);
-      }// REGRESAR A 30 SEGUNDOS
-
+        }, 900000);
+      } // REGRESAR A 30 SEGUNDOS
     } else {
       setFiltrado([]);
     }
+  };
+
+  const guardarCambios = () => {
+    const inputText = observacionesRef.current.value;
+    setObservaciones(inputText);
+
+    const boton = document.querySelector('#boton-pendiente');
+    boton.setAttribute('title', inputText);
   };
 
   // const awaitT = () => {};
@@ -76,6 +86,62 @@ export default function Tabla() {
         {/* trae por props el contenido de las columnas y convierte data en el estado filtrado */}
         <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
         <ModalImprimir />
+
+        {/* MODAL */}
+        <div className='modal fade' id='modal' tabIndex='-1'>
+          <div className='modal-dialog'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Modificar Observaciones</h5>
+                <button
+                  type='button'
+                  className='btn-close'
+                  data-bs-dismiss='modal'
+                  aria-label='Close'
+                ></button>
+              </div>
+              <div className='modal-body'>
+                <div className='mb-3'>
+                  <label htmlFor='observaciones' className='form-label'>
+                    Observaciones
+                  </label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='observaciones'
+                    ref={observacionesRef}
+                    value={observaciones}
+                    onChange={(e) => setObservaciones(e.target.value)}
+                  />
+                  <div>{observaciones}</div>
+                </div>
+              </div>
+              <div className='modal-footer'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  data-bs-dismiss='modal'
+                >
+                  Cancelar
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  data-bs-dismiss='modal'
+                  onClick={() => {
+                    guardarCambios
+                    // const newObservaciones = observacionesRef.current.value;
+                    // setObservaciones(newObservaciones);
+                    // sendObser(newObservaciones);
+                    // observacionesRef.current.value = "";
+                  }}
+                >
+                  Guardar cambios
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
