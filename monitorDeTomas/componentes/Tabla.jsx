@@ -43,7 +43,7 @@ export default function Tabla() {
     console.log(":( ");
     const selected = event.target.value;
 
-    const filter = document.getElementsByClassName("filter-text")[0];
+    let filter = document.getElementsByClassName("filter-text")[0];
     if (filter.value.length > 0) {
       console.log("El input tiene algo escrito.");
     } else {
@@ -57,15 +57,39 @@ export default function Tabla() {
       if (filter.value.length < 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 300000);
+        }, 30000);
       }
       if (filter.value.length > 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 900000);
+        }, 90000);
       } // REGRESAR A 30 SEGUNDOS
     } else {
       setFiltrado([]);
+    }
+  };
+
+  const hadleFetch = () => {
+    let filter = document.getElementsByClassName("filter-text")[0];
+    if (filter.value.length === 10) {
+      fetch(
+        `${process.env.RUTA_API}/sian2/ms/monitor/GetTomaByExpediente?F=${filter.value}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.data[0]) {
+            console.log(data);
+            localStorage.setItem("desactivarimp", false);
+            document.getElementById("checkbx").checked = true;
+            setFiltrado(data.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Inserta un Folio correcto");
+        });
+    } else {
+      alert("Inserta un Folio correcto");
     }
   };
 
@@ -97,7 +121,33 @@ export default function Tabla() {
         <BuscadorHeader // el componente trae por props las funciones de filtrar.js
           handleFilter={handleFilter}
           handleSucursal={handleSucursal}
+          hadleFetch={hadleFetch}
         />
+        {filtrado.map((d, i) => {
+          if (
+            localStorage.getItem("ipdelEquipo") &&
+            localStorage.getItem("nombredeimp")
+          ) {
+              if (d.Impreso.Int64 === 0) {
+                d.Impreso.Int64 = 1;
+                fetch(
+                  `${
+                    process.env.RUTA_API
+                  }/sian2/ms/monitor/MandarPdfAImprimir?f=${
+                    d.OrdenDeTrabajo
+                  }&Ip=${localStorage.getItem(
+                    "ipdelEquipo"
+                  )}&P=${localStorage.getItem("nombredeimp")}`
+                ).then((response) => response.text());
+              }
+          } else {
+            if (i === 0 && localStorage.getItem("desactivarimp") === "true") {
+              alert("Primero Selecciona una impresora");
+              return null;
+            }
+          }
+        })}
+
         {/* trae por props el contenido de las columnas y convierte data en el estado filtrado */}
         <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
         <ModalImprimir />
@@ -144,12 +194,18 @@ export default function Tabla() {
                   data-bs-dismiss='modal'
                   onClick={() => {
                     let formdata = new FormData();
-                    formdata.append("IdOrdenDetalle", document.getElementById("observacionesArea").ariaLabel);
-                    formdata.append("ObservacionesTomas", document.getElementById("observacionesTomas").value);
+                    formdata.append(
+                      "IdOrdenDetalle",
+                      document.getElementById("observacionesArea").ariaLabel
+                    );
+                    formdata.append(
+                      "ObservacionesTomas",
+                      document.getElementById("observacionesTomas").value
+                    );
 
                     let requestOptions = {
                       method: "POST",
-                      body: formdata
+                      body: formdata,
                     };
 
                     fetch(
