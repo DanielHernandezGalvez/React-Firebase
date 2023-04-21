@@ -1,121 +1,173 @@
-import React, { useState, useEffect } from "react";
-import DataTable from "react-data-table-component";
-import "react-data-table-component-extensions/dist/index.css";
-import DetalleFila from "./DetalleFila";
-import { TABLA_PRINCIPAL_COLUMNS } from "./funciones/columns";
+import React, { useState, useEffect, useRef } from "react";
+import BuscadorHeader from "./BuscadorHeader";
+import TablaDatos from "./TablaDatos";
+import { TABLE_COLUMNS } from "./funciones/columns";
 import ModalImprimir from "./ModalImprimir";
+import { filterData, filterSucursal } from "./funciones/filtrar";
 
-export default function TablaPrincipal({ columns, data }) {
-  const [ recipientes, setRecipientes ] = useState([]);
-  const [ filaExpandible, setFilaExpandible ] = useState({});
-  const [ filaActual, setFilaActual ] = useState(null);
-  const [ selectedRow, setSelectedRow ] = useState(null);
-  const [ selectedData, setSelectedData ] = useState(null);
-  const [ isPrintModalOpen, setIsPrintModalOpen ] = useState(false);
+export default function Tabla() {
+  // EL estado filtrado inicia como array vacío que se actualiza por la función setFiltrado
+  const [filtrado, setFiltrado] = useState([]);
+  // const [timer, setTimer] = useState("");
+  const [is_open, setIsOpen] = useState(true);
+  // const [time, setTime] = useState(3000);
+  // const [selected, setSelected] = useState(null);
 
-  useEffect(() => {
-    const fetchRecipientes = async () => {
-      let url = `http://localhost:8081/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
-      const response = await fetch(url);
-      const data_r = await response.json();
-      console.log(data_r);
-      setRecipientes(
-        data_r.filter((r) => {
-          r.OrdenTrabajoId = data.OrdenTrabajoId;
-          return true;
-        })
-      );
+  // title hover \\
+  /** */ const [observaciones, setObservaciones] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  /** */ const observacionesRef = useRef(null);
+
+  const fetchData = async (suc) => {
+    let time = 1;
+    if (is_open) time = 1500;
+
+    let requestOptions = {
+      method: "GET",
+      redirect: "follow",
     };
-    fetchRecipientes();
-    console.log(recipientes);
-  }, []);
-
-  const handleExpand = (row, expanded) => {
-    const filaExpandibleCopia = { ...filaExpandible };
-    filaExpandibleCopia[row.index] = expanded;
-    setFilaExpandible(filaExpandibleCopia);
-    setSelectedRow(expanded ? row.index : null);
+    let url = `${process.env.RUTA_API}/sian2/ms/monitor/GetAllTomas?Id=` + suc;
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    setFiltrado(data.data);
   };
 
-  const rowClass = (row) => {
-    if (selectedRow === row.index) {
-      return "selected-row";
+  /* Filtra los datos por nombre desde el componente BuscadorHeader
+  llama a la función filterData desde la carpeta funciones */
+  const handleFilter = (event) => {
+    const newData = filterData(event, filtrado);
+    setFiltrado(newData);
+  };
+
+  const handleSucursal = async (event) => {
+    console.log(":( ");
+    const selected = event.target.value;
+
+    const filter = document.getElementsByClassName("filter-text")[0];
+    if (filter.value.length > 0) {
+      console.log("El input tiene algo escrito.");
+    } else {
+      console.log("El input está vacío.");
     }
-    return "";
+
+    if (selected !== "null") {
+      setIsOpen(!is_open);
+      await fetchData(selected);
+
+      if (filter.value.length < 1) {
+        setTimeout(() => {
+          handleSucursal(event);
+        }, 300000);
+      }
+      if (filter.value.length > 1) {
+        setTimeout(() => {
+          handleSucursal(event);
+        }, 900000);
+      } // REGRESAR A 30 SEGUNDOS
+    } else {
+      setFiltrado([]);
+    }
   };
 
-  const handleRowClick = (row) => {
-    setSelectedData(row);
+  let sendObser = (observaciones) => {
+    // aqui va el fetch para mandar el status pendiente y las observaciones
+    fetch("/ruta-del-backend", {
+      method: "POST",
+      body: JSON.stringify({ observaciones: inputValue }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {})
+      .catch((error) => {});
   };
 
-  const handlePrintModalOpen = () => {
-    setIsPrintModalOpen(true);
-  };
+  // title hover \\
+  // const guardarCambios = () => {
+  //   const inputText = observacionesRef.current.value;
+  //   setObservaciones(inputText);
 
-  const handlePrintModalClose = () => {
-    setIsPrintModalOpen(false);
-  };
-
-  const dataTable = {
-
-    columns: [
-      ...TABLA_PRINCIPAL_COLUMNS,
-  
-    ],
-    data: recipientes,
-    expandableRows: true,
-    expandableRowsComponent: DetalleFila,
-    expandOnRowClicked: true,
-    onRowExpandToggled: handleExpand,
-    expandedRows: filaExpandible,
-    fileName: "document",
-  };
+  //   const boton = document.querySelector('#boton-pendiente');
+  //   boton.setAttribute('title', inputText);
+  // };
 
   return (
     <>
-      <DataTable
-        {...dataTable}
-        // highlightOnHover
-        // columns={ TABLA_PRINCIPAL_COLUMNS }
-        // data={ recipientes }
-        // highlightOnHover
-        // striped
-        // responsive
-        // fixedHeader
-        // expandableRows    
-        className='shadow-lg bg-body'
-        expandableRowExpanded={(row) => row === filaActual}
-        expandOnRowClicked
-        onRowClicked={(row) => setFilaActual(row)}
-        onRowExpandToggled={(bool, row) => setFilaActual(row)}
-        conditionalRowStyles={[
-          {
-            when: (row) => selectedRow === row.index,
-            style: {
-              backgroundColor: "#f0f0f0 !important",
-            },
-          },
-        ]}
-        rowClass={rowClass}
-      />
-      {selectedData && (
-        <div className='d-grid gap-2'>
-          <button
-            className='btn btn-primary'
-            type='button'
-            onClick={handlePrintModalOpen}
-          >
-            Imprimir
-          </button>
+      <div className='container-fluid container-fluid-margin'>
+        <BuscadorHeader // el componente trae por props las funciones de filtrar.js
+          handleFilter={handleFilter}
+          handleSucursal={handleSucursal}
+        />
+        {/* trae por props el contenido de las columnas y convierte data en el estado filtrado */}
+        <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
+        <ModalImprimir />
+
+        {/* MODAL */}
+        <div className='modal fade' id='modal' tabIndex='-1'>
+          <div className='modal-dialog'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <h5 className='modal-title'>Cambio de Estatus</h5>
+                <button
+                  type='button'
+                  className='btn-close'
+                  data-bs-dismiss='modal'
+                  aria-label='Close'
+                ></button>
+              </div>
+              <div className='modal-body'>
+                <h5 id='observacionesArea'></h5>
+                <p id='observacionesEstudio'></p>
+                <div className='mb-3'>
+                  <label htmlFor='observaciones' className='form-label'>
+                    Observaciones
+                  </label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='observacionesTomas'
+                  />
+                </div>
+              </div>
+              <div className='modal-footer'>
+                <button
+                  type='button'
+                  className='btn btn-secondary'
+                  data-bs-dismiss='modal'
+                >
+                  Cancelar
+                </button>
+                <button
+                  id='btn-setstatus'
+                  type='button'
+                  className='btn btn-primary'
+                  data-bs-dismiss='modal'
+                  onClick={() => {
+                    let formdata = new FormData();
+                    formdata.append("IdOrdenDetalle", document.getElementById("observacionesArea").ariaLabel);
+                    formdata.append("ObservacionesTomas", document.getElementById("observacionesTomas").value);
+
+                    let requestOptions = {
+                      method: "POST",
+                      body: formdata
+                    };
+
+                    fetch(
+                      document.getElementById("observacionesTomas").ariaLabel,
+                      requestOptions
+                    )
+                      .then((response) => response.text())
+                      .then((result) => console.log(result))
+                      .catch((error) => console.log("error", error));
+                  }}
+                >
+                  Guardar cambios
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      <ModalImprimir
-        show={isPrintModalOpen}
-        handleDataClick={handleDataClick}
-        data={data}
-      />
+      </div>
     </>
   );
 }
-
-
