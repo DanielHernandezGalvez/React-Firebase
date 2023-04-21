@@ -1,3 +1,5 @@
+import { APP_CLIENT_INTERNALS } from "next/dist/shared/lib/constants";
+
 /*  Cada objeto representa una columna de una tabla y tiene las siguientes propiedades:
 "name": el nombre de la columna
 "selector": el nombre de la propiedad del objeto que se usará para llenar la columna
@@ -42,7 +44,7 @@ export const TABLE_COLUMNS = [
     sortable: true,
     /* La función "cell" se usa en las dos últimas columnas para formatear las 
     fechas a la forma deseada, en caso de que el número sea menor a 10, se le 
-    agrega un cero anes del número */
+    agrega un cero antes del número */
     cell: (row) => {
       const fechaEstimada = new Date(row.FechaEstimada.Time);
       const anio = fechaEstimada.getUTCFullYear();
@@ -54,6 +56,27 @@ export const TABLE_COLUMNS = [
   },
 ];
 
+export const handlePrintModalOpen = (row) => {
+  let url = `${process.env.RUTA_API}/sian2/ms/monitor/GenerarUnaSolaEtiqueta?f=${row.Folio}&Ip=192.168.0.46&P=Etiquetas&pid=${row.ProductoId}`;
+  document.getElementById("inputToprint").value = row.CantidadEtiquetas;
+  document.getElementById("inputToprint").ariaLabel = url;
+  document.getElementById("printProductoDescripcion").innerText =
+    row.ProductoDescripcion;
+  document.getElementById("printEstudios").innerText = row.Estudios;
+  document.getElementById("printFolio").innerText = row.Folio;
+  console.log(row);
+};
+
+export const handleUpdateEstudioModalOpen = (row) => {
+  let url = `${process.env.RUTA_API}/sian2/ms/monitor/UpdateEstudio`;
+  document.getElementById("observacionesTomas").value = row.ObservacionesTomas.String;
+  document.getElementById("observacionesTomas").ariaLabel = url;
+  document.getElementById("btn-setstatus").innerText = row.Estatus === "PENDIENTE"?'Cambiar a En Tomas':'Cambiar a Pendiente';
+  document.getElementById("observacionesEstudio").innerText = row.Estudio;
+  document.getElementById("observacionesArea").innerText = row.Área;
+  document.getElementById("observacionesArea").ariaLabel = row.IdOrdenDetalle;
+};
+
 export const TABLA_PRINCIPAL_COLUMNS = [
   {
     name: "Producto",
@@ -63,7 +86,7 @@ export const TABLA_PRINCIPAL_COLUMNS = [
       <img
         // src={row.ProductoImagenUrl}
         src={
-          "https://dhb3yazwboecu.cloudfront.net/764//laboratorio/frasco-orina-125-ml.jpg"
+          "/laboratorio/imgProductos/" + row.ProductoImagen
         }
         alt={row.ProductoDescripcion}
         className='tabla-img'
@@ -99,7 +122,11 @@ export const TABLA_PRINCIPAL_COLUMNS = [
     cell: (row) => (
       <button
         className='btn btn-outline-secondary'
-        onClick={() => console.log(`Imprimir ${row.ProductoDescripcion}`)}
+        title={row.Observaciones}
+        data-bs-toggle='modal'
+        data-bs-target='#modalprint'
+        // onClick={() => console.log(`Imprimir ${row.ProductoDescripcion}`)}
+        onClick={() => handlePrintModalOpen(row)}
       >
         <i class='bi bi-printer'></i>
       </button>
@@ -109,6 +136,8 @@ export const TABLA_PRINCIPAL_COLUMNS = [
     button: true,
   },
 ];
+
+// 6
 
 export const COLUNS_DETAILS_TABLE = [
   {
@@ -168,9 +197,67 @@ export const COLUNS_DETAILS_TABLE = [
     selector: "Área",
     sortable: true,
   },
-  {
-    name: "Observaciones",
+  { 
+    name: "Estatus",
     selector: "Estatus",
     sortable: true,
+    cell: (row) => {
+      return (
+        <>
+          <span title={row.ObservacionesTomas.String}>{row.Estatus}</span>
+        </>
+      );
+    },
+  },
+  {
+    name: "Cambiar a:",
+    selector: "Estatus",
+    sortable: true,
+    cell: (row) => {
+      if (row.Estatus === "PENDIENTE") {
+        return (
+          <>
+            <button
+              type='button'
+              className='btn btn-outline-secondary text-center'
+              id={row.ProductoId}
+              data-bs-toggle='modal'
+              data-bs-target='#modal'
+              title=''
+              onmouseover='setTooltipTitle()'
+              onClick={() => handleUpdateEstudioModalOpen(row)}
+            >
+              En Tomas
+            </button>
+          </>
+        );
+      } else if (row.Estatus === "EN TOMAS") {
+        return (
+          <>
+            <button
+              type='button'
+              className='btn btn-outline-secondary text-center'
+              id={row.ProductoId}
+              data-bs-toggle='modal'
+              data-bs-target='#modal'
+              title=''
+              onmouseover='setTooltipTitle()'
+              onClick={() => handleUpdateEstudioModalOpen(row)}
+            >
+              Pendiente
+            </button>
+          </>
+        );
+      } else {
+        return <div>{row.Estatus}</div>;
+      }
+    },
   },
 ];
+
+// title hover \\
+// const boton = document.querySelector("#boton-pendiente");
+// boton.addEventListener("mouseover", () => {
+//   const observaciones = document.querySelector("#observaciones").value;
+//   boton.setAttribute("title", observaciones);
+// });
