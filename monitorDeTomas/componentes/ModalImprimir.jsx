@@ -3,37 +3,6 @@ import DataTable from "react-data-table-component";
 import ReactDom from "react-dom";
 
 const ModalImprimir = ({ show, onClose, recipientes }) => {
-  // const showHideClassName = show
-  //   ? "modal display-block"
-  //   : "modal display-none";
-  //   const [value, setValue] = useState(1);
-
-  // const [data, setData] = useState(null);
-  // const [params, setParams] = useState({ f: "", Ip: "", P: "" });
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const url = `http://192.168.0.14:8081/sian2/ms/monitor/MandarPdfAImprimir?f=${params.f}&Ip=${params.Ip}&P=${params.P}`;
-  //       const requestOptions = {
-  //         method: "GET",
-  //         redirect: "follow",
-  //       };
-  //       const response = await fetch(url, requestOptions);
-  //       const result = await response.text();
-  //       setData(result);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, [params]);
-
-  // const handleDataClick = (data) => {
-  //   // checar los valores de IpValue y Etiquetas
-  //   setParams({ f: data.Folio, Ip: data.IpValue, P: data.Etiquetas })
-  // }
-
   const handleInputChange = (event) => {
     const inputValue = parseInt(event.target.value);
     if (inputValue >= 1) {
@@ -82,10 +51,12 @@ const ModalImprimir = ({ show, onClose, recipientes }) => {
             <button
               type='button'
               className='btn btn-primary'
+              data-bs-dismiss='modal'
               onClick={() => {
                 print(
                   document.getElementById("inputToprint").ariaLabel,
-                  parseInt(document.getElementById("inputToprint").value)
+                  parseInt(document.getElementById("inputToprint").value),
+                  localStorage.getItem("desactivarimp") === "true"
                 );
               }}
             >
@@ -98,13 +69,17 @@ const ModalImprimir = ({ show, onClose, recipientes }) => {
   );
 };
 
-const print = (url, cantidad) => {
+const print = (url, cantidad, bool) => {
   console.log(cantidad);
 
-  fetch(url + "&CE=" + cantidad)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+  if (bool) {
+    fetch(url + "&CE=" + cantidad)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  } else {
+    alert("Primero Selecciona una impresora");
+  }
 };
 
 export default ModalImprimir;
