@@ -12,7 +12,10 @@ export default function Tabla() {
   const [is_open, setIsOpen] = useState(true);
   // const [time, setTime] = useState(3000);
   // const [selected, setSelected] = useState(null);
+
+  // title hover \\
   /** */ const [observaciones, setObservaciones] = useState("");
+  const [inputValue, setInputValue] = useState("");
   /** */ const observacionesRef = useRef(null);
 
   const fetchData = async (suc) => {
@@ -23,7 +26,7 @@ export default function Tabla() {
       method: "GET",
       redirect: "follow",
     };
-    let url = "http://localhost:8081/sian2/ms/monitor/GetAllTomas?Id=" + suc;
+    let url = `${process.env.RUTA_API}/sian2/ms/monitor/GetAllTomas?Id=` + suc;
     const response = await fetch(url, requestOptions);
     const data = await response.json();
     setFiltrado(data.data);
@@ -66,15 +69,27 @@ export default function Tabla() {
     }
   };
 
-  const guardarCambios = () => {
-    const inputText = observacionesRef.current.value;
-    setObservaciones(inputText);
-
-    const boton = document.querySelector('#boton-pendiente');
-    boton.setAttribute('title', inputText);
+  let sendObser = (observaciones) => {
+    // aqui va el fetch para mandar el status pendiente y las observaciones
+    fetch("/ruta-del-backend", {
+      method: "POST",
+      body: JSON.stringify({ observaciones: inputValue }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {})
+      .catch((error) => {});
   };
 
-  // const awaitT = () => {};
+  // title hover \\
+  // const guardarCambios = () => {
+  //   const inputText = observacionesRef.current.value;
+  //   setObservaciones(inputText);
+
+  //   const boton = document.querySelector('#boton-pendiente');
+  //   boton.setAttribute('title', inputText);
+  // };
 
   return (
     <>
@@ -92,7 +107,7 @@ export default function Tabla() {
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header'>
-                <h5 className='modal-title'>Modificar Observaciones</h5>
+                <h5 className='modal-title'>Cambio de Estatus</h5>
                 <button
                   type='button'
                   className='btn-close'
@@ -101,6 +116,8 @@ export default function Tabla() {
                 ></button>
               </div>
               <div className='modal-body'>
+                <h5 id='observacionesArea'></h5>
+                <p id='observacionesEstudio'></p>
                 <div className='mb-3'>
                   <label htmlFor='observaciones' className='form-label'>
                     Observaciones
@@ -108,12 +125,8 @@ export default function Tabla() {
                   <input
                     type='text'
                     className='form-control'
-                    id='observaciones'
-                    ref={observacionesRef}
-                    value={observaciones}
-                    onChange={(e) => setObservaciones(e.target.value)}
+                    id='observacionesTomas'
                   />
-                  <div>{observaciones}</div>
                 </div>
               </div>
               <div className='modal-footer'>
@@ -125,15 +138,27 @@ export default function Tabla() {
                   Cancelar
                 </button>
                 <button
+                  id='btn-setstatus'
                   type='button'
                   className='btn btn-primary'
                   data-bs-dismiss='modal'
                   onClick={() => {
-                    guardarCambios
-                    // const newObservaciones = observacionesRef.current.value;
-                    // setObservaciones(newObservaciones);
-                    // sendObser(newObservaciones);
-                    // observacionesRef.current.value = "";
+                    let formdata = new FormData();
+                    formdata.append("IdOrdenDetalle", document.getElementById("observacionesArea").ariaLabel);
+                    formdata.append("ObservacionesTomas", document.getElementById("observacionesTomas").value);
+
+                    let requestOptions = {
+                      method: "POST",
+                      body: formdata
+                    };
+
+                    fetch(
+                      document.getElementById("observacionesTomas").ariaLabel,
+                      requestOptions
+                    )
+                      .then((response) => response.text())
+                      .then((result) => console.log(result))
+                      .catch((error) => console.log("error", error));
                   }}
                 >
                   Guardar cambios
