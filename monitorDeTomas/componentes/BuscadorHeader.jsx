@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
+import FiltroImpresoras from "./FiltroImpresoras";
 
 /* Toma dos props, handleFilter y handleSucursal, que son funciones que se 
 ejecutarán cuando se cambie el texto del input y cuando se seleccione una 
 sucursal en el select, respectivamente. */
-const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
+const BuscadorHeader = ({ handleFilter, handleSucursal, hadleFetch }) => {
   const [sucursales, setSucursales] = useState([]);
+  const [filtroData, setFiltroData] = useState(null)
 
   /* Utiliza el hook useEffect para realizar una petición GET a una API utilizando 
   la función fetch. La respuesta se convierte a un objeto JSON utilizando .json() y 
   luego se establece el valor del estado sucursales con los datos de la respuesta */
   useEffect(() => {
-    fetch("http://localhost:8081/sian2/ms/monitor/GetAllSucursales")
+    fetch(`${process.env.RUTA_API}/sian2/ms/monitor/GetAllSucursales`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setSucursales(data.data);
       })
       .catch((error) => console.log(error));
-  }, []);
 
-  // const myInput = document.getElementsByClassName("filter-text")
-  // myInput.placeholder = "Filtrar";
+    if (
+      !localStorage.getItem("desactivarimp") ||
+      localStorage.getItem("desactivarimp") === "false"
+    ) {
+      localStorage.setItem("desactivarimp", false);
+      document.getElementById("checkbx").checked = true;
+    }
+  }, []);
 
   /* Renderiza una sección de búsqueda que contiene un título, un input de 
   búsqueda y un select de sucursales. También incluye un botón que activa un 
@@ -36,13 +43,26 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
           >
             <div className='d-flex w-50' id='impresionesAuto'>
               {/* BUSCADOR */}
-              <h6 className='me-2 mt-1'>Detener impresiones automáticas</h6>
-              <div>
+              <div class='form-check'>
                 <input
-                  id='buscadorTabla'
+                  id='checkbx'
+                  class='form-check-input'
                   type='checkbox'
-                  // onChange={handleFilter}
+                  value=''
+                  onChange={(e) => {
+                    localStorage.setItem("desactivarimp", !e.target.checked);
+                  }}
                 />
+                <label class='form-check-label' for='checkbx'>
+                  Detener impresiones automáticas
+                </label>
+                <button
+                  id='btn-filter-header'
+                  className='btn btn-primary position-absolute btn-buscar-top p-1'
+                  onClick={hadleFetch}
+                >
+                  Buscar
+                </button>
               </div>
             </div>
             {/* SUCURSALES */}
@@ -67,52 +87,15 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
                   type='button'
                   className='btn btn-outline-secondary'
                   data-bs-toggle='modal'
-                  data-bs-target='#exampleModal'
+                  data-bs-target='#setingsmodal'
                 >
                   <i className='bi bi-gear-fill'></i>
                 </button>
               </div>
               {/* MODAL */}
-              <div
-                className='modal fade'
-                id='exampleModal'
-                tabIndex='-1'
-                aria-labelledby='exampleModalLabel'
-                aria-hidden='true'
-              >
-                <div className='modal-dialog'>
-                  <div className='modal-content'>
-                    <div className='modal-header'>
-                      <h5 className='modal-title' id='exampleModalLabel'>
-                        Título del modal
-                      </h5>
-                      <button
-                        type='button'
-                        className='btn-close'
-                        data-bs-dismiss='modal'
-                        aria-label='Close'
-                      ></button>
-                    </div>
-                    <div className='modal-body'>
-                      Aquí va el contenido del modal, sepa la bola que vaya a
-                      ser pero quedará mamalón
-                    </div>
-                    <div className='modal-footer'>
-                      <button
-                        type='button'
-                        className='btn btn-secondary'
-                        data-bs-dismiss='modal'
-                      >
-                        Cerrar
-                      </button>
-                      <button type='button' className='btn btn-primary'>
-                        Guardar cambios
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               {/* modal */}
+              <FiltroImpresoras />
             </div>
           </div>
         </div>
@@ -122,7 +105,3 @@ const BuscadorHeader = ({ handleFilter, handleSucursal }) => {
 };
 
 export default BuscadorHeader;
-
-
-
-
