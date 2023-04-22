@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import FiltroImpresoras from "./FiltroImpresoras";
 
-
+/* Toma dos props, handleFilter y handleSucursal, que son funciones que se 
+ejecutarán cuando se cambie el texto del input y cuando se seleccione una 
+sucursal en el select, respectivamente. */
 const BuscadorHeader = ({ handleFilter, handleSucursal, hadleFetch }) => {
   const [sucursales, setSucursales] = useState([]);
   const [filtroData, setFiltroData] = useState(null)
