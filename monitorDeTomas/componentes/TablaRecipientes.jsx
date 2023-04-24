@@ -52,10 +52,6 @@ export default function TablaPrincipal({ columns, data }) {
     setIsPrintModalOpen(false);
   };
 
-  // const handlePrintModalClose = () => {
-  //   setIsPrintModalOpen(false);
-  // };
-
   const handlePrintModalOpen = () => {
     setRecipientes(recipientes);
     setIsPrintModalOpen(true);
@@ -112,32 +108,6 @@ export default function TablaPrincipal({ columns, data }) {
     },
   ];
 
-  // const changeColor = () => {
-  //   if (true) {
-  //     const rowColor = document.querySelector(".ifWazN");
-  //     if (rowColor) {
-  //       const styleSheet = document.createElement("style");
-  //       styleSheet.innerHTML =
-  //         ".new-row-color { background-color: rgba(254, 138, 127, 0.4) !important; }";
-  //       // ".new-row-color { background-color: rgba(255, 199, 95, 0.5) !important; }";
-  //       document.head.appendChild(styleSheet);
-  //       rowColor.style.cssText +=
-  //         "background-color: rgba(254, 138, 127, 0.4) !important;";
-  //       rowColor.classList.add("new-row-color");
-  //     }
-  //   } else {
-  //     const rowColor = document.querySelector(".ifWazN");
-  //     const styleSheet = document.createElement("style");
-  //     styleSheet.innerHTML =
-  //       ".new-row-color { background-color: #007cba23 !important; }";
-  //     document.head.appendChild(styleSheet);
-  //     rowColor.style.cssText += "background-color: #007cba23 !important;";
-  //     rowColor.classList.add("new-row-color");
-  //   }
-  // };
-
-  // changeColor();
-
   function scrollToRow(row) {
     const rowElement = document.querySelector(`#${row.id}`);
     if (rowElement) {
@@ -154,14 +124,11 @@ export default function TablaPrincipal({ columns, data }) {
         className='shadow-lg bg-body'
         expandableRowExpanded={(row) => row === filaActual}
         expandOnRowClicked
-        // onRowClicked={(row) => setFilaActual(row)}
         onRowExpandToggled={(bool, row) => {
-          // scrollToRow(row);
           setFilaActual(row);
         }}
         conditionalRowStyles={conditionalRowStyles}
         rowClass={rowClass}
-        //expandableRowsComponent={DetalleFila}
       />
       {selectedData && (
         <div className='d-grid gap-2'>
