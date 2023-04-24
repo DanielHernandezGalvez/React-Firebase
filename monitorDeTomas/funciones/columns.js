@@ -46,18 +46,22 @@ export const TABLE_COLUMNS = [
     fechas a la forma deseada, en caso de que el número sea menor a 10, se le 
     agrega un cero antes del número */
     cell: (row) => {
-      const fechaEstimada = new Date(row.FechaEstimada.Time);
-      const anio = fechaEstimada.getUTCFullYear();
-      const dia = fechaEstimada.getDate().toString().padStart(2, "0");
-      const mes = (fechaEstimada.getMonth() + 1).toString().padStart(2, "0");
-      const fechaFormateada = `${dia}/${mes}/${anio}`;
-      return <div>{fechaFormateada}</div>;
+      if (row.FechaEstimada.Valid) {
+        const fechaEstimada = new Date(row.FechaEstimada.Time);
+        const anio = fechaEstimada.getUTCFullYear();
+        const dia = fechaEstimada.getDate().toString().padStart(2, "0");
+        const mes = (fechaEstimada.getMonth() + 1).toString().padStart(2, "0");
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+        return <div>{fechaFormateada}</div>;
+      } else {
+        return <div>N-D</div>
+      }
     },
   },
 ];
 
 export const handlePrintModalOpen = (row) => {
-  let url = `${process.env.RUTA_API}/sian2/ms/monitor/GenerarUnaSolaEtiqueta?f=${row.Folio}&Ip=192.168.0.46&P=Etiquetas&pid=${row.ProductoId}`;
+  let url = `${process.env.RUTA_API}/sian2/ms/monitor/GenerarUnaSolaEtiqueta?f=${row.Folio}&Ip=${localStorage.getItem("ipdelEquipo")}&P=${localStorage.getItem("nombredeimp")}&pid=${row.ProductoId}`;
   document.getElementById("inputToprint").value = row.CantidadEtiquetas;
   document.getElementById("inputToprint").ariaLabel = url;
   document.getElementById("printProductoDescripcion").innerText =
@@ -166,8 +170,8 @@ export const COLUNS_DETAILS_TABLE = [
     sortable: true,
     format: (row) => {
       return row.TiempoEstimado !== 1
-        ? `${row.TiempoEstimado} Días`
-        : `${row.TiempoEstimado} Día`;
+        ? `${row.TiempoEstimado.Int64} Días`
+        : `${row.TiempoEstimado.Int64} Día`;
     },
   },
   {
@@ -175,7 +179,7 @@ export const COLUNS_DETAILS_TABLE = [
     selector: "FechaEstimada",
     sortable: true,
     format: (row) => {
-      return new Date(row.FechaEstimada)
+      return new Date(row.FechaEstimada.Time)
         .toLocaleDateString("es-ES", {
           day: "2-digit",
           month: "2-digit",
@@ -254,10 +258,3 @@ export const COLUNS_DETAILS_TABLE = [
     },
   },
 ];
-
-// title hover \\
-// const boton = document.querySelector("#boton-pendiente");
-// boton.addEventListener("mouseover", () => {
-//   const observaciones = document.querySelector("#observaciones").value;
-//   boton.setAttribute("title", observaciones);
-// });
