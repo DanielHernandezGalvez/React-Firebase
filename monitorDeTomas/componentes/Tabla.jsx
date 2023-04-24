@@ -57,7 +57,7 @@ export default function Tabla() {
       if (filter.value.length < 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 30000);
+        }, 10000); // subir a producción
       }
       if (filter.value.length > 1) {
         setTimeout(() => {
