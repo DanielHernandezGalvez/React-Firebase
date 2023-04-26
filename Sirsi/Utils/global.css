@@ -1,0 +1,55 @@
+*{
+  font-family: sans-serif;
+}
+
+
+
+.opacity-navbar{
+ background-color: rgba(0, 0, 0, 0.07);
+}
+
+.sirsi{
+  font-weight: bolder;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.sidebar{ 
+  height: 90vh;
+  border: white;
+  top: 0;
+  bottom: 0;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.navbar{
+  padding: 0px !important;
+}
+
+.no-border:focus {
+  outline: none !important;
+}
+
+.accordion-button {
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.accordion-button:hover {
+  background-color: #6da3f528;
+  color: #212529;
+}
+
+.primary-text{
+  color: #067DB2 !important;
+}
+
+.bi{
+  color: #067DB2 !important;
+}
+
+.table-scroll{
+  overflow-y: scroll !important;
+  max-height: 80vh !important;
+}
