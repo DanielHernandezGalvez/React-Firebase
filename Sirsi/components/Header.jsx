@@ -39,6 +39,7 @@ export default function Header(props) {
     document.body.innerHTML = printContent;
     window.print()
     document.body.innerHTML = originalContent
+    // recargar en caso de ser necesario
   }
 
   return (
