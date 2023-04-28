@@ -12,11 +12,13 @@ export default function Tabla() {
   const [is_open, setIsOpen] = useState(true);
   // const [time, setTime] = useState(3000);
   // const [selected, setSelected] = useState(null);
+  const [info, setInfo] = useState(false);
 
   // title hover \\
   /** */ const [observaciones, setObservaciones] = useState("");
   const [inputValue, setInputValue] = useState("");
   /** */ const observacionesRef = useRef(null);
+
 
   const fetchData = async (suc) => {
     let time = 1;
@@ -31,6 +33,8 @@ export default function Tabla() {
     const data = await response.json();
     setFiltrado(data.data);
   };
+
+
 
   /* Filtra los datos por nombre desde el componente BuscadorHeader
   llama a la función filterData desde la carpeta funciones */
@@ -57,7 +61,7 @@ export default function Tabla() {
       if (filter.value.length < 1) {
         setTimeout(() => {
           handleSucursal(event);
-        }, 10000); // subir a producción
+        }, 30000);
       }
       if (filter.value.length > 1) {
         setTimeout(() => {
@@ -69,7 +73,8 @@ export default function Tabla() {
     }
   };
 
-  const hadleFetch = () => {
+  const hadleFetch = (bool) => {
+    setInfo(bool)
     let filter = document.getElementsByClassName("filter-text")[0];
     if (filter.value.length === 10) {
       fetch(
@@ -94,7 +99,7 @@ export default function Tabla() {
   };
 
   let sendObser = (observaciones) => {
-    // aqui va el fetch para mandar el status pendiente y las observaciones
+    // aqui va el fetch para mandar el status pendiente y las observaciones 
     fetch("/ruta-del-backend", {
       method: "POST",
       body: JSON.stringify({ observaciones: inputValue }),
@@ -106,15 +111,6 @@ export default function Tabla() {
       .catch((error) => {});
   };
 
-  // title hover \\
-  // const guardarCambios = () => {
-  //   const inputText = observacionesRef.current.value;
-  //   setObservaciones(inputText);
-
-  //   const boton = document.querySelector('#boton-pendiente');
-  //   boton.setAttribute('title', inputText);
-  // };
-
   return (
     <>
       <div className='container-fluid container-fluid-margin'>
@@ -123,33 +119,9 @@ export default function Tabla() {
           handleSucursal={handleSucursal}
           hadleFetch={hadleFetch}
         />
-        {filtrado.map((d, i) => {
-          if (
-            localStorage.getItem("ipdelEquipo") &&
-            localStorage.getItem("nombredeimp")
-          ) {
-              if (d.Impreso.Int64 === 0) {
-                d.Impreso.Int64 = 1;
-                fetch(
-                  `${
-                    process.env.RUTA_API
-                  }/sian2/ms/monitor/MandarPdfAImprimir?f=${
-                    d.OrdenDeTrabajo
-                  }&Ip=${localStorage.getItem(
-                    "ipdelEquipo"
-                  )}&P=${localStorage.getItem("nombredeimp")}`
-                ).then((response) => response.text());
-              }
-          } else {
-            if (i === 0 && localStorage.getItem("desactivarimp") === "true") {
-              alert("Primero Selecciona una impresora");
-              return null;
-            }
-          }
-        })}
 
         {/* trae por props el contenido de las columnas y convierte data en el estado filtrado */}
-        <TablaDatos columns={TABLE_COLUMNS} data={filtrado} />
+        <TablaDatos columns={TABLE_COLUMNS} data={filtrado} info={info} />
         <ModalImprimir />
 
         {/* MODAL */}
