@@ -4,7 +4,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import DetalleFila from "./DetalleFila";
 import { TABLA_PRINCIPAL_COLUMNS, changeColor } from "./funciones/columns";
 
-export default function TablaPrincipal({ columns, data }) {
+export default function TablaRecipiente(props,{ columns, data }) {
   const [recipientes, setRecipientes] = useState([]);
   const [filaExpandible, setFilaExpandible] = useState({});
   const [filaActual, setFilaActual] = useState(null);
@@ -12,9 +12,30 @@ export default function TablaPrincipal({ columns, data }) {
   const [selectedData, setSelectedData] = useState(null);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
+  // ======================== \\
+  const fetchInfo = async (folio) => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    let url =
+      `${process.env.RUTA_API}/ms/monitor/BuscarRecipientesByFolio?f=` + folio;
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    setInfo(data);
+  };
+  // ======================== \\
+
   useEffect(() => {
+    
     const fetchRecipientes = async () => {
-      let url = `${process.env.RUTA_API}/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
+      if (props.info) {
+        let url = `${process.env.RUTA_API}/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
+      } else {
+        let url = `${process.env.RUTA_API}/sian2/ms/monitor/GetRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
+      }
+      let url = `${process.env.RUTA_API}/sian2/ms/monitor/BuscarRecipientesByFolio?f=${data.OrdenDeTrabajo}`;
       const response = await fetch(url);
       const data_r = await response.json();
       console.log(data_r);
@@ -25,7 +46,8 @@ export default function TablaPrincipal({ columns, data }) {
         })
       );
     };
-    fetchRecipientes();
+    fetchRecipientes()
+    
     console.log(recipientes);
   }, []);
 
@@ -52,6 +74,10 @@ export default function TablaPrincipal({ columns, data }) {
     setIsPrintModalOpen(false);
   };
 
+  // const handlePrintModalClose = () => {
+  //   setIsPrintModalOpen(false);
+  // };
+
   const handlePrintModalOpen = () => {
     setRecipientes(recipientes);
     setIsPrintModalOpen(true);
@@ -68,11 +94,6 @@ export default function TablaPrincipal({ columns, data }) {
     fileName: "document",
   };
 
-  // const handleExpandRow = (row) => {
-  //   setFilaActual(row);
-  //   const filaExpandida = document.getElementById(`fila-${row.id}`);
-  //   filaExpandida.scrollIntoView({ behavior: "smooth" });
-  // };
   // const changeColor = () => {
   //   const rowColor = document.querySelector(".ifWazN");
   //   const styleSheet = document.createElement("style");
@@ -108,27 +129,54 @@ export default function TablaPrincipal({ columns, data }) {
     },
   ];
 
-  function scrollToRow(row) {
-    const rowElement = document.querySelector(`#${row.id}`);
-    if (rowElement) {
-      const topPosition = rowElement.offsetTop;
-      window.scrollTo({ top: topPosition, behavior: "smooth" });
-    }
-  }
-
+  // const changeColor = () => {
+  //   if (true) {
+  //     const rowColor = document.querySelector(".ifWazN");
+  //     if (rowColor) {
+  //       const styleSheet = document.createElement("style");
+  //       styleSheet.innerHTML =
+  //         ".new-row-color { background-color: rgba(254, 138, 127, 0.4) !important; }";
+  //       // ".new-row-color { background-color: rgba(255, 199, 95, 0.5) !important; }";
+  //       document.head.appendChild(styleSheet);
+  //       rowColor.style.cssText +=
+  //         "background-color: rgba(254, 138, 127, 0.4) !important;";
+  //       rowColor.classList.add("new-row-color");
+  //     }
+  
+  //   } else {
+  //     const rowColor = document.querySelector(".ifWazN");
+  //     const styleSheet = document.createElement("style");
+  //     styleSheet.innerHTML =
+  //       ".new-row-color { background-color: #007cba23 !important; }";
+  //     document.head.appendChild(styleSheet);
+  //     rowColor.style.cssText += "background-color: #007cba23 !important;";
+  //     rowColor.classList.add("new-row-color");
+  //   }
+  // };
+  // changeColor();
   return (
     <>
       <DataTable
         {...dataTable}
-        onClick={() => scrollToRow(row)} // expandir última fila
+        // highlightOnHover
+        // columns={ TABLA_PRINCIPAL_COLUMNS }
+        // data={ recipientes }
+        // highlightOnHover
+        // striped
+        // responsive
+        // fixedHeader
+        // expandableRows
         className='shadow-lg bg-body'
         expandableRowExpanded={(row) => row === filaActual}
         expandOnRowClicked
+        onRowClicked={(row) => setFilaActual(row)}
         onRowExpandToggled={(bool, row) => {
+          console.log("Aqui va la funcion que hace el scroll", row);
           setFilaActual(row);
         }}
         conditionalRowStyles={conditionalRowStyles}
         rowClass={rowClass}
+        //expandableRowsComponent={DetalleFila}
       />
       {selectedData && (
         <div className='d-grid gap-2'>
