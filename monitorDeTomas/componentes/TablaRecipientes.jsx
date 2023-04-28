@@ -74,10 +74,6 @@ export default function TablaRecipiente(props,{ columns, data }) {
     setIsPrintModalOpen(false);
   };
 
-  // const handlePrintModalClose = () => {
-  //   setIsPrintModalOpen(false);
-  // };
-
   const handlePrintModalOpen = () => {
     setRecipientes(recipientes);
     setIsPrintModalOpen(true);
@@ -93,24 +89,6 @@ export default function TablaRecipiente(props,{ columns, data }) {
     expandedRows: filaExpandible,
     fileName: "document",
   };
-
-  // const changeColor = () => {
-  //   const rowColor = document.querySelector(".ifWazN");
-  //   const styleSheet = document.createElement("style");
-
-  //   if (true) {
-  //     styleSheet.innerHTML =
-  //       ".new-row-color { background-color: rgba(254, 138, 127, 0.4) !important; }";
-  //     rowColor.style.cssText += "background-color: rgba(254, 138, 127, 0.4) !important;";
-  //   } else {
-  //     styleSheet.innerHTML =
-  //       ".new-row-color { background-color: #007cba23 !important; }";
-  //     rowColor.style.cssText += "background-color: #007cba23 !important;";
-  //   }
-
-  //   document.head.appendChild(styleSheet);
-  //   rowColor.classList.add("new-row-color");
-  // };
 
   const conditionalRowStyles = [
     {
@@ -129,43 +107,10 @@ export default function TablaRecipiente(props,{ columns, data }) {
     },
   ];
 
-  // const changeColor = () => {
-  //   if (true) {
-  //     const rowColor = document.querySelector(".ifWazN");
-  //     if (rowColor) {
-  //       const styleSheet = document.createElement("style");
-  //       styleSheet.innerHTML =
-  //         ".new-row-color { background-color: rgba(254, 138, 127, 0.4) !important; }";
-  //       // ".new-row-color { background-color: rgba(255, 199, 95, 0.5) !important; }";
-  //       document.head.appendChild(styleSheet);
-  //       rowColor.style.cssText +=
-  //         "background-color: rgba(254, 138, 127, 0.4) !important;";
-  //       rowColor.classList.add("new-row-color");
-  //     }
-  
-  //   } else {
-  //     const rowColor = document.querySelector(".ifWazN");
-  //     const styleSheet = document.createElement("style");
-  //     styleSheet.innerHTML =
-  //       ".new-row-color { background-color: #007cba23 !important; }";
-  //     document.head.appendChild(styleSheet);
-  //     rowColor.style.cssText += "background-color: #007cba23 !important;";
-  //     rowColor.classList.add("new-row-color");
-  //   }
-  // };
-  // changeColor();
   return (
     <>
       <DataTable
         {...dataTable}
-        // highlightOnHover
-        // columns={ TABLA_PRINCIPAL_COLUMNS }
-        // data={ recipientes }
-        // highlightOnHover
-        // striped
-        // responsive
-        // fixedHeader
-        // expandableRows
         className='shadow-lg bg-body'
         expandableRowExpanded={(row) => row === filaActual}
         expandOnRowClicked
@@ -176,7 +121,6 @@ export default function TablaRecipiente(props,{ columns, data }) {
         }}
         conditionalRowStyles={conditionalRowStyles}
         rowClass={rowClass}
-        //expandableRowsComponent={DetalleFila}
       />
       {selectedData && (
         <div className='d-grid gap-2'>
