@@ -8,16 +8,13 @@ import { filterData, filterSucursal } from "./funciones/filtrar";
 export default function Tabla() {
   // EL estado filtrado inicia como array vacío que se actualiza por la función setFiltrado
   const [filtrado, setFiltrado] = useState([]);
-  // const [timer, setTimer] = useState("");
   const [is_open, setIsOpen] = useState(true);
-  // const [time, setTime] = useState(3000);
-  // const [selected, setSelected] = useState(null);
   const [info, setInfo] = useState(false);
 
   // title hover \\
-  /** */ const [observaciones, setObservaciones] = useState("");
+  const [observaciones, setObservaciones] = useState("");
   const [inputValue, setInputValue] = useState("");
-  /** */ const observacionesRef = useRef(null);
+  const observacionesRef = useRef(null);
 
 
   const fetchData = async (suc) => {
