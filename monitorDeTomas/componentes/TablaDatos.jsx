@@ -4,7 +4,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 import TablaRecipiente from "./TablaRecipiente";
 
-const TablaDatos = ({ columns, data }) => {
+const TablaDatos = ({ columns, data, info }) => {
   const [expandedRows, setExpandedRows] = useState({});
   const [currentRow, setCurrentRow] = useState(null);
 
@@ -19,19 +19,19 @@ const TablaDatos = ({ columns, data }) => {
     columns: columns,
     data: data,
     expandableRows: true,
-    expandableRowsComponent: TablaRecipiente,
+    expandableRowsComponent: <TablaRecipiente info={info}/>,
     expandOnRowClicked: true,
     onRowExpandToggled: handleRowExpand,
     expandedRows: expandedRows,
-    fileName: 'document'
-  }; 
+    fileName: "document",
+  };
 
   return (
-    <div className=''>
-      <DataTableExtensions { ...tableData }>
+    <div>
+      <DataTableExtensions {...tableData}>
         <DataTable
-          columns={ columns }
-          data={ data }
+          columns={columns}
+          data={data}
           pagination
           highlightOnHover
           striped
@@ -39,7 +39,8 @@ const TablaDatos = ({ columns, data }) => {
           fixedHeader
           expandableRows
           className='border-top border-start'
-          expandableRowExpanded={(row) => (row === currentRow)}expandOnRowClicked
+          expandableRowExpanded={(row) => row === currentRow}
+          expandOnRowClicked
           onRowClicked={(row) => setCurrentRow(row)}
           onRowExpandToggled={(bool, row) => setCurrentRow(row)}
           expandableRowsComponent={TablaRecipiente}
