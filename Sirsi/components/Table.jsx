@@ -1,54 +1,76 @@
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
 import FacturaFilter from "./FacturaFilter";
+import DataTable from "react-data-table-component";
+import DataTableExtensions from "react-data-table-component-extensions";
+import "react-data-table-component-extensions/dist/index.css";
+import Header from "./Header";
 
 export default function Table() {
   const [facturas, setFacturas] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  async function getSucursales() {
-    const url =
-      "http://192.168.0.46:8081/sirsi/administracion/BuscarSucursales";
+
+
+  const capitalize = (val) => {
+    return val
+      .toLowerCase()
+      .trim()
+      .split(" ")
+      .map((v) => v[0].toUpperCase() + v.substr(1))
+      .join(" ");
+  };
+
+  const getSucursales = async () => {
+    const url = process.env.RUTA_API + "/sirsi/web/BuscarSucursales?suc=1";
 
     try {
       const response = await fetch(url);
-      const data = await response.json();
+      let data = [];
+      data = await response.json();
 
       const select = document.getElementById("sucInput");
+      select.innerHTML = "";
+      const option = document.createElement("option");
+      option.value = 0;
+      option.selected = true;
+      option.text = "Todas";
+      select.appendChild(option);
 
-      data.data.forEach((sucursal) => {
+      data.data.map((sucursal) => {
         const option = document.createElement("option");
         option.value = sucursal.SucuId;
-        option.text = sucursal.SucuNombre;
+        option.text = capitalize(sucursal.SucuNombre);
         select.appendChild(option);
       });
     } catch (error) {
       console.error(error);
     }
-  }
-
-  useEffect(() => {
-    getSucursales();
-  }, []);
+  };
 
   const getTipoPago = async () => {
-
     var requestOptions = {
-      method: 'GET',
-      redirect: 'follow'
+      method: "GET",
+      redirect: "follow",
     };
-    const url = "http://192.168.0.46:8081/sirsi/administracion/BuscarTipoPagos";
+    const url = process.env.RUTA_API + "/sirsi/web/BuscarTipoPagos";
 
     try {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
-      console.log(data)
+      console.log(data);
 
       const select = document.getElementById("tpInput");
+      select.innerHTML = "";
+      const option = document.createElement("option");
+      option.value = 0;
+      option.selected = true;
+      option.text = "Todos";
+      select.appendChild(option);
 
-      data.data.forEach((pago) => {
+      data.data.map((pago) => {
         const option = document.createElement("option");
         option.value = pago.TipoPagoId;
-        option.text = pago.TipoPagoDescripcion;
+        option.text = capitalize(pago.TipoPagoDescripcion);
         select.appendChild(option);
       });
     } catch (error) {
@@ -57,10 +79,12 @@ export default function Table() {
   };
 
   useEffect(() => {
+    getSucursales();
     getTipoPago();
   }, []);
 
-  const getFacturas = async () => {
+  const getFacturas = async (event) => {
+    event.preventDefault();
     try {
       const fiDate = new Date(document.getElementById("fiInput").value);
       const ffDate = new Date(document.getElementById("ffInput").value);
@@ -70,29 +94,18 @@ export default function Table() {
       const suc = document.getElementById("sucInput").value;
       const tp = document.getElementById("tpInput").value;
 
-      const todas = document.getElementById("todas");
-      const sinfactura = document.getElementById("sinfactura");
-      const facturadas = document.getElementById("facturadas");
-      
-      let g;
-      
-      if (todas.checked) {
-        g = 0;
-      } else if (sinfactura.checked) {
-        g = 1;
-      } else if (facturadas.checked) {
-        g = 2;
-      } else {
-        // Si ninguno está seleccionado, asignar un valor predeterminado
-        g = 0;
-      }
+      const Grupo = document.getElementById("Grupo").value;
 
-      const url = `http://192.168.0.46:8081/sirsi/administracion/BuscarFacturas?fi=${fi}&ff=${ff}&suc=${suc}&tp=${tp}&g=${g}`;
+      const url = `${process.env.RUTA_API}/sirsi/web/BuscarFacturas?fi=${fi}&ff=${ff}&suc=${suc}&tp=${tp}&g=${Grupo}`;
+      //const url = `http://ms.nucleodediagnostico.com/sirsi/web/BuscarFacturas?fi=1682143200&ff=1682316000&suc=0&tp=1&g=1`;
 
       const response = await fetch(url);
-      const data = await response.json();
-      console.log(data.data);
-      setFacturas(data.data);
+      if (response.status === 200) {
+        const data = await response.json();
+        setFacturas(data.data);
+      } else {
+        alert('Datos no encontrados')
+      }
     } catch (error) {
       console.error(error);
     }
@@ -100,18 +113,95 @@ export default function Table() {
 
   const columns = [
     {
-      name: "",
-      selector: (row) => row.Sucursal,
+      name: "Sucursal",
+      selector: "Sucursal",
+      sortable: true,
+    },
+    {
+      name: "Folio",
+      selector: "Folio",
+      sortable: true,
+    },
+    {
+      name: "Fecha",
+      selector: "Fecha",
+      sortable: true,
+    },
+    {
+      name: "Monto",
+      selector: "Monto.Float64",
+      sortable: true,
+    },
+    {
+      name: "Descuento",
+      selector: "Descuento.Float64",
+      sortable: true,
+    },
+    {
+      name: "Total",
+      selector: "Total.Float64",
+      sortable: true,
+    },
+    {
+      name: "Tipo de Pago",
+      selector: "TipoPago.String",
+      sortable: true,
+    },
+    {
+      name: "Factura",
+      selector: "Factura.String",
+      sortable: true,
+    },
+    {
+      name: "Número de Factura",
+      selector: "NumeroFactura.String",
+      sortable: true,
     },
   ];
 
-  useEffect(() => {
-    getFacturas();
-  }, []);
+  const tableData = {
+    columns: columns,
+    data: facturas,
+    fileName: "document",
+    export: true,
+    print: true,
+    filterHidden: true,
+    filterDigit: 1
+  }
+
+  const filteredData = facturas.filter((row) =>
+    Object.values(row).some(
+      (value) => {
+        if (typeof value === "string" || typeof value === "number") {
+          return value.toString().toLowerCase().includes(searchTerm.toLowerCase());
+        }
+        return false;
+      }
+    )
+  );
 
   return (
-    <div id='my-table' className='col-10 bg-white table-scroll'>
-      <FacturaFilter />
+    <div id='my-table' className='col-lg-10 col-md-12 col-sm-12 col-12 bg-white table-scroll'>
+      <FacturaFilter getFacturas={getFacturas} />
+      {/* <Header /> */}
+      {/* <input
+        type="text"
+        className="form-control w-25 ms-3"
+        placeholder="Buscar..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      /> */}
+      <DataTableExtensions {...tableData}>
+        <DataTable
+          // title='Sirsi'
+          columns={columns}
+          data={filteredData}
+          responsive="true"
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight='600px'
+        />
+      </DataTableExtensions>
     </div>
   );
 }
