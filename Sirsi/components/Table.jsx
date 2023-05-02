@@ -212,9 +212,8 @@ export default function Table() {
       className='col-12 col-lg-9 col-md-12   bg-white table-scroll mt-2'
     >
       <FacturaFilter getFacturas={getFacturas} />
-      <button className='text-end btn' onClick={handleRowSelected}>
-        {" "}
-        <i className='bi bi-filetype-pdf text-info fs-4'></i>
+      <button className='text-end btn p-1' onClick={handleSendData}>
+        <i className='bi bi-filetype-pdf text-danger fs-4'></i>
       </button>
       <DataTableExtensions {...tableData}>
         <DataTable
