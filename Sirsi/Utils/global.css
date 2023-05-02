@@ -1,7 +1,23 @@
-*{
-  font-family: sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600;700;900&display=swap');
+@import url('https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/datatables.min.css');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Work Sans', sans-serif;
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-image: linear-gradient(180deg, #eaf1fa 0%, #f5f5f5 100%);
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: #012639;
+  min-height: 100vh;
+}
 
 
 .opacity-navbar{
@@ -15,7 +31,7 @@
 }
 
 .sidebar{ 
-  height: 90vh;
+  height: 100%;
   border: white;
   top: 0;
   bottom: 0;
@@ -37,7 +53,7 @@
 }
 
 .accordion-button:hover {
-  background-color: #6da3f528;
+  background-color: #fff !important;
   color: #212529;
 }
 
@@ -51,5 +67,56 @@
 
 .table-scroll{
   overflow-y: scroll !important;
-  max-height: 80vh !important;
+  max-height: 81vh !important;
+  box-shadow: rgba(0, 0, 0, 0.07) !important;
 }
+
+.filter-text{
+  border: 1px solid rgba(70, 70, 70, 0.3) !important; 
+  border-radius: 5px;
+  margin-left: 18px;
+}
+
+.form{
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+
+@media screen and (max-width: 600px) {
+  #my-table{
+    margin-top: 1px;
+  }
+}
+
+.sidebar-bottom{
+  z-index: -2;
+}
+
+.shadow-navbar{
+  z-index: 9999;
+}
+
+.footer-sirsi{
+  height: 70px;
+  background-color: #fff;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* @media (max-width: 1078px) {
+  .custom-toggler {
+    display: block !important;
+  }
+  .navbar-collapse {
+    display: none !important;
+  }
+  .navbar-collapse.show {
+    display: block !important;
+  }
+  .navbar-toggler {
+    display: block !important;
+  }
+} */
