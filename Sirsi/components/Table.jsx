@@ -3,13 +3,11 @@ import FacturaFilter from "./FacturaFilter";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import Header from "./Header";
 
 export default function Table() {
   const [facturas, setFacturas] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const capitalize = (val) => {
     return val
@@ -104,11 +102,38 @@ export default function Table() {
         const data = await response.json();
         setFacturas(data.data);
       } else {
-        alert('Datos no encontrados')
+        alert("Datos no encontrados");
       }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleSendData = () => {
+    const dataToSend = { selectedRows };
+    fetch("http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data sent successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error sending data:", error);
+      });
+  };
+
+  const handleRowSelected = (rows) => {
+    setSelectedRows(rows);
+  };
+
+  const options = {
+    selectableRows: true,
+    onRowSelected: handleRowSelected,
   };
 
   const columns = [
@@ -166,39 +191,39 @@ export default function Table() {
     export: true,
     print: true,
     filterHidden: true,
-    filterDigit: 1
-  }
+    filterDigit: 1,
+  };
 
   const filteredData = facturas.filter((row) =>
-    Object.values(row).some(
-      (value) => {
-        if (typeof value === "string" || typeof value === "number") {
-          return value.toString().toLowerCase().includes(searchTerm.toLowerCase());
-        }
-        return false;
+    Object.values(row).some((value) => {
+      if (typeof value === "string" || typeof value === "number") {
+        return value
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
       }
-    )
+      return false;
+    })
   );
 
   return (
-    <div id='my-table' className='col-lg-10 col-md-12 col-sm-12 col-12 bg-white table-scroll'>
+    <div
+      id='my-table'
+      className='col-12 col-lg-9 col-md-12   bg-white table-scroll mt-2'
+    >
       <FacturaFilter getFacturas={getFacturas} />
-      {/* <Header /> */}
-      {/* <input
-        type="text"
-        className="form-control w-25 ms-3"
-        placeholder="Buscar..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      /> */}
+      <button className='text-end btn' onClick={handleRowSelected}>
+        {" "}
+        <i className='bi bi-filetype-pdf text-info fs-4'></i>
+      </button>
       <DataTableExtensions {...tableData}>
         <DataTable
-          // title='Sirsi'
           columns={columns}
           data={filteredData}
-          responsive="true"
+          responsive='true'
           pagination
           fixedHeader
+          option={options}
           fixedHeaderScrollHeight='600px'
         />
       </DataTableExtensions>
