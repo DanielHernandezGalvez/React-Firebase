@@ -106,17 +106,3 @@ body {
   align-items: center;
 }
 
-/* @media (max-width: 1078px) {
-  .custom-toggler {
-    display: block !important;
-  }
-  .navbar-collapse {
-    display: none !important;
-  }
-  .navbar-collapse.show {
-    display: block !important;
-  }
-  .navbar-toggler {
-    display: block !important;
-  }
-} */
