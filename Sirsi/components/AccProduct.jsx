@@ -56,7 +56,6 @@ export default function AccProduct() {
           </div>
         </div>
       </div>
-
       <div className='accordion-item border border-0'>
         <h2 className='accordion-header border border-0'>
           <button
