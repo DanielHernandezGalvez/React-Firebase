@@ -71,16 +71,21 @@ body {
   box-shadow: rgba(0, 0, 0, 0.07) !important;
 }
 
-.filter-text{
+.data-table-extensions-filter{
+  margin-top: 50px;
   border: 1px solid rgba(70, 70, 70, 0.3) !important; 
   border-radius: 5px;
   margin-left: 18px;
+  margin-top: 40px;
+}
+
+.icon{
+  margin: 5px;
 }
 
 .form{
   display: flex;
-  flex-wrap: wrap;
-  
+  flex-wrap: wrap; 
 }
 
 @media screen and (max-width: 600px) {
@@ -104,4 +109,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.btnPDF{
+  position: relative;
+  text-align: end;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 92px;
+  margin-bottom: -47px;
+  z-index: inherit;
+}
+
+.btn-hover{
+  background-color: none;
+}
+
+.btn-hover:hover{
+  background-color: rgba(70, 70, 70, 0.07) !important;
+}
+
+.color-icon{
+  color: #3ca6dbe7 !important;
 }
