@@ -109,23 +109,65 @@ export default function Table() {
     }
   };
 
-  const handleSendData = () => {
-    const dataToSend = { selectedRows };
-    fetch("http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Data sent successfully:", data);
-      })
-      .catch((error) => {
-        console.error("Error sending data:", error);
-      });
+  const handleSendData = async () => {
+    const fi = new Date(document.getElementById("fiInput").value).getTime() / 1000;
+    const ff = new Date(document.getElementById("ffInput").value).getTime() /1000;
+    const dataToSend = { FechaInicio: fi, FechaFinal: ff, DatosTabla: filteredData };
+
+    try {
+      const response = await fetch(
+        "http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
+
+      console.log(response.status);
+
+      const html = await response.blob();
+      console.log(dataToSend);
+
+      const pdfUrl = URL.createObjectURL(html);
+      const newTab = window.open();
+      newTab.location.href = pdfUrl;
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  // const handleSendData = () => {
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Content-Type", "application/json");
+
+  //   var raw = JSON.stringify({
+  //     FechaInicio: 1682748000,
+  //     FechaFinal: 1682748000,
+  //     DatosTabla: [
+  //       {
+  //         facturas
+  //       },
+  //     ],
+  //   });
+
+  //   var requestOptions = {
+  //     method: "POST",
+  //     headers: myHeaders,
+  //     body: raw,
+  //     redirect: "follow",
+  //   };
+
+  //   fetch(
+  //     "http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas",
+  //     requestOptions
+  //   )
+  //     .then((response) => response.text())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.log("error", error));
+  // };
 
   const handleRowSelected = (rows) => {
     setSelectedRows(rows);
@@ -209,20 +251,22 @@ export default function Table() {
   return (
     <div
       id='my-table'
-      className='col-12 col-lg-9 col-md-12   bg-white table-scroll mt-2'
+      className='col-12 col-lg-9 col-md-12 bg-white table-scroll mt-2'
     >
       <FacturaFilter getFacturas={getFacturas} />
-      <button className='text-end btn p-1' onClick={handleSendData}>
-        <i className='bi bi-filetype-pdf text-danger fs-4'></i>
-      </button>
+      <div className='btnPDF'>
+        <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
+          <i className='bi bi-filetype-pdf color-icon fs-5'></i>
+        </button>
+      </div>
       <DataTableExtensions {...tableData}>
         <DataTable
           columns={columns}
           data={filteredData}
+          option={options}
           responsive='true'
           pagination
           fixedHeader
-          option={options}
           fixedHeaderScrollHeight='600px'
         />
       </DataTableExtensions>
