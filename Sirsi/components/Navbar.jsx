@@ -1,23 +1,21 @@
 import React from "react";
 import Image from "next/image";
-import ND from "../utils/ND.png"
-
+import Logo from "../utils/Logo.png"
 export default function Navbar() {
   return (
     <>
-      <nav class=' bg-body-tertiary navbar'>
-        <div class='container-fluid'>
-            <span className="ps-1">
+      <nav className=' bg-body-tertiary navbar bg-white shadow-sm shadow-navbar'>
+        <div className='container-fluid d-flex justify-content-start'>
+            <span className="p-2 ">
           <Image
-            src={ND}
-            alt='Núcleo de Diagnóstico'
-            width={150}
-            height={80}
+            src={Logo}
+            alt='Sirsi web Núcleo de Diagnóstico'
+            width={110}
+            height={30}
           />
           </span>
         </div>
       </nav>
-      
     </>
   );
 }
