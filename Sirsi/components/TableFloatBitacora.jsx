@@ -7,9 +7,15 @@ import BitacoraDetail from "./BitacoraDetail";
 export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   const [checkTabla, setCheckTabla] = useState("");
   const [data, setData] = useState([]);
+  const [encabezado, setEncabezado] = useState([]);
+  const [activeSection, setActiveSection] = useState("");
 
-  const handleBotonClick = (e) => {
-    setCheckTabla(e.target.value);
+  // const handleBotonClick = (e) => {
+  //   setCheckTabla(e.target.value);
+  // };
+
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
   };
 
   useEffect(() => {
@@ -20,13 +26,310 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
     fetch(url)
       .then((response) => response.json())
       .then((data) => setData(data.data))
-      .catch((error) =>
-        console.log(
-          error,
-          "⣿⣿⣿⠟⢹⣶⣶⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⡟⢰⡌⠿⢿⣿⡾⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⣿⢸⣿⣤⣒⣶⣾⣳⡻⣿⣿⣿⣿⡿⢛⣯⣭⣭⣭⣽⣻⣿⣿⣿ ⣿⣿⣿⢸⣿⣿⣿⣿⢿⡇⣶⡽⣿⠟⣡⣶⣾⣯⣭⣽⣟⡻⣿⣷⡽⣿ ⣿⣿⣿⠸⣿⣿⣿⣿⢇⠃⣟⣷⠃⢸⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⣿⣿⣿⣇⢻⣿⣿⣯⣕⠧⢿⢿⣇⢯⣝⣒⣛⣯⣭⣛⣛⣣⣿⣿⣿⡇ ⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⡘⣞⣿⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣦⠻⠿⣿⣿⣷⠈⢞⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣿⣗⠄⢿⣿⣿⡆⡈⣽⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻ ⣿⣿⣿⣿⡿⣻⣽⣿⣆⠹⣿⡇⠁⣿⡼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣾ ⣿⠿⣛⣽⣾⣿⣿⠿⠋⠄⢻⣷⣾⣿⣧⠟⣡⣾⣿⣿⣿⣿⣿⣿⡇⣿ ⢼⡟⢿⣿⡿⠋⠁⣀⡀⠄⠘⠊⣨⣽⠁⠰⣿⣿⣿⣿⣿⣿⣿⡍⠗⣿ ⡼⣿⠄⠄⠄⠄⣼⣿⡗⢠⣶⣿⣿⡇⠄⠄⣿⣿⣿⣿⣿⣿⣿⣇⢠⣿"
-        )
-      );
+      .catch((error) => console.log(error, "⣿⣿⣿⠟⢹⣶⣶⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⡟⢰⡌⠿⢿⣿⡾⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⣿⢸⣿⣤⣒⣶⣾⣳⡻⣿⣿⣿⣿⡿⢛⣯⣭⣭⣭⣽⣻⣿⣿⣿ ⣿⣿⣿⢸⣿⣿⣿⣿⢿⡇⣶⡽⣿⠟⣡⣶⣾⣯⣭⣽⣟⡻⣿⣷⡽⣿ ⣿⣿⣿⠸⣿⣿⣿⣿⢇⠃⣟⣷⠃⢸⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⣿⣿⣿⣇⢻⣿⣿⣯⣕⠧⢿⢿⣇⢯⣝⣒⣛⣯⣭⣛⣛⣣⣿⣿⣿⡇ ⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⡘⣞⣿⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣦⠻⠿⣿⣿⣷⠈⢞⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣿⣗⠄⢿⣿⣿⡆⡈⣽⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻ ⣿⣿⣿⣿⡿⣻⣽⣿⣆⠹⣿⡇⠁⣿⡼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣾ ⣿⠿⣛⣽⣾⣿⣿⠿⠋⠄⢻⣷⣾⣿⣧⠟⣡⣾⣿⣿⣿⣿⣿⣿⡇⣿ ⢼⡟⢿⣿⡿⠋⠁⣀⡀⠄⠘⠊⣨⣽⠁⠰⣿⣿⣿⣿⣿⣿⣿⡍⠗⣿ ⡼⣿⠄⠄⠄⠄⣼⣿⡗⢠⣶⣿⣿⡇⠄⠄⣿⣿⣿⣿⣿⣿⣿⣇⢠⣿"));
   }, []);
+
+  const columnHead = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "Bita ID",
+      selector: "BitacoraId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Tabla",
+      selector: "Tabla.String",
+      sortable: true,
+    },
+    {
+      name: "Tabla_ID",
+      selector: "TablaId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Accion",
+      selector: "Accion.String",
+      sortable: true,
+    },
+    {
+      name: 'Fecha',
+      selector: 'Fecha',
+      sortable: true,
+      cell: row => {
+        const fechaOriginal = row.Fecha.String;
+        const fecha = new Date(fechaOriginal);
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+        const hora = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+        return <div>{fechaFormateada}</div>;
+      }
+    },
+    {
+      name: "Usuario",
+      selector: "Usuario.String",
+      sortable: true,
+    },
+  ];
+
+  const columnHeadDetalle = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "BITA Id",
+      selector: "BitacoraId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Tabla",
+      selector: "Tabla.String",
+      sortable: true,
+    },
+    {
+      name: "Estudio",
+      selectpr: "Estudio.String",
+      sortable: true,
+    },
+    {
+      name: "Accion",
+      selector: "Accion.String",
+      sortable: true,
+    },
+    {
+      name: "Fecha",
+      selector: "Fecha",
+      sortable: true,
+      cell: row => {
+        const fechaOriginal = row.Fecha.String;
+        const fecha = new Date(fechaOriginal);
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+        const hora = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+        return <div>{fechaFormateada}</div>;
+      }
+    },
+    {
+      name: "Usuario",
+      selector: "Usuario.String",
+      sortable: true,
+    },
+    {
+      name: "TablaId",
+      selector: "TablaId.Int64",
+      sortable: true,
+    },
+  ];
+
+  const columnHeadPagos = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "BITA ID",
+      selector: "BitacoraId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Tabla",
+      selector: "Tabla.String",
+      sortable: true,
+    },
+    {
+      name: "TablaId",
+      selector: "TablaId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Accion",
+      selector: "Accion.String",
+      sortable: true,
+    },
+    {
+      name: "Fecha",
+      selector: "Fecha.String",
+      sortable: true,
+      cell: row => {
+        const fechaOriginal = row.Fecha.String;
+        const fecha = new Date(fechaOriginal);
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+        const hora = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+        return <div>{fechaFormateada}</div>;
+      }
+    },
+    {
+      name: "Usuario",
+      selector: "Usuario.String",
+      sortable: true,
+    },
+    {
+      name: "OTPa OTEn ID",
+      selector: "OTPa_OTEnId.Int64",
+      sortable: true,
+    },
+  ];
+
+  const columnHeadTickets = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "Ti ID",
+      selector: "TicketId.Int64",
+      sortable: true,
+    },
+    {
+      name: "TiNoTicket",
+      selector: "TicketNumero.Int64",
+      sortable: true,
+    },
+    {
+      name: "TiPago",
+      selector: "TicketPago.Float64",
+      sortable: true,
+    },
+    {
+      name: "TiFecha",
+      selector: "TicketFecha",
+      sortable: true,
+      cell: row => {
+        const fechaOriginal = row.TicketFecha.String;
+        const fecha = new Date(fechaOriginal);
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+        const hora = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+        return <div>{fechaFormateada}</div>;
+      }
+    },
+  ];
+
+  const columnHeadPacientes = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "BitacoraId",
+      selector: "BitacoraId.Int64",
+      sortable: true,
+    },
+    {
+      name: "Tabla",
+      selector: "Tabla.String",
+      sortable: true,
+    },
+    {
+      name: "TablaId",
+      selector: "TablaId.Int64",
+    },
+    {
+      name: "Accion",
+      selector: "Accion.String",
+      sortable: true,
+    },
+    {
+      name: "Fecha",
+      selector: "Fecha",
+      sortable: true,
+      cell: row => {
+        const fechaOriginal = row.Fecha.String;
+        const fecha = new Date(fechaOriginal);
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear();
+        const hora = fecha.getHours().toString().padStart(2, '0');
+        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
+        return <div>{fechaFormateada}</div>;
+      }
+    },
+    {
+      name: "Usuario",
+      selector: "Usuario.String",
+      sortable: true,
+    }
+  ]
+
+  const columnHeadTrazabilidad = [
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='btn'>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+      name: "Fecha",
+      selector: "Fecha.String",
+      sortable: true,
+    },
+    {
+      name: "Muestra",
+      selector: "Muestra.String",
+      sortable: true,
+    },
+    {
+      name: "Estatus",
+      selector: "Estatus.String",
+      sortable: true,
+    },
+    {
+      name: "Usuario",
+      selector: "Usuario.String",
+      sortable: true,
+    },
+  ]
 
   return (
     <>
@@ -58,8 +361,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio1'
                 autocomplete='off'
-                value={"1"}
-                onClick={handleBotonClick}
+                // value={"1"}
+                checked={activeSection === "Encabezado"}
+                onChange={() => handleSectionChange("Encabezado")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio1'>
                 Encabezado
@@ -71,7 +375,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio2'
                 autocomplete='off'
-                value={"2"}
+                // value={"2"}
+                checked={activeSection === "Detalle"}
+                onChange={() => handleSectionChange("Detalle")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio2'>
                 Detalle
@@ -83,7 +389,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio3'
                 autocomplete='off'
-                value={"3"}
+                // value={"3"}
+                checked={activeSection === "Pagos"}
+                onChange={() => handleSectionChange("Pagos")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio3'>
                 Pagos
@@ -95,7 +403,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio4'
                 autocomplete='off'
-                value={"4"}
+                // value={"4"}
+                checked={activeSection === "Tickets"}
+                onChange={() => handleSectionChange("Tickets")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio4'>
                 Tickets
@@ -107,7 +417,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio5'
                 autocomplete='off'
-                value={"5"}
+                // value={"5"}
+                checked={activeSection === "Pacientes"}
+                onChange={() => handleSectionChange("Pacientes")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio5'>
                 Paciente
@@ -119,7 +431,9 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 name='btnradio'
                 id='btnradio6'
                 autocomplete='off'
-                value={"6"}
+                // value={"6"}
+                checked={activeSection === "Trazabilidad"}
+                onChange={() => handleSectionChange("Trazabilidad")}
               />
               <label className='btn btn-outline-secondary' htmlFor='btnradio6'>
                 Trazabilidad
@@ -128,33 +442,32 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
 
             {/* /////////// */}
 
-            {/* /// DAta como estado asi que también columnas como un estado para cada input */}
+            {/* /// Data como estado asi que también columnas como un estado
+            para cada input */}
 
-            <table className='mx-auto table border '>
-              <thead>
-                <tr className='border-bottom'>
-                  <th scope='col'>Detalle</th>
-                  <th scope='col'>Bita_ID</th>
-                  <th scope='col'>Tabla</th>
-                  <th scope='col'>Tabla_ID</th>
-                  <th scope='col'>Accion</th>
-                  <th scope='col'>Fecha</th>
-                  <th scope='col'>Usuario</th>
-                </tr>
-              </thead>
-              <tbody>
-                {checkTabla === "1" && (
-                  <>
-                    {data.Encabezado.map((dato) => (
-                      <tr key={dato.id}>
-                        <td>{dato.BitacoraId.Int64}</td>
-                        <td>{dato.Tabla.String}</td>
-                      </tr>
-                    ))}
-                  </>
-                )}
-              </tbody>
-            </table>
+            {activeSection === "Encabezado" && (
+              <DataTable data={data.Encabezado} columns={columnHead} />
+            )}
+
+            {activeSection === "Detalle" && (
+              <DataTable data={data.Detalle} columns={columnHeadDetalle} />
+            )}
+
+            {activeSection === "Pagos" && (
+              <DataTable data={data.Pagos} columns={columnHeadPagos} />
+            )}
+
+            {activeSection === "Tickets" && (
+              <DataTable data={data.Tickets} columns={columnHeadTickets} />
+            )}
+
+            {activeSection === "Pacientes" && (
+              <DataTable data={data.Paciente} columns={columnHeadPacientes} />
+            )}
+
+            {activeSection === "Trazabilidad" && (
+              <DataTable data={data.Trazabilidad} columns={columnHeadTrazabilidad} />
+            )}
           </div>
 
           <BitacoraDetail />
@@ -163,3 +476,5 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
     </>
   );
 }
+
+// consulta individual y horas con minutos
