@@ -5,23 +5,15 @@ import DataTable from "react-data-table-component";
 import BitacoraDetail from "./BitacoraDetail";
 
 export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
-  const [checkTabla, setCheckTabla] = useState("");
   const [data, setData] = useState([]);
-  const [encabezado, setEncabezado] = useState([]);
   const [activeSection, setActiveSection] = useState("");
-
-  // const handleBotonClick = (e) => {
-  //   setCheckTabla(e.target.value);
-  // };
+  const [cambioEncabezado, setCambioEncabezado] = useState([]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
 
   useEffect(() => {
-    // document.addEventListener("DOMContentLoaded", function () {
-    //   const bsOffcanvas = new bootstrap.Offcanvas("#offcanvasBottom");
-    // });
     const url = `${process.env.RUTA_API}/sirsi/web/BuscarBitacoraDatos?id=${oderId}&pacid=${clickID}`;
     fetch(url)
       .then((response) => response.json())
@@ -29,13 +21,21 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       .catch((error) => console.log(error, "⣿⣿⣿⠟⢹⣶⣶⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⡟⢰⡌⠿⢿⣿⡾⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⣿⢸⣿⣤⣒⣶⣾⣳⡻⣿⣿⣿⣿⡿⢛⣯⣭⣭⣭⣽⣻⣿⣿⣿ ⣿⣿⣿⢸⣿⣿⣿⣿⢿⡇⣶⡽⣿⠟⣡⣶⣾⣯⣭⣽⣟⡻⣿⣷⡽⣿ ⣿⣿⣿⠸⣿⣿⣿⣿⢇⠃⣟⣷⠃⢸⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⣿⣿⣿⣇⢻⣿⣿⣯⣕⠧⢿⢿⣇⢯⣝⣒⣛⣯⣭⣛⣛⣣⣿⣿⣿⡇ ⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⡘⣞⣿⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣦⠻⠿⣿⣿⣷⠈⢞⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣿⣗⠄⢿⣿⣿⡆⡈⣽⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻ ⣿⣿⣿⣿⡿⣻⣽⣿⣆⠹⣿⡇⠁⣿⡼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣾ ⣿⠿⣛⣽⣾⣿⣿⠿⠋⠄⢻⣷⣾⣿⣧⠟⣡⣾⣿⣿⣿⣿⣿⣿⡇⣿ ⢼⡟⢿⣿⡿⠋⠁⣀⡀⠄⠘⠊⣨⣽⠁⠰⣿⣿⣿⣿⣿⣿⣿⡍⠗⣿ ⡼⣿⠄⠄⠄⠄⣼⣿⡗⢠⣶⣿⣿⡇⠄⠄⣿⣿⣿⣿⣿⣿⣿⣇⢠⣿"));
   }, []);
 
+  const cambiosEncabezado = async () => {
+    const url = `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraEncabezado?id=${oderId}`;
+    const response = await fetch(url);
+    const dataCambiosEncabezado = await response.json();
+    setCambioEncabezado(dataCambiosEncabezado.data[0].Campo.String);
+    console.log(cambioEncabezado);
+  };
+
   const columnHead = [
     {
       name: "Detalle",
       selector: "botón",
       sortable: true,
       cell: () => (
-        <button className='btn'>
+        <button className='btn' onClick={cambiosEncabezado}>
           <i className='bi bi-search'></i>
         </button>
       ),
@@ -61,20 +61,20 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       sortable: true,
     },
     {
-      name: 'Fecha',
-      selector: 'Fecha',
+      name: "Fecha",
+      selector: "Fecha",
       sortable: true,
-      cell: row => {
+      cell: (row) => {
         const fechaOriginal = row.Fecha.String;
         const fecha = new Date(fechaOriginal);
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, "0");
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
         const anio = fecha.getFullYear();
-        const hora = fecha.getHours().toString().padStart(2, '0');
-        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const hora = fecha.getHours().toString().padStart(2, "0");
+        const minutos = fecha.getMinutes().toString().padStart(2, "0");
         const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
         return <div>{fechaFormateada}</div>;
-      }
+      },
     },
     {
       name: "Usuario",
@@ -118,17 +118,17 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       name: "Fecha",
       selector: "Fecha",
       sortable: true,
-      cell: row => {
+      cell: (row) => {
         const fechaOriginal = row.Fecha.String;
         const fecha = new Date(fechaOriginal);
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, "0");
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
         const anio = fecha.getFullYear();
-        const hora = fecha.getHours().toString().padStart(2, '0');
-        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const hora = fecha.getHours().toString().padStart(2, "0");
+        const minutos = fecha.getMinutes().toString().padStart(2, "0");
         const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
         return <div>{fechaFormateada}</div>;
-      }
+      },
     },
     {
       name: "Usuario",
@@ -177,17 +177,17 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       name: "Fecha",
       selector: "Fecha.String",
       sortable: true,
-      cell: row => {
+      cell: (row) => {
         const fechaOriginal = row.Fecha.String;
         const fecha = new Date(fechaOriginal);
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, "0");
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
         const anio = fecha.getFullYear();
-        const hora = fecha.getHours().toString().padStart(2, '0');
-        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const hora = fecha.getHours().toString().padStart(2, "0");
+        const minutos = fecha.getMinutes().toString().padStart(2, "0");
         const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
         return <div>{fechaFormateada}</div>;
-      }
+      },
     },
     {
       name: "Usuario",
@@ -231,17 +231,17 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       name: "TiFecha",
       selector: "TicketFecha",
       sortable: true,
-      cell: row => {
+      cell: (row) => {
         const fechaOriginal = row.TicketFecha.String;
         const fecha = new Date(fechaOriginal);
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, "0");
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
         const anio = fecha.getFullYear();
-        const hora = fecha.getHours().toString().padStart(2, '0');
-        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const hora = fecha.getHours().toString().padStart(2, "0");
+        const minutos = fecha.getMinutes().toString().padStart(2, "0");
         const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
         return <div>{fechaFormateada}</div>;
-      }
+      },
     },
   ];
 
@@ -279,24 +279,24 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       name: "Fecha",
       selector: "Fecha",
       sortable: true,
-      cell: row => {
+      cell: (row) => {
         const fechaOriginal = row.Fecha.String;
         const fecha = new Date(fechaOriginal);
-        const dia = fecha.getDate().toString().padStart(2, '0');
-        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const dia = fecha.getDate().toString().padStart(2, "0");
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
         const anio = fecha.getFullYear();
-        const hora = fecha.getHours().toString().padStart(2, '0');
-        const minutos = fecha.getMinutes().toString().padStart(2, '0');
+        const hora = fecha.getHours().toString().padStart(2, "0");
+        const minutos = fecha.getMinutes().toString().padStart(2, "0");
         const fechaFormateada = `${dia}/${mes}/${anio} ${hora}:${minutos}`;
         return <div>{fechaFormateada}</div>;
-      }
+      },
     },
     {
       name: "Usuario",
       selector: "Usuario.String",
       sortable: true,
-    }
-  ]
+    },
+  ];
 
   const columnHeadTrazabilidad = [
     {
@@ -329,7 +329,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       selector: "Usuario.String",
       sortable: true,
     },
-  ]
+  ];
 
   return (
     <>
@@ -466,7 +466,10 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
             )}
 
             {activeSection === "Trazabilidad" && (
-              <DataTable data={data.Trazabilidad} columns={columnHeadTrazabilidad} />
+              <DataTable
+                data={data.Trazabilidad}
+                columns={columnHeadTrazabilidad}
+              />
             )}
           </div>
 
