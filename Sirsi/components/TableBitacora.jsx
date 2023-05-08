@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import TableFloat from "./TableFloat";
+import TableFloatBitacora from "./TableFloatBitacora";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import FacturaFilter from "./FacturaFilter";
 import BitacorasFilter from "./BitacorasFilter";
 
 export default function TableBitacora() {
   const [bitacora, setBitacora] = useState([]);
+  const [clickID, setClickId] = useState(null);
+  const [oderId, setOrderId] = useState(null);
 
   const capitalize = (val) => {
     return val
@@ -49,7 +50,6 @@ export default function TableBitacora() {
     event.preventDefault();
 
     try {
-
       const fiDate = new Date(document.getElementById("fiInputBitacora").value);
       const ffDate = new Date(document.getElementById("ffInputBitacora").value);
       const fi = Math.floor(fiDate.getTime() / 1000);
@@ -61,13 +61,9 @@ export default function TableBitacora() {
       const url = `${process.env.RUTA_API}/sirsi/web/BuscarBitacoraEncabezado?fi=${fi}&ff=${ff}&suc=${suc}&f=${f}`;
 
       const response = await fetch(url);
-      if (response.status === 200) {
-        const data = await response.json();
-        setBitacora(data.data);
-        console.log(bitacora)
-      } else {
-        alert("Datos no encontrados");
-      }
+      const data = await response.json();
+      console.log("click", data.data);
+      setBitacora(data.data);
     } catch (error) {
       console.error(error);
     }
@@ -77,17 +73,25 @@ export default function TableBitacora() {
     getSucursales();
   }, []);
 
+  const handleClickId = (id, id2) => {
+    setClickId(id);
+    setOrderId(id2);
+  };
+
   const columns = [
     {
       name: "OTEn ID",
       cell: (row) => (
         <button
+          id={row.PacienteId.Int64}
           className='btn'
           type='button'
           data-bs-toggle='offcanvas'
           data-bs-target='#offcanvasBottom'
           aria-controls='offcanvasBottom'
-          onClick={() => console.log(row.title)}
+          onClick={() => {
+            handleClickId(row.PacienteId.Int64, row.OrdenTrabajoId);
+          }}
         >
           {row.OrdenTrabajoId}
         </button>
@@ -99,116 +103,126 @@ export default function TableBitacora() {
     },
     {
       name: "Folio_Cotizacion",
-      selector: "FolioCotizacion",
+      selector: "FolioCotizacion.String",
     },
     {
       name: "Fecha",
-      selector: "Fecha",
+      selector: "Fecha.String",
     },
     {
       name: "Estatus",
-      selector: "Estatus",
+      selector: "Estatus.String",
     },
     {
       name: "Descuento",
-      selector: "Descuento",
+      selector: "Descuento.Float64",
     },
     {
       name: "PacId",
-      selector: "PacienteId",
+      selector: "PacienteId.Int64",
     },
     {
       name: "Paciente",
-      selector: "Paciente",
+      selector: "Paciente.String",
     },
     {
       name: "Medico",
-      selector: "Medico",
+      selector: "Medico.String",
     },
     {
       name: "EnviarMedico",
-      selector: "EnviarMedico",
+      selector: "EnviarMedico.Bool",
     },
     {
       name: "CorreoMedico",
-      selector: "CorreoMedico",
+      selector: "CorreoMedico.String",
     },
     {
       name: "TipoOrden",
-      selector: "TipoOrden",
+      selector: "TipoOrden.String",
     },
     {
       name: "Factura",
-      selector: "Factura",
+      selector: "Factura.Bool",
     },
     {
       name: "EnviarPaciente",
-      selector: "EnviarPaciente",
+      selector: "EnviarPaciente.Bool",
     },
     {
       name: "CorreoPaciente",
-      selector: "CorreoPaciente",
+      selector: "CorreoPaciente.String",
     },
     {
       name: "UsuarioAlta",
-      selector: "UsuarioAlta",
+      selector: "UsuarioAlta.String",
     },
     {
       name: "FechaAlta",
-      selector: "FechaAlta",
+      selector: "FechaAlta.String",
     },
     {
       name: "UsuarioActualiza",
-      selector: "UsuarioActualiza",
+      selector: "UsuarioActualiza.String",
     },
     {
       name: "FechaActualiza",
-      selector: "FechaActualiza",
+      selector: "FechaActualiza.String",
     },
   ];
 
-//   const data = [
-//     {
-//       id: 1,
-//       title: "Beetlejuice",
-//       year: "1988",
-//     },
-//     {
-//       id: 2,
-//       title: "Ghostbusters",
-//       year: "1984",
-//     },
-//     {
-//       id: 1,
-//       title: "Beetlejuice",
-//       year: "1988",
-//     },
-//     {
-//       id: 2,
-//       title: "Ghostbusters",
-//       year: "1984",
-//     },
-//     {
-//       id: 1,
-//       title: "Beetlejuice",
-//       year: "1988",
-//     },
-//     {
-//       id: 2,
-//       title: "Ghostbusters",
-//       year: "1984",
-//     },
-//     {
-//       id: 1,
-//       title: "Beetlejuice",
-//       year: "1988",
-//     },
-//     {
-//       id: 2,
-//       title: "Ghostbusters",
-//       year: "1984",
-//     },
-//   ];
+  //   const data = [
+  //     {
+  //       id: 1,
+  //       title: "Beetlejuice",
+  //       year: "1988",
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Ghostbusters",
+  //       year: "1984",
+  //     },
+  //     {
+  //       id: 1,
+  //       title: "Beetlejuice",
+  //       year: "1988",
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Ghostbusters",
+  //       year: "1984",
+  //     },
+  //     {
+  //       id: 1,
+  //       title: "Beetlejuice",
+  //       year: "1988",
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Ghostbusters",
+  //       year: "1984",
+  //     },
+  //     {
+  //       id: 1,
+  //       title: "Beetlejuice",
+  //       year: "1988",
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Ghostbusters",
+  //       year: "1984",
+  //     },
+  //   ];
+
+  const tableData = {
+    columns: columns,
+    data: bitacora,
+    fileName: "document",
+    export: true,
+    print: true,
+    filterHidden: true,
+    filterDigit: 1,
+  };
 
   return (
     <>
@@ -217,16 +231,23 @@ export default function TableBitacora() {
         className='col-12 col-xl-10 col-lg-12 col-sm-12 bg-white table-scroll mt-2'
       >
         <h3 className='m-3'>Bitácora</h3>
-        {/* <FacturaFilter /> */}
-        {/*  <div className='btnPDF'>
+        {/*<div className='btnPDFBitacora'>
          <button className='text-end btn-hover btn p-1'>
             <i className='bi bi-filetype-pdf color-icon fs-5'></i>
-          </button> 
-        </div>*/}
+          </button>
+
+        </div> */}
         <BitacorasFilter getBitacora={getBitacora} />
-        {/* <DataTableExtensions> */}
-        <DataTable columns={columns} data={bitacora} responsive />
-        {/* </DataTableExtensions> */}
+        <DataTableExtensions {...tableData}>
+          <DataTable
+            columns={columns}
+            data={bitacora}
+            responsive='true'
+            pagination
+            fixedHeader
+            fixedHeaderScrollHeight='600px'
+          />
+        </DataTableExtensions>
 
         {/* <button
           class='btn btn-primary'
@@ -237,7 +258,20 @@ export default function TableBitacora() {
         >
           Toggle bottom offcanvas
         </button> */}
-        <TableFloat />
+        <div
+          className='offcanvas offcanvas-bottom pb-5'
+          tabindex='-1'
+          id='offcanvasBottom'
+          aria-labelledby='offcanvasBottomLabel'
+        >
+          {clickID && (
+            <TableFloatBitacora
+              oderId={oderId}
+              clickID={clickID}
+              handleClickId={handleClickId}
+            />
+          )}
+        </div>
       </div>
     </>
   );
