@@ -8,6 +8,10 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   const [data, setData] = useState([]);
   const [activeSection, setActiveSection] = useState("");
   const [cambioEncabezado, setCambioEncabezado] = useState([]);
+  const [cambioDetalle, setCambioDetalle] = useState([]);
+  const [cambioPagos, setCambioPagos] = useState([]);
+  const [cambioTickets, setCambioTickets] = useState([]);
+  const [cambioPaciete, setCambioPaciente] = useState([]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -18,14 +22,21 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
     fetch(url)
       .then((response) => response.json())
       .then((data) => setData(data.data))
-      .catch((error) => console.log(error, "⣿⣿⣿⠟⢹⣶⣶⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⡟⢰⡌⠿⢿⣿⡾⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⣿⣿⢸⣿⣤⣒⣶⣾⣳⡻⣿⣿⣿⣿⡿⢛⣯⣭⣭⣭⣽⣻⣿⣿⣿ ⣿⣿⣿⢸⣿⣿⣿⣿⢿⡇⣶⡽⣿⠟⣡⣶⣾⣯⣭⣽⣟⡻⣿⣷⡽⣿ ⣿⣿⣿⠸⣿⣿⣿⣿⢇⠃⣟⣷⠃⢸⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽ ⣿⣿⣿⣇⢻⣿⣿⣯⣕⠧⢿⢿⣇⢯⣝⣒⣛⣯⣭⣛⣛⣣⣿⣿⣿⡇ ⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⡘⣞⣿⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣦⠻⠿⣿⣿⣷⠈⢞⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⣿⣿⣿⣿⣿⣿⣗⠄⢿⣿⣿⡆⡈⣽⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢻ ⣿⣿⣿⣿⡿⣻⣽⣿⣆⠹⣿⡇⠁⣿⡼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣾ ⣿⠿⣛⣽⣾⣿⣿⠿⠋⠄⢻⣷⣾⣿⣧⠟⣡⣾⣿⣿⣿⣿⣿⣿⡇⣿ ⢼⡟⢿⣿⡿⠋⠁⣀⡀⠄⠘⠊⣨⣽⠁⠰⣿⣿⣿⣿⣿⣿⣿⡍⠗⣿ ⡼⣿⠄⠄⠄⠄⣼⣿⡗⢠⣶⣿⣿⡇⠄⠄⣿⣿⣿⣿⣿⣿⣿⣇⢠⣿"));
+      .catch((error) => console.log(error, "error"));
   }, []);
 
+  const urls = {
+    Encabezado: `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraEncabezado?id=${oderId}`,
+    Detalle: `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraDetalle?id=${oderId}`,
+    Pagos: `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraPagos?id=${oderId}`,
+    Tickets: `${process.env.RUTA_API}/sirsi/web/PdfTicketByImagen?id=${oderId}`,
+    Pacientes: `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraPacientes?id=${oderId}`,
+  };
+
   const cambiosEncabezado = async () => {
-    const url = `${process.env.RUTA_API}/sirsi/web/CambiosBitacoraEncabezado?id=${oderId}`;
-    const response = await fetch(url);
+    const response = await fetch(urls[activeSection]);
     const dataCambiosEncabezado = await response.json();
-    setCambioEncabezado(dataCambiosEncabezado.data[0].Campo.String);
+    setCambioEncabezado(dataCambiosEncabezado.data);
     console.log(cambioEncabezado);
   };
 
@@ -89,7 +100,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       selector: "botón",
       sortable: true,
       cell: () => (
-        <button className='btn'>
+        <button className='btn' onClick={cambiosEncabezado}>
           <i className='bi bi-search'></i>
         </button>
       ),
@@ -148,7 +159,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       selector: "botón",
       sortable: true,
       cell: () => (
-        <button className='btn'>
+        <button className='btn' onClick={cambiosEncabezado}>
           <i className='bi bi-search'></i>
         </button>
       ),
@@ -202,16 +213,16 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   ];
 
   const columnHeadTickets = [
-    {
-      name: "Detalle",
-      selector: "botón",
-      sortable: true,
-      cell: () => (
-        <button className='btn'>
-          <i className='bi bi-search'></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Detalle",
+    //   selector: "botón",
+    //   sortable: true,
+    //   cell: () => (
+    //     <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
+    //     <i className='bi bi-filetype-pdf color-icon fs-5'></i>
+    //   </button>
+    //   ),
+    // },
     {
       name: "Ti ID",
       selector: "TicketId.Int64",
@@ -251,7 +262,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       selector: "botón",
       sortable: true,
       cell: () => (
-        <button className='btn'>
+        <button className='btn' onClick={cambiosEncabezado}>
           <i className='bi bi-search'></i>
         </button>
       ),
@@ -300,16 +311,6 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
 
   const columnHeadTrazabilidad = [
     {
-      name: "Detalle",
-      selector: "botón",
-      sortable: true,
-      cell: () => (
-        <button className='btn'>
-          <i className='bi bi-search'></i>
-        </button>
-      ),
-    },
-    {
       name: "Fecha",
       selector: "Fecha.String",
       sortable: true,
@@ -331,6 +332,42 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
     },
   ];
 
+  // const handleSendData = async () => {
+  //   const fi =
+  //     new Date(document.getElementById("fiInput").value).getTime() / 1000;
+  //   const ff =
+  //     new Date(document.getElementById("ffInput").value).getTime() / 1000;
+  //   const dataToSend = {
+  //     FechaInicio: fi,
+  //     FechaFinal: ff,
+  //     DatosTabla: filteredData,
+  //   };
+
+  //   try {
+  //     const response = await fetch(
+  //       urls.Tickets,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(dataToSend),
+  //       }
+  //     );
+
+  //     console.log(response.status);
+
+  //     const html = await response.blob();
+  //     console.log(dataToSend);
+
+  //     const pdfUrl = URL.createObjectURL(html);
+  //     const newTab = window.open();
+  //     newTab.location.href = pdfUrl;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   return (
     <>
       <div className='offcanvas-header'>
@@ -349,7 +386,6 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
           <div></div>
           <div className=' mb-3 col-12 col-xxl-5 col-xl-12 col-sm-12 table-responsive'>
             {/* /////////// */}
-
             <div
               className='btn-group col-5 pe-3'
               role='group'
@@ -439,41 +475,39 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
                 Trazabilidad
               </label>
             </div>
-
             {/* /////////// */}
 
-            {/* /// Data como estado asi que también columnas como un estado
-            para cada input */}
+            <div>
+              {activeSection === "Encabezado" && (
+                <DataTable data={data.Encabezado} columns={columnHead} />
+              )}
 
-            {activeSection === "Encabezado" && (
-              <DataTable data={data.Encabezado} columns={columnHead} />
-            )}
+              {activeSection === "Detalle" && (
+                <DataTable data={data.Detalle} columns={columnHeadDetalle} />
+              )}
 
-            {activeSection === "Detalle" && (
-              <DataTable data={data.Detalle} columns={columnHeadDetalle} />
-            )}
+              {activeSection === "Pagos" && (
+                <DataTable data={data.Pagos} columns={columnHeadPagos} />
+              )}
 
-            {activeSection === "Pagos" && (
-              <DataTable data={data.Pagos} columns={columnHeadPagos} />
-            )}
+              {activeSection === "Tickets" && (
+                <DataTable data={data.Tickets} columns={columnHeadTickets} />
+              )}
 
-            {activeSection === "Tickets" && (
-              <DataTable data={data.Tickets} columns={columnHeadTickets} />
-            )}
+              {activeSection === "Pacientes" && (
+                <DataTable data={data.Paciente} columns={columnHeadPacientes} />
+              )}
 
-            {activeSection === "Pacientes" && (
-              <DataTable data={data.Paciente} columns={columnHeadPacientes} />
-            )}
-
-            {activeSection === "Trazabilidad" && (
-              <DataTable
-                data={data.Trazabilidad}
-                columns={columnHeadTrazabilidad}
-              />
-            )}
+              {activeSection === "Trazabilidad" && (
+                <DataTable
+                  data={data.Trazabilidad}
+                  columns={columnHeadTrazabilidad}
+                />
+              )}
+            </div>
           </div>
 
-          <BitacoraDetail />
+          <BitacoraDetail cambioEncabezado={cambioEncabezado} activeSection={activeSection}/>
         </div>
       </div>
     </>
