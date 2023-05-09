@@ -321,42 +321,6 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
     },
   ];
 
-  // const handleSendData = async () => {
-  //   const fi =
-  //     new Date(document.getElementById("fiInput").value).getTime() / 1000;
-  //   const ff =
-  //     new Date(document.getElementById("ffInput").value).getTime() / 1000;
-  //   const dataToSend = {
-  //     FechaInicio: fi,
-  //     FechaFinal: ff,
-  //     DatosTabla: filteredData,
-  //   };
-
-  //   try {
-  //     const response = await fetch(
-  //       urls.Tickets,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(dataToSend),
-  //       }
-  //     );
-
-  //     console.log(response.status);
-
-  //     const html = await response.blob();
-  //     console.log(dataToSend);
-
-  //     const pdfUrl = URL.createObjectURL(html);
-  //     const newTab = window.open();
-  //     newTab.location.href = pdfUrl;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   return (
     <>
       <div className='offcanvas-header'>
