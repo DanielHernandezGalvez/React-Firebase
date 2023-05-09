@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import DataTable from "react-data-table-component";
 import DataTable from "react-data-table-component";
-// import BitacoraHeader from "./BitacoraHeader";
 import BitacoraDetail from "./BitacoraDetail";
 
 export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
