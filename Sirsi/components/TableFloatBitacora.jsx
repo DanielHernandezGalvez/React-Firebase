@@ -211,16 +211,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   ];
 
   const columnHeadTickets = [
-    // {
-    //   name: "Detalle",
-    //   selector: "botón",
-    //   sortable: true,
-    //   cell: () => (
-    //     <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
-    //     <i className='bi bi-filetype-pdf color-icon fs-5'></i>
-    //   </button>
-    //   ),
-    // },
+
     {
       name: "Ti ID",
       selector: "TicketId.Int64",
