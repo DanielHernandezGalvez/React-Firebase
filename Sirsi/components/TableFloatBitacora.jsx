@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+// import DataTable from "react-data-table-component";
 import DataTable from "react-data-table-component";
+// import BitacoraHeader from "./BitacoraHeader";
 import BitacoraDetail from "./BitacoraDetail";
 
 export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
@@ -12,6 +14,7 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   const [cambioPaciete, setCambioPaciente] = useState([]);
 
   const handleSectionChange = (section) => {
+    setCambioEncabezado([]);
     setActiveSection(section);
   };
 
@@ -211,7 +214,16 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
   ];
 
   const columnHeadTickets = [
-
+    {
+      name: "Detalle",
+      selector: "botón",
+      sortable: true,
+      cell: () => (
+        <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
+          <i className='bi bi-filetype-pdf color-icon fs-5'></i>
+        </button>
+      ),
+    },
     {
       name: "Ti ID",
       selector: "TicketId.Int64",
@@ -320,6 +332,38 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
       sortable: true,
     },
   ];
+
+  const handleSendData = async () => {
+    const cel1 = document.getElementById("cell-2-undefined").value;
+    const cel2 = document.getElementById("cell-3-undefined").value;
+    const cel3 = document.getElementById("cell-4-undefined").value;
+    const cel4 = document.getElementById("cell-5-undefined").value;
+    const dataToSend = {
+     cel1: cel1,
+     cel2: cel2,
+     cel3: cel3,
+     cel4: cel4,
+    };
+
+    try {
+      const response = await fetch(urls.Tickets, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      const html = await response.blob();
+      console.log(dataToSend);
+
+      const pdfUrl = URL.createObjectURL(html);
+      const newTab = window.open();
+      newTab.location.href = pdfUrl;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -431,36 +475,79 @@ export default function TableFloatBitacora({ clickID, oderId, handleClickId }) {
             {/* /////////// */}
 
             <div>
+              {console.log(activeSection)}
               {activeSection === "Encabezado" && (
-                <DataTable data={data.Encabezado} columns={columnHead} />
+                <DataTable
+                  data={data.Encabezado}
+                  columns={columnHead}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
+                />
               )}
 
               {activeSection === "Detalle" && (
-                <DataTable data={data.Detalle} columns={columnHeadDetalle} />
+                <DataTable
+                  data={data.Detalle}
+                  columns={columnHeadDetalle}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
+                />
               )}
 
               {activeSection === "Pagos" && (
-                <DataTable data={data.Pagos} columns={columnHeadPagos} />
+                <DataTable
+                  data={data.Pagos}
+                  columns={columnHeadPagos}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
+                />
               )}
 
               {activeSection === "Tickets" && (
-                <DataTable data={data.Tickets} columns={columnHeadTickets} />
+                <DataTable
+                  data={data.Tickets}
+                  columns={columnHeadTickets}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
+                />
               )}
 
               {activeSection === "Pacientes" && (
-                <DataTable data={data.Paciente} columns={columnHeadPacientes} />
+                <DataTable
+                  data={data.Paciente}
+                  columns={columnHeadPacientes}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
+                />
               )}
 
               {activeSection === "Trazabilidad" && (
                 <DataTable
                   data={data.Trazabilidad}
                   columns={columnHeadTrazabilidad}
+                  responsive='true'
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight='400px'
                 />
               )}
             </div>
           </div>
 
-          <BitacoraDetail cambioEncabezado={cambioEncabezado} activeSection={activeSection}/>
+          <BitacoraDetail
+            cambioEncabezado={cambioEncabezado}
+            activeSection={activeSection}
+          />
         </div>
       </div>
     </>
