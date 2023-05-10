@@ -50,7 +50,9 @@ export default function TableBitacora() {
     event.preventDefault();
 
     try {
+      const today = new Date().toISOString().split('T')[0];  
       const fiDate = new Date(document.getElementById("fiInputBitacora").value);
+      fiDate.value =  today
       const ffDate = new Date(document.getElementById("ffInputBitacora").value);
       const fi = Math.floor(fiDate.getTime() / 1000);
       const ff = Math.floor(ffDate.getTime() / 1000);
@@ -249,15 +251,7 @@ export default function TableBitacora() {
           />
         </DataTableExtensions>
 
-        {/* <button
-          class='btn btn-primary'
-          type='button'
-          data-bs-toggle='offcanvas'
-          data-bs-target='#offcanvasBottom'
-          aria-controls='offcanvasBottom'
-        >
-          Toggle bottom offcanvas
-        </button> */}
+
         <div
           className='offcanvas offcanvas-bottom pb-5'
           tabindex='-1'
