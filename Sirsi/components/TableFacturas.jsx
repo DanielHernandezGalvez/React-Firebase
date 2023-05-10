@@ -3,8 +3,9 @@ import FacturaFilter from "./FacturaFilter";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
+import TableFloat from "./TableFloatBitacora";
 
-export default function Table() {
+export default function TableFacturas() {
   const [facturas, setFacturas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
@@ -45,6 +46,14 @@ export default function Table() {
     }
   };
 
+  const fechaActualFactura = () => {
+    const myDateInput = document.getElementById("fiInput");
+    const ffInputBitacora = document.getElementById("ffInput");
+    const fechaActual = new Date().toISOString().split("T")[0];
+    myDateInput.value = fechaActual;
+    ffInputBitacora.value = fechaActual;
+  };
+
   const getTipoPago = async () => {
     var requestOptions = {
       method: "GET",
@@ -79,6 +88,7 @@ export default function Table() {
   useEffect(() => {
     getSucursales();
     getTipoPago();
+    fechaActualFactura()
   }, []);
 
   const getFacturas = async (event) => {
@@ -110,9 +120,15 @@ export default function Table() {
   };
 
   const handleSendData = async () => {
-    const fi = new Date(document.getElementById("fiInput").value).getTime() / 1000;
-    const ff = new Date(document.getElementById("ffInput").value).getTime() /1000;
-    const dataToSend = { FechaInicio: fi, FechaFinal: ff, DatosTabla: filteredData };
+    const fi =
+      new Date(document.getElementById("fiInput").value).getTime() / 1000;
+    const ff =
+      new Date(document.getElementById("ffInput").value).getTime() / 1000;
+    const dataToSend = {
+      FechaInicio: fi,
+      FechaFinal: ff,
+      DatosTabla: filteredData,
+    };
 
     try {
       const response = await fetch(
@@ -188,6 +204,7 @@ export default function Table() {
       name: "Folio",
       selector: "Folio",
       sortable: true,
+      cell: (row) => <button className='btn  text-dark'>{row.Folio}</button>,
     },
     {
       name: "Fecha",
@@ -251,8 +268,9 @@ export default function Table() {
   return (
     <div
       id='my-table'
-      className='col-12 col-lg-9 col-md-12 bg-white table-scroll mt-2'
+      className='col-12 col-xl-10 col-lg-12 col-sm-12 bg-white table-scroll mt-2'
     >
+      <h3 className='m-3'>Facturas</h3>
       <FacturaFilter getFacturas={getFacturas} />
       <div className='btnPDF'>
         <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
@@ -270,6 +288,7 @@ export default function Table() {
           fixedHeaderScrollHeight='600px'
         />
       </DataTableExtensions>
+      <div></div>
     </div>
   );
 }
