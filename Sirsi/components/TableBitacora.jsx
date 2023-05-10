@@ -192,12 +192,7 @@ export default function TableBitacora() {
         className='col-12 col-xl-10 col-lg-12 col-sm-12 bg-white table-scroll mt-2'
       >
         <h3 className='m-3'>Bitácora</h3>
-        {/*<div className='btnPDFBitacora'>
-         <button className='text-end btn-hover btn p-1'>
-            <i className='bi bi-filetype-pdf color-icon fs-5'></i>
-          </button>
-
-        </div> */}
+ 
         <BitacorasFilter getBitacora={getBitacora} />
         <DataTableExtensions {...tableData}>
           <DataTable
