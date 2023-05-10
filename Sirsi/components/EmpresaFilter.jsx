@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function BitacorasFilter(props) {
+  const [laboratorioChecked, setLaboratorioChecked] = useState(false);
+  const [imagenologiaChecked, setImagenologiaChecked] = useState(false);
+
+  const handleLaboratorioChange = () => {
+    setLaboratorioChecked(true);
+    setImagenologiaChecked(false);
+  };
+
+  const handleImagenologiaChange = () => {
+    setLaboratorioChecked(false);
+    setImagenologiaChecked(true);
+  };
+
   return (
     <form id='forEmpresa' onSubmit={props.getEmpresa}>
       <div className='row p-3 d-flex mx-5'>
@@ -33,35 +46,38 @@ export default function BitacorasFilter(props) {
             <select
               className='form-select'
               id='sucInputEmpresa'
-              placeholder='Username'
               required
             >
-              <option id='zero'>Todas</option>
+              <option>  </option>
             </select>
             <label htmlFor='sucInputEmpresa'>Empresas</label>
           </div>
         </div>
         <div className='col-md-3 col-sm-12 pe-0 my-auto d-flex justify-content-evenly'>
           <div className=''>
-            <label htmlFor='fInputBitacora'>Laboratorio</label>
 
+            <label htmlFor='fInputBitacora'>Laboratorio</label>
             <input
               type='checkbox'
               className='ms-1'
               id='inputLaboratorio'
               autocomplete='off'
+              checked={laboratorioChecked}
+              onChange={handleLaboratorioChange}
             />
 
             <label className='ms-3' htmlFor='fInputBitacora'>
               Imagenología
             </label>
-
             <input
               type='checkbox'
               className='ms-1'
               id='inputImagenologia'
               autocomplete='off'
+              checked={imagenologiaChecked}
+              onChange={handleImagenologiaChange}
             />
+
           </div>
         </div>
         <div className='col-md-1 col-sm-4'>
