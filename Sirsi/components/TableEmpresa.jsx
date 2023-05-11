@@ -30,7 +30,7 @@ export default function TableEmpresa() {
       const option = document.createElement("option");
       option.value = 0;
       option.selected = true;
-      option.text = "Todas";
+      option.text = "";
       select.appendChild(option);
 
       data.data.map((empresa) => {
@@ -52,10 +52,39 @@ export default function TableEmpresa() {
     ffInputBitacora.value = fechaActual;
   };
 
+  const diferenciaDias = () => {
+    const fiInput = document.getElementById("fiInputEmpresa");
+    const ffInput = document.getElementById("ffInputEmpresa");
+
+    const fiDate = new Date(fiInput.value);
+    const ffDate = new Date(ffInput.value);
+
+    const diffTime = Math.abs(ffDate - fiDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 2) {
+      alert("La diferencia entre las fechas no puede ser mayor a 2 días.");
+      fiInput.value = "";
+      ffInput.value = "";
+    }
+  };
+
   useEffect(() => {
     selectEmpresas();
     fechaActualEmpresa();
   }, []);
+
+  useEffect(() => {
+    const fiInput = document.getElementById("fiInputEmpresa");
+    const ffInput = document.getElementById("ffInputEmpresa");
+    fiInput.addEventListener("change", diferenciaDias);
+    ffInput.addEventListener("change", diferenciaDias);
+  
+    return () => {
+      fiInput.removeEventListener("change", diferenciaDias);
+      ffInput.removeEventListener("change", diferenciaDias);
+    };
+  }, [])
 
   const getEmpresa = async (event) => {
     event.preventDefault();
@@ -89,19 +118,26 @@ export default function TableEmpresa() {
 
       let url;
       if (laboratorios.checked) {
-        setCheck("laboratorio");
         url = urlLabs;
         const response = await fetch(url, requestOptions);
-        let data = await response.json();
-        setDataLab(data.data);
+        if (response.status === 200) {
+          let data = await response.json();
+          setDataLab(data.data);
+          setCheck("laboratorio");
+        } else {
+          alert(await response.text());
+        }
       } else if (imagenologia.checked) {
-        setCheck("imagenologia");
         url = urlImagen;
         const response = await fetch(url, requestOptions);
         let data = await response.json();
-        setDataImg(data.data);
+        if (response.status === 200) {
+          setDataImg(data.data);
+          setCheck("imagenologia");
+        } else {
+          alert(await response.text());
+        }
       }
-
     } catch (error) {
       console.error(error);
     }
@@ -144,12 +180,26 @@ export default function TableEmpresa() {
       <EmpresaFilter getEmpresa={getEmpresa} />
       {console.log(check)}
       {check === "laboratorio" && (
-        <DataTable data={dataLab} columns={columnsLaboratorio} />
+        <DataTable
+          data={dataLab}
+          columns={columnsLaboratorio}
+          responsive='true'
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight='600px'
+        />
       )}
       {check === "imagenologia" && (
-        <DataTable data={dataImg} columns={columnsLaboratorio} />
+        <DataTable
+          data={dataImg}
+          columns={columnsLaboratorio}
+          responsive='true'
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight='600px'
+        />
       )}
-      TableEmpresa
+      
     </div>
   );
 }
