@@ -30,14 +30,7 @@ body {
   margin-left: 20px;
 }
 
-.sidebar{ 
-  height: 100%;
-  border: white;
-  top: 0;
-  bottom: 0;
-  margin-top: 0px;
-  padding-top: 0px;
-}
+
 
 .navbar{
   padding: 0px !important;
@@ -50,6 +43,17 @@ body {
 .accordion-button {
   transition: all 0.3s ease;
   font-weight: bold;
+  background-color: #012639;
+  color: #067DB2;
+}
+
+.accordion-body{
+  background-color: #012639;
+  color: #f5f5f5;
+}
+
+.accordion-body button{
+  color: #f5f5f5;
 }
 
 .accordion-button:hover {
@@ -67,7 +71,7 @@ body {
 
 .table-scroll{
   overflow-y: scroll !important;
-  max-height: 81vh !important;
+  max-height: 90% !important;
   box-shadow: rgba(0, 0, 0, 0.07) !important;
 }
 
@@ -76,7 +80,7 @@ body {
   border: 1px solid rgba(70, 70, 70, 0.3) !important; 
   border-radius: 5px;
   margin-left: 18px;
-  margin-top: 40px;
+  margin-top: 36px;
 }
 
 .icon{
@@ -94,24 +98,33 @@ body {
   }
 }
 
-.sidebar-bottom{
-  z-index: -2;
-}
 
 .shadow-navbar{
   z-index: 9999;
 }
 
 .footer-sirsi{
-  height: 70px;
-  background-color: #fff;
-  bottom: 0;
+  padding-top: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 55px;
 }
 
 .btnPDF{
+  position: relative;
+  text-align: end;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 92px;
+  margin-bottom: -47px;
+  z-index: inherit;
+}
+
+.btnPDFBitacora{
   position: relative;
   text-align: end;
   display: flex;
@@ -132,3 +145,125 @@ body {
 .color-icon{
   color: #3ca6dbe7 !important;
 }
+
+#my-table{
+  height: 90vh !important;
+  border: rgba(70, 70, 70, 0.1) solid 1px;
+}
+
+.bitacora-checked{
+  padding: -21px !important;
+}
+
+/* .btn {
+  --bs-btn-padding-x: 0 !important;
+  --bs-btn-padding-y: 0 !important;
+} */
+
+/* .offcanvas-bottom{
+  height: 50vh !important;
+} */
+
+.offcanvas-body{
+  flex-grow: none;
+  flex-wrap: wrap !important;
+  display: flex;
+  overflow: scroll !important;
+  margin-bottom: 50px !important;
+}
+
+.scroll-table{
+  overflow-y: scroll;
+}
+
+@media screen and (max-width: 1400px) {
+  .offcanvas-bottom{
+    height: 70vh !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .offcanvas-bottom{
+    height: 80vh !important;
+  }
+}
+
+.cartas{
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+#card-container{
+  width: 300px;
+  height: auto;
+  background-color: rgb(253, 253, 253);
+  border-radius: 4px;
+  margin: 10px;
+  transition: .2s all;
+  box-shadow: 7px 7px 15px rgba(26, 20, 20, 0.2);
+}
+
+#card-container img{
+  border-radius: 3px 3px 0 0;
+}
+
+#card-container h4{
+  text-align: center;
+  margin: 10px 0;
+}
+
+#card-container:hover{
+  transform: scale(1.01);
+}
+
+.fondo-suite{
+  background-color: rgba(26, 20, 20, 0.04) !important;
+  height: 100vh !important;
+}
+
+.sidebarTitle{
+  font-size: 15px;
+}
+
+.display{
+  position: relative;
+  background-color: #fff;
+  height: 100%;
+  padding-bottom: 200px !important;
+}
+
+/* .sidebar{
+  height: 100% !important;
+} */
+
+ .sidebar-height{
+   background-color: #012639 !important;
+   position: absolute;
+   height: 100vh;
+   overflow-y: scroll;
+  }
+
+  .side-toggle-btn{
+    color: #f5f5f5 !important;
+  }
+  
+  @media screen and (max-width: 1669px) {
+  .sidebar-height{
+    height:  65vh !important;
+  }
+}
+@media screen and (max-width: 1580px) {
+  .sidebar-height{
+    padding-bottom: 72% !important;
+  }
+} 
+
+#my-bitacora{
+  height: 85vh;
+}
+/* @media screen and (max-width: 1300px) {
+  .sidebar-height{
+    padding-bottom: 72% !important;
+  }
+} */
