@@ -166,8 +166,6 @@ export default function AccProduct() {
           </div>
         </div>
       </div>
-
-
     </div>
   );
 }
