@@ -30,8 +30,6 @@ body {
   margin-left: 20px;
 }
 
-
-
 .navbar{
   padding: 0px !important;
 }
@@ -154,10 +152,6 @@ body {
   padding: -21px !important;
 }
 
-
-
-
-
 .offcanvas-body{
   flex-grow: none;
   flex-wrap: wrap !important;
@@ -227,11 +221,7 @@ body {
   padding-bottom: 200px !important;
 }
 
-/* .sidebar{
-  height: 100% !important;
-} */
-
- .sidebar-height{
+.sidebar-height{
    background-color: #012639 !important;
    position: absolute;
    height: 100vh;
@@ -256,8 +246,3 @@ body {
 #my-bitacora{
   height: 85vh;
 }
-/* @media screen and (max-width: 1300px) {
-  .sidebar-height{
-    padding-bottom: 72% !important;
-  }
-} */
