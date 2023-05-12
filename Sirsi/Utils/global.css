@@ -98,7 +98,6 @@ body {
   }
 }
 
-
 .shadow-navbar{
   z-index: 9999;
 }
@@ -155,14 +154,9 @@ body {
   padding: -21px !important;
 }
 
-/* .btn {
-  --bs-btn-padding-x: 0 !important;
-  --bs-btn-padding-y: 0 !important;
-} */
 
-/* .offcanvas-bottom{
-  height: 50vh !important;
-} */
+
+
 
 .offcanvas-body{
   flex-grow: none;
