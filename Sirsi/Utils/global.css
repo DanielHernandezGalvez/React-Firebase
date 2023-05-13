@@ -1,5 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600;700;900&display=swap');
 @import url('https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/datatables.min.css');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600;700;900&display=swap');
+@import url('https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/datatables.min.css');
 
 * {
   box-sizing: border-box;
@@ -30,6 +59,8 @@ body {
   margin-left: 20px;
 }
 
+
+
 .navbar{
   padding: 0px !important;
 }
@@ -41,12 +72,12 @@ body {
 .accordion-button {
   transition: all 0.3s ease;
   font-weight: bold;
-  background-color: #012639;
+  background-color: #fff;
   color: #067DB2;
 }
 
 .accordion-body{
-  background-color: #012639;
+  background-color: #fff;
   color: #f5f5f5;
 }
 
@@ -96,6 +127,7 @@ body {
   }
 }
 
+
 .shadow-navbar{
   z-index: 9999;
 }
@@ -117,8 +149,9 @@ body {
   display: flex;
   justify-content: flex-end;
   margin-right: 92px;
-  margin-bottom: -47px;
-  z-index: inherit;
+  margin-bottom: -37px;
+  height: 30px;
+ 
 }
 
 .btnPDFBitacora{
@@ -128,7 +161,7 @@ body {
   justify-content: flex-end;
   margin-right: 92px;
   margin-bottom: -47px;
-  z-index: inherit;
+  z-index: 9999;
 }
 
 .btn-hover{
@@ -145,12 +178,21 @@ body {
 
 #my-table{
   height: 90vh !important;
-  border: rgba(70, 70, 70, 0.1) solid 1px;
+  /* border: rgba(70, 70, 70, 0.1) solid 1px; */
 }
 
 .bitacora-checked{
   padding: -21px !important;
 }
+
+/* .btn {
+  --bs-btn-padding-x: 0 !important;
+  --bs-btn-padding-y: 0 !important;
+} */
+
+/* .offcanvas-bottom{
+  height: 50vh !important;
+} */
 
 .offcanvas-body{
   flex-grow: none;
@@ -160,9 +202,9 @@ body {
   margin-bottom: 50px !important;
 }
 
-.scroll-table{
+/* .scroll-table{
   overflow-y: scroll;
-}
+} */
 
 @media screen and (max-width: 1400px) {
   .offcanvas-bottom{
@@ -221,12 +263,16 @@ body {
   padding-bottom: 200px !important;
 }
 
-.sidebar-height{
-   background-color: #012639 !important;
-   position: absolute;
-   height: 100vh;
+/* .sidebar{
+  height: 100% !important;
+} */
+
+ /* .sidebar-height{
+   background-color: #fff !important;
+   position: relative;
+   /* height: 100vh; 
    overflow-y: scroll;
-  }
+  } */
 
   .side-toggle-btn{
     color: #f5f5f5 !important;
@@ -246,3 +292,8 @@ body {
 #my-bitacora{
   height: 85vh;
 }
+/* @media screen and (max-width: 1300px) {
+  .sidebar-height{
+    padding-bottom: 72% !important;
+  }
+} */
