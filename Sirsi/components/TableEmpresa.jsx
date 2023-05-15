@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import EmpresaFilter from "./EmpresaFilter";
+import FiltrosEmpresa from "./FiltrosEmpresa";
 import DataTable from "react-data-table-component";
 
-export default function TableEmpresa() {
+export default function TablaEmpresas() {
   const [check, setCheck] = useState("");
   const [dataLab, setDataLab] = useState([]);
   const [dataImg, setDataImg] = useState([]);
@@ -28,10 +28,10 @@ export default function TableEmpresa() {
       const select = document.getElementById("sucInputEmpresa");
       select.innerHTML = "";
       const option = document.createElement("option");
-      option.value = 0;
-      option.selected = true;
-      option.text = "";
-      select.appendChild(option);
+      // option.value = 0;
+      // option.selected = true;
+      // option.text = "";
+      // select.appendChild(option);
 
       data.data.map((empresa) => {
         const option = document.createElement("option");
@@ -47,7 +47,7 @@ export default function TableEmpresa() {
   const fechaActualEmpresa = () => {
     const myDateInput = document.getElementById("fiInputEmpresa");
     const ffInputBitacora = document.getElementById("ffInputEmpresa");
-    const fechaActual = new Date().toISOString().split("T")[0];
+    const fechaActual = new Date(new Date() - 6 * 60 * 60 * 1000).toISOString().split("T")[0];
     myDateInput.value = fechaActual;
     ffInputBitacora.value = fechaActual;
   };
@@ -98,9 +98,25 @@ export default function TableEmpresa() {
 
       const laboratorios = document.getElementById("inputLaboratorio");
       const imagenologia = document.getElementById("inputImagenologia");
+      var opciones = document.getElementById("opciones");
+
 
       const urlLabs = `${process.env.RUTA_API}/sirsi/web/BuscarResultadosLaboratorioEmpresa`;
       const urlImagen = `${process.env.RUTA_API}/sirsi/web/BuscarResultadosImagenologiaEmpresa`;
+
+      // if (emp.trim() === "") {
+      //   alert("Debes ingresar el nombre de la empresa.");
+      //   return false;
+      // }
+    
+      if (!laboratorios.checked && !imagenologia.checked) {
+        alert("Debes seleccionar Laboratorio o Imagenología.");
+        return false;
+      }
+      // if (opciones.value === "") {
+      //   alert("Debes seleccionar una opción.");
+      //   return false;
+      // }
 
       let headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -172,12 +188,8 @@ export default function TableEmpresa() {
   ];
 
   return (
-    <div
-      id='my-bitacora'
-      className='col-12 col-xl-10 col-lg-12 col-sm-12 bg-white table-scroll mt-2'
-    >
-      <h3 className='m-3'>Empresas</h3>
-      <EmpresaFilter getEmpresa={getEmpresa} />
+    <>
+      <FiltrosEmpresa getEmpresa={getEmpresa} />
       {console.log(check)}
       {check === "laboratorio" && (
         <DataTable
@@ -186,7 +198,9 @@ export default function TableEmpresa() {
           responsive='true'
           pagination
           fixedHeader
-          fixedHeaderScrollHeight='600px'
+          // fixedHeaderScrollHeight='600px'
+        //   scrollY='30vh'
+        //   scrollX='true'
         />
       )}
       {check === "imagenologia" && (
@@ -196,10 +210,10 @@ export default function TableEmpresa() {
           responsive='true'
           pagination
           fixedHeader
-          fixedHeaderScrollHeight='600px'
+        //   fixedHeaderScrollHeight='60%'
         />
       )}
       
-    </div>
+    </>
   );
 }
