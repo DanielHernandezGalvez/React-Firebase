@@ -19,6 +19,14 @@ a {
   box-sizing: border-box;
 }
 
+
+
+
+
+
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600;700;900&display=swap');
 @import url('https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/datatables.min.css');
 
@@ -27,17 +35,6 @@ a {
   padding: 0;
   margin: 0;
   font-family: 'Work Sans', sans-serif;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  background-image: linear-gradient(180deg, #eaf1fa 0%, #f5f5f5 100%);
-  background-size: contain;
-  background-repeat: no-repeat;
-  color: #012639;
-  min-height: 1
 }
 
 
@@ -97,11 +94,31 @@ body {
 }
 
 .data-table-extensions-filter{
-  margin-top: 50px;
-  border: 1px solid rgba(70, 70, 70, 0.3) !important; 
+  /* margin-top: 50px; */
+  border: 1px solid rgba(70, 70, 70, 0.2) !important; 
   border-radius: 5px;
   margin-left: 18px;
   margin-top: 36px;
+}
+
+@media screen and (min-width: 700px) {
+  .data-table-extensions-filter{
+    /* margin-top: 50px; */
+    border: 1px solid rgba(70, 70, 70, 0.2) !important; 
+    border-radius: 5px;
+    margin-left: 18px;
+    margin-top: -7px;
+    z-index: 9999 !important;
+    position: relative;
+  }
+  .btnPDF{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 92px;
+    margin-bottom: -37px;
+    height: 30px;
+   
+  }
 }
 
 .icon{
@@ -182,9 +199,10 @@ body {
   --bs-btn-padding-y: 0 !important;
 } */
 
-/* .offcanvas-bottom{
-  height: 50vh !important;
-} */
+.offcanvas-bottom{
+  height: 40vh !important;
+  z-index: 9999 !important;
+}
 
 .offcanvas-body{
   flex-grow: none;
@@ -200,7 +218,7 @@ body {
 
 @media screen and (max-width: 1400px) {
   .offcanvas-bottom{
-    height: 70vh !important;
+    height: 80vh !important;
   }
 }
 
@@ -289,3 +307,77 @@ body {
     padding-bottom: 72% !important;
   }
 } */
+
+#offcanvas{
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+.offcanvas-header{
+  justify-content: end !important;
+  z-index: 9999 !important;
+}
+
+
+@media screen and (max-width: 767px) {
+  #rowformBitacora{
+    margin:  0 !important;
+    padding:  0 !important;
+  }
+  #rowforEmpresa{
+    margin:  0 !important;
+    padding:  0 !important;
+  }
+  #botonescheckbox{
+    margin:   0 !important;
+  }
+  #rowformFacturas{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #botonescheckbox{
+    margin: 10px 0 !important;
+  }
+}
+
+@media screen and (max-width: 442px) {
+  .btnPDF button{
+    position: sticky;
+    text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: -19px;
+    margin-top: 73px;
+    margin-bottom: -100px;
+    height: 30px;
+  }
+  .data-table-extensions{
+    /* margin-top: 90px; */
+    /* border: 1px solid rgba(70, 70, 70, 0.3) !important;  */
+    border-radius: 5px;
+    margin-left: 18px;
+    /* margin-top: 1x; */
+  }
+}
+
+@media screen and (max-width: 372px) {
+  .btnPDF button{
+    position: sticky;
+    text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2px;
+    margin-top: 81px;
+    margin-bottom: -100px;
+    height: 30px;
+  }
+  .data-table-extensions{
+    margin-top: -20px;
+    width: 100vw;
+    /* border: 1px solid rgba(70, 70, 70, 0.3) !important;  */
+    border-radius: 5px;
+    margin-left: 0px;
+    /* margin-top: 1x; */
+  }
+}
+
