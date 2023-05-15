@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import FacturaFilter from "./FacturaFilter";
+import FiltrosFacturas from "./FiltrosFacturas";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import TableFloat from "./TableFloatBitacora";
 
 export default function TableFacturas() {
   const [facturas, setFacturas] = useState([]);
@@ -49,7 +48,7 @@ export default function TableFacturas() {
   const fechaActualFactura = () => {
     const myDateInput = document.getElementById("fiInput");
     const ffInputBitacora = document.getElementById("ffInput");
-    const fechaActual = new Date().toISOString().split("T")[0];
+    const fechaActual = new Date(new Date() - 6 * 60 * 60 * 1000).toISOString().split("T")[0];
     myDateInput.value = fechaActual;
     ffInputBitacora.value = fechaActual;
   };
@@ -132,7 +131,7 @@ export default function TableFacturas() {
 
     try {
       const response = await fetch(
-        "http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas",
+        process.env.RUTA_API + "/sirsi/web/GenerarPDFFacturas",
         {
           method: "POST",
           headers: {
@@ -155,36 +154,6 @@ export default function TableFacturas() {
     }
   };
 
-  // const handleSendData = () => {
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Content-Type", "application/json");
-
-  //   var raw = JSON.stringify({
-  //     FechaInicio: 1682748000,
-  //     FechaFinal: 1682748000,
-  //     DatosTabla: [
-  //       {
-  //         facturas
-  //       },
-  //     ],
-  //   });
-
-  //   var requestOptions = {
-  //     method: "POST",
-  //     headers: myHeaders,
-  //     body: raw,
-  //     redirect: "follow",
-  //   };
-
-  //   fetch(
-  //     "http://192.168.0.14:8081/sirsi/web/GenerarPDFFacturas",
-  //     requestOptions
-  //   )
-  //     .then((response) => response.text())
-  //     .then((result) => console.log(result))
-  //     .catch((error) => console.log("error", error));
-  // };
-
   const handleRowSelected = (rows) => {
     setSelectedRows(rows);
   };
@@ -204,7 +173,7 @@ export default function TableFacturas() {
       name: "Folio",
       selector: "Folio",
       sortable: true,
-      cell: (row) => <button className='btn  text-dark'>{row.Folio}</button>,
+      // cell: (row) => <button className='btn  text-dark'>{row.Folio}</button>,
     },
     {
       name: "Fecha",
@@ -266,12 +235,8 @@ export default function TableFacturas() {
   );
 
   return (
-    <div
-      id='my-table'
-      className='col-12 col-xl-10 col-lg-12 col-sm-12 bg-white table-scroll mt-2'
-    >
-      <h3 className='m-3'>Facturas</h3>
-      <FacturaFilter getFacturas={getFacturas} />
+    <>
+      <FiltrosFacturas getFacturas={getFacturas} />
       <div className='btnPDF'>
         <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
           <i className='bi bi-filetype-pdf color-icon fs-5'></i>
@@ -285,10 +250,9 @@ export default function TableFacturas() {
           responsive='true'
           pagination
           fixedHeader
-          fixedHeaderScrollHeight='600px'
+          fixedHeaderScrollHeight='auto'
         />
       </DataTableExtensions>
-      <div></div>
-    </div>
+    </>
   );
 }
