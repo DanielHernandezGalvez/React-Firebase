@@ -7,6 +7,7 @@ export default function () {
       className='accordion border-none border border-0 p-1 pt-4'
       id='accordionExample'
     >
+    
       <div className='d-flex  justify-content-center'>
         <i class='bi bi-clock fs-3 my-auto'></i>
         <h6 className='fw-bold ps-3 my-auto'>Bitácora</h6>
@@ -80,6 +81,7 @@ export default function () {
             Dirección
           </button>
         </h2>
+    
         <div
           id='collapseThree'
           className='accordion-collapse collapse border border-0'
