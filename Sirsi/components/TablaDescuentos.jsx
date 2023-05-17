@@ -137,6 +137,7 @@ const capitalize = (val) => {
 
   return (
     <>
+      
         <FiltrosDescuentos getDescuentos={getDescuentos} />   
         <div className='row' > 
         <div className='col-12 col-lg-9' > 
@@ -160,6 +161,7 @@ const capitalize = (val) => {
         {tipoDescuento && 
         <DescuentoDetalle  tipoDescuento={tipoDescuento} />
       }
+        
   </>
   )
 }
