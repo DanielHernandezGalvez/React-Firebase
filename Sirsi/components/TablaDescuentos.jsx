@@ -4,9 +4,13 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 import ResumenDescuentos from './ResumenDescuentos';
+import GraficaDescuentos from "./GraficaDescuentos"
+import DescuentoDetalle from './DescuentoDetalle';
 
 function TablaDescuentos() {
 const [dataDescuentos, setDataDescuentos] = useState([])
+const [tipoDescuento, setTipoDescuento] = useState("")
+const [impTotal, setImpTotal] = useState([])
 
 const capitalize = (val) => {
     return val
@@ -60,13 +64,14 @@ const capitalize = (val) => {
     const fi = Math.floor(fiDate.getTime() / 1000);
     const ff = Math.floor(ffDate.getTime() / 1000);
     const suc = document.getElementById("sucInputDescuentos").value;
-    const url = `${process.env.RUTA_API}/ruta-del-backcend`
+    const url = `${process.env.RUTA_API}/sirsi/web/BuscarDescuentosTotales?IdSucursal=${suc}&Fi=${fi}&Ff=${ff}`
 
     try {
         const response = await fetch(url);
         const data = await response.json()
         console.log("click descuentos", data.data)
         setDataDescuentos(data.data)
+        setImpTotal(data.data.ImporteTotal)
       } 
       catch (error) {
         alert(error, "no se pudieron traer los datos")
@@ -78,12 +83,46 @@ const capitalize = (val) => {
     fechaActualDescuentos();
   }, []);
 
+  const activarTabla =  (td) => {
+    setTipoDescuento(td)
+  }
+
   const columns = [
     {
-        name: "",
-        selector: "",
+      name: "Detalle",
+      selector: "TipoDescuento",
+      sortable: true,
+      cell: (row) => (
+        <button className='btn' onClick={() => activarTabla(row.TipoDescuento)}>
+          <i className='bi bi-search'></i>
+        </button>
+      ),
+    },
+    {
+        name: "Tipo de Descuento",
+        selector: "TipoDescuento",
         sorteable: true
-    }
+    },
+    {
+        name: "N. Descuentos",
+        selector: "NumDescuentos",
+        sorteable: true
+    },
+    {
+        name: "Importe Total",
+        selector: "ImporteTotal",
+        sorteable: true
+    },
+    {
+        name: "Descuento",
+        selector: "Descuento",
+        sorteable: true
+    },
+    {
+        name: "Subtotal",
+        selector: "Subtotal",
+        sorteable: true
+    },
   ]
 
   const tableData = {
@@ -99,8 +138,9 @@ const capitalize = (val) => {
   return (
     <>
         <FiltrosDescuentos getDescuentos={getDescuentos} />   
-        <div className='col-9' > 
-        <DataTableExtensions {...tableData}>
+        <div className='row' > 
+        <div className='col-12 col-lg-9' > 
+          <DataTableExtensions {...tableData}>
             <DataTable
             columns={columns}
             data={dataDescuentos}
@@ -108,11 +148,18 @@ const capitalize = (val) => {
             pagination
             fixedHeader
             />
-        </DataTableExtensions>
+          </DataTableExtensions>
         </div>
-        <div className='col-3'> 
-        <ResumenDescuentos />
+        <div className='col-12 col-lg-3 resumen-descuentos'> 
+          <ResumenDescuentos />
+          </div>
         </div>
+        <div className='col-12'> 
+          <GraficaDescuentos />
+        </div>
+        {tipoDescuento && 
+        <DescuentoDetalle  tipoDescuento={tipoDescuento} />
+      }
   </>
   )
 }
