@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // PARA LA GRAFICA
 import { useTheme } from '@mui/material/styles';
+import RevenueChartCard from 'components/widget/Chart/RevenueChartCard';
+
 import GraficaPregunta from './GraficaPregunta';
 import useConfig from 'hooks/useConfig';
 // PARA LA GRAFICA
 
 export default function SelectPregunta({ detalleEncuesta, preguntas, setPreguntas }) {
+  const theme = useTheme();
+
   // PARA LA GRAFICA --- DATOS TABLA
   let RevenueChartCardOptions = {
     chart: {
@@ -31,8 +35,13 @@ export default function SelectPregunta({ detalleEncuesta, preguntas, setPregunta
     }
   };
 
-  const theme = useTheme();
-  const [revenueChartCardSeries, setRevenueChartCardSeries] = useState([1258, 975, 500]);
+  const [resultados, setResultados] = useState([]);
+  const [preguntaSel, setpreguntaSel] = useState([]);
+  const [bueno, setBueno] = useState(0);
+  const [regular, setRegular] = useState(0);
+  const [malo, setMalo] = useState(0);
+
+  const [revenueChartCardSeries, setRevenueChartCardSeries] = useState([1, 1, 1]);
   const [revenueChartCardOptions, setRevenueChartCardOptions] = useState(RevenueChartCardOptions);
   const { navType } = useConfig();
 
@@ -46,6 +55,18 @@ export default function SelectPregunta({ detalleEncuesta, preguntas, setPregunta
 
   const PreguntasUnicas = [...new Set(detalleEncuesta.map((preg) => preg.Pregunta))];
 
+  useEffect(() => {
+    setResultados(
+      detalleEncuesta.filter((row) => {
+        return row.Pregunta === preguntas ? true : false;
+      })
+    );
+  }, [detalleEncuesta, preguntas]);
+  
+  useEffect(() => {
+    setPreguntas(PreguntasUnicas[0])
+  },[detalleEncuesta])
+
   React.useEffect(() => {
     setRevenueChartCardOptions((prevState) => ({
       ...prevState,
@@ -56,16 +77,48 @@ export default function SelectPregunta({ detalleEncuesta, preguntas, setPregunta
     }));
   }, [navType, backColor, secondary, error, primary, successDark, orange, orangeDark]);
   // PARA LA GRAFICA
+  useEffect(() => {
+    let sumaBueno = resultados.reduce((total, row) => {
+      let val = row.Calificacion === 'Bueno' ? 1 : 0;
+      return total + val;
+    }, 0);
+    let sumaRegular = resultados.reduce((total, row) => {
+      let val = row.Calificacion === 'Regular' ? 1 : 0;
+      return total + val;
+    }, 0);
+    let sumaMalo = resultados.reduce((total, row) => {
+      let val = row.Calificacion === 'Malo' ? 1 : 0;
+      return total + val;
+    }, 0);
+
+    console.log(resultados, '==================>');
+
+    let porcentajeBueno = ((sumaBueno / (sumaBueno + sumaRegular + sumaMalo)) * 100).toFixed(2);
+    let porcentajeRegular = ((sumaRegular / (sumaBueno + sumaRegular + sumaMalo)) * 100).toFixed(2);
+    let porcentajeMalo = ((sumaMalo / (sumaBueno + sumaRegular + sumaMalo)) * 100).toFixed(2);
+
+    setRevenueChartCardSeries([sumaBueno, sumaRegular, sumaMalo]);
+    setBueno(porcentajeBueno);
+    setRegular(porcentajeRegular);
+    setMalo(porcentajeMalo);
+  }, [resultados]);
 
   return (
-    <div className="col-md-3 col-sm-11 my-1 mx-1">
-      <GraficaPregunta 
+    <div className="col-lg-3 col-sm-11 my-1 mx-1">
+      {/* <GraficaPregunta 
        chartData={{ series: revenueChartCardSeries, options: revenueChartCardOptions }}
        detalleEncuesta={detalleEncuesta}
-       preguntas={preguntas} />
+       preguntas={preguntas} 
+        bueno={bueno} regular={regular} malo={malo} /> */}
+      <RevenueChartCard
+        chartData={{ series: revenueChartCardSeries, options: revenueChartCardOptions }}
+        bueno={bueno}
+        regular={regular}
+        malo={malo}
+      />
+
       <div className="form-floating">
         <select id="tres" className="form-select" value={preguntas} onChange={(e) => setPreguntas(e.target.value)}>
-          <option value="">Todas las preguntas</option>
           {PreguntasUnicas.map((preg) => (
             <option key={preg} value={preg}>
               {preg}
