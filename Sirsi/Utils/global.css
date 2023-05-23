@@ -19,6 +19,14 @@ a {
   box-sizing: border-box;
 }
 
+
+
+
+
+
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;500;600;700;900&display=swap');
 @import url('https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-html5-2.3.3/datatables.min.css');
 
@@ -95,11 +103,12 @@ a {
 
 @media screen and (min-width: 700px) {
   .data-table-extensions-filter{
+    /* margin-top: 50px; */
     border: 1px solid rgba(70, 70, 70, 0.2) !important; 
     border-radius: 5px;
     margin-left: 18px;
     margin-top: -7px;
-    z-index: 9999 !important;
+    z-index: 1 !important;
     position: relative;
   }
   .btnPDF{
@@ -178,11 +187,17 @@ a {
 
 #my-table{
   height: 90vh !important;
+  /* border: rgba(70, 70, 70, 0.1) solid 1px; */
 }
 
 .bitacora-checked{
   padding: -21px !important;
 }
+
+/* .btn {
+  --bs-btn-padding-x: 0 !important;
+  --bs-btn-padding-y: 0 !important;
+} */
 
 .offcanvas-bottom{
   height: 40vh !important;
@@ -196,6 +211,10 @@ a {
   overflow: scroll !important;
   margin-bottom: 50px !important;
 }
+
+/* .scroll-table{
+  overflow-y: scroll;
+} */
 
 @media screen and (max-width: 1400px) {
   .offcanvas-bottom{
@@ -254,6 +273,17 @@ a {
   padding-bottom: 200px !important;
 }
 
+/* .sidebar{
+  height: 100% !important;
+} */
+
+ /* .sidebar-height{
+   background-color: #fff !important;
+   position: relative;
+   /* height: 100vh; 
+   overflow-y: scroll;
+  } */
+
   .side-toggle-btn{
     color: #f5f5f5 !important;
   }
@@ -272,6 +302,11 @@ a {
 #my-bitacora{
   height: 85vh;
 }
+/* @media screen and (max-width: 1300px) {
+  .sidebar-height{
+    padding-bottom: 72% !important;
+  }
+} */
 
 #offcanvas{
   z-index: 9999 !important;
@@ -316,8 +351,11 @@ a {
     height: 30px;
   }
   .data-table-extensions{
+    /* margin-top: 90px; */
+    /* border: 1px solid rgba(70, 70, 70, 0.3) !important;  */
     border-radius: 5px;
     margin-left: 18px;
+    /* margin-top: 1x; */
   }
 }
 
@@ -335,8 +373,67 @@ a {
   .data-table-extensions{
     margin-top: -20px;
     width: 100vw;
+    /* border: 1px solid rgba(70, 70, 70, 0.3) !important;  */
     border-radius: 5px;
     margin-left: 0px;
+    /* margin-top: 1x; */
   }
 }
 
+.resumen-descuentos{
+  border: solid #067DB2 1px;
+  border-radius: 12px;
+  background-color: #067DB2;
+  margin-top: 65px;
+  color: #fff;
+}
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: 10px;
+    scrollbar-color: #cfcfcf #cacaca;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, #eaf1fa 0%, #f5f5f5 100%);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #bbbbbb;
+    border-radius: 15px;
+  }
+
+  .custom-cell {
+    border-top: 1px solid #00000025;
+  }
+
+  .rotate-down {
+    animation: rotateDown 0.5s forwards;
+  }
+  
+  @keyframes rotateDown {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(90deg);
+    }
+  }
+
+  .collapsed-content {
+    transition: height 0.8s ease all;
+    overflow: hidden;
+    height: auto;
+  }
+  
+  .collapsed-content.closed {
+    height: 0;
+  }
+
+  
