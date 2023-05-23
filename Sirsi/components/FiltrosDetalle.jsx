@@ -54,59 +54,6 @@ export default function FiltrosDetalle({ detalleEncuesta }) {
         <SelectUsuario setUsuarios={setUsuarios} detalleEncuesta={detalleEncuesta} sucursales={sucursales} />
       </div>
 
-      {/* {filtros.length > 0 && (
-      <TableContainer>
-        <Table xs={8} size="small" aria-label="a dense table">
-        <TableHead>
-              <TableRow>
-                <TableCell xs={3}>Folio</TableCell>
-                <TableCell align="left">Fecha</TableCell>
-                <TableCell align="left">Departamento</TableCell>
-                <TableCell align="left">Pregunta</TableCell>
-                <TableCell align="left">Etiqueta</TableCell>
-                <TableCell align="left">Calificacion</TableCell>
-                <TableCell align="left">Sucursal</TableCell>
-                <TableCell align="left">Caja</TableCell>
-                <TableCell align="left">Usuario</TableCell>
-              </TableRow>
-            </TableHead>
-          <TableBody>
-            {filtros
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow hover>
-                <TableCell align="left" component="th" scope="row">
-                  {row.Folio}
-                </TableCell>
-                <TableCell align="left"> {format(new Date(row.Fecha), 'dd/MM/yyyy')}</TableCell>
-                <TableCell align="left">{row.Departamento}</TableCell>
-                <TableCell align="left">{row.Pregunta}</TableCell>
-                <TableCell align="left">{row.Etiqueta}</TableCell>
-                <TableCell align="left">{row.Calificacion}</TableCell>
-                <TableCell align="left">{row.Sucursal}</TableCell>
-                <TableCell align="left">{row.Caja}</TableCell>
-                <TableCell align="left">{row.Usuario}</TableCell> 
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
-          component="div"
-          count={filtros.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{
-            '& .MuiTablePagination-toolbar': {
-              width: '400px',
-            },
-          }}
-        />
-      </TableContainer> 
-    )}*/}
-
     </div>
   );
 }
