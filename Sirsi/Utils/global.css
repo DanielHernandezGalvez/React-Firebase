@@ -392,7 +392,7 @@ a {
   /* Firefox */
   * {
     scrollbar-width: 10px;
-    scrollbar-color: #cfcfcf #cacaca;
+    scrollbar-color: rgba(143, 143, 143, 0.2)
   }
 
   /* Chrome, Edge, and Safari */
@@ -401,11 +401,11 @@ a {
   }
 
   *::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #eaf1fa 0%, #f5f5f5 100%);
+    background: rgba(26, 138, 138, 0);
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: #bbbbbb;
+    background-color: rgba(143, 143, 143, 0.2);
     border-radius: 15px;
   }
 
@@ -436,4 +436,7 @@ a {
     height: 0;
   }
 
+  .letra-chica{
+    font-size: 13px;
+  }
   
