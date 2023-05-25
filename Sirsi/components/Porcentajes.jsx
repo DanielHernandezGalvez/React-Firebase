@@ -19,7 +19,6 @@ const[malo, setMalo] = useState(0)
   const porcentajeRegular = ((sumaRegular / (sumaBueno + sumaRegular + sumaMalo)) * 100).toFixed(2);
   const porcentajeMalo = ((sumaMalo / (sumaBueno + sumaRegular + sumaMalo)) * 100).toFixed(2);
 
-
   // Imprime los resultados
   console.log(`Porcentaje de Bueno: ${porcentajeBueno}%`);
   console.log(`Porcentaje de Regular: ${porcentajeRegular}%`);
@@ -84,10 +83,6 @@ useEffect(() => {
   return (
     <>
       <RevenueChartCard chartData={{ series: revenueChartCardSeries, options: revenueChartCardOptions }} bueno={bueno} regular={regular} malo={malo} ordenes={ordenes}/>
-      {/* <p className="text-end">{ordenes}</p>
-      <p className="text-end"> Bueno {porcentajeBueno}%</p>
-      <p className="text-end">Regular {porcentajeRegular}%</p>
-      <p className="text-end">Malo {porcentajeMalo}%</p> */}
     </>
   );
 }
