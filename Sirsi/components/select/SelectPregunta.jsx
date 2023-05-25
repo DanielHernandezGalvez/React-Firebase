@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 // PARA LA GRAFICA
 import { useTheme } from '@mui/material/styles';
 import RevenueChartCard from 'components/widget/Chart/RevenueChartCard';
-
-import GraficaPregunta from './GraficaPregunta';
 import useConfig from 'hooks/useConfig';
 // PARA LA GRAFICA
 
@@ -62,10 +60,10 @@ export default function SelectPregunta({ detalleEncuesta, preguntas, setPregunta
       })
     );
   }, [detalleEncuesta, preguntas]);
-  
+
   useEffect(() => {
-    setPreguntas(PreguntasUnicas[0])
-  },[detalleEncuesta])
+    setPreguntas(PreguntasUnicas[0]);
+  }, [detalleEncuesta]);
 
   React.useEffect(() => {
     setRevenueChartCardOptions((prevState) => ({
@@ -105,11 +103,6 @@ export default function SelectPregunta({ detalleEncuesta, preguntas, setPregunta
 
   return (
     <div className="col-lg-3 col-sm-11 my-1 mx-1">
-      {/* <GraficaPregunta 
-       chartData={{ series: revenueChartCardSeries, options: revenueChartCardOptions }}
-       detalleEncuesta={detalleEncuesta}
-       preguntas={preguntas} 
-        bueno={bueno} regular={regular} malo={malo} /> */}
       <RevenueChartCard
         chartData={{ series: revenueChartCardSeries, options: revenueChartCardOptions }}
         bueno={bueno}
