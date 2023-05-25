@@ -1,41 +1,49 @@
-import React, { useEffect, useState } from "react";
-import FiltrosFacturas from "./FiltrosFacturas";
-import DataTable from "react-data-table-component";
-import DataTableExtensions from "react-data-table-component-extensions";
-import "react-data-table-component-extensions/dist/index.css";
+import React, { useEffect, useState } from 'react';
+import FiltrosFacturas from './FiltrosFacturas';
+import DataTable from 'react-data-table-component';
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
 
-export default function TableFacturas() {
+// material-ui
+import { useTheme } from '@mui/material/styles';
+import { Card, Grid, useMediaQuery } from '@mui/material';
+import { gridSpacing } from 'store/constant';
+
+export default function TableFacturas({ iconPrimary, primary, secondary, secondarySub, color, bgcolor }) {
   const [facturas, setFacturas] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
+
+  const theme = useTheme();
+  const matchDownXs = useMediaQuery(theme.breakpoints.down('sm'));
 
   const capitalize = (val) => {
     return val
       .toLowerCase()
       .trim()
-      .split(" ")
+      .split(' ')
       .map((v) => v[0].toUpperCase() + v.substr(1))
-      .join(" ");
+      .join(' ');
   };
 
   const getSucursales = async () => {
-    const url = process.env.RUTA_API + "/sirsi/web/BuscarSucursales?suc=1";
+    const url = process.env.RUTA_API + '/sirsi/web/BuscarSucursales?suc=1';
 
     try {
       const response = await fetch(url);
       let data = [];
       data = await response.json();
 
-      const select = document.getElementById("sucInput");
-      select.innerHTML = "";
-      const option = document.createElement("option");
+      const select = document.getElementById('sucInput');
+      select.innerHTML = '';
+      const option = document.createElement('option');
       option.value = 0;
       option.selected = true;
-      option.text = "Todas";
+      option.text = 'Todas';
       select.appendChild(option);
 
       data.data.map((sucursal) => {
-        const option = document.createElement("option");
+        const option = document.createElement('option');
         option.value = sucursal.SucuId;
         option.text = capitalize(sucursal.SucuNombre);
         select.appendChild(option);
@@ -46,35 +54,35 @@ export default function TableFacturas() {
   };
 
   const fechaActualFactura = () => {
-    const myDateInput = document.getElementById("fiInput");
-    const ffInputBitacora = document.getElementById("ffInput");
-    const fechaActual = new Date(new Date() - 6 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const myDateInput = document.getElementById('fiInput');
+    const ffInputBitacora = document.getElementById('ffInput');
+    const fechaActual = new Date(new Date() - 6 * 60 * 60 * 1000).toISOString().split('T')[0];
     myDateInput.value = fechaActual;
     ffInputBitacora.value = fechaActual;
   };
 
   const getTipoPago = async () => {
     var requestOptions = {
-      method: "GET",
-      redirect: "follow",
+      method: 'GET',
+      redirect: 'follow'
     };
-    const url = process.env.RUTA_API + "/sirsi/web/BuscarTipoPagos";
+    const url = process.env.RUTA_API + '/sirsi/web/BuscarTipoPagos';
 
     try {
       const response = await fetch(url, requestOptions);
       const data = await response.json();
       console.log(data);
 
-      const select = document.getElementById("tpInput");
-      select.innerHTML = "";
-      const option = document.createElement("option");
+      const select = document.getElementById('tpInput');
+      select.innerHTML = '';
+      const option = document.createElement('option');
       option.value = 0;
       option.selected = true;
-      option.text = "Todos";
+      option.text = 'Todos';
       select.appendChild(option);
 
       data.data.map((pago) => {
-        const option = document.createElement("option");
+        const option = document.createElement('option');
         option.value = pago.TipoPagoId;
         option.text = capitalize(pago.TipoPagoDescripcion);
         select.appendChild(option);
@@ -87,21 +95,21 @@ export default function TableFacturas() {
   useEffect(() => {
     getSucursales();
     getTipoPago();
-    fechaActualFactura()
+    fechaActualFactura();
   }, []);
 
   const getFacturas = async (event) => {
     event.preventDefault();
     try {
-      const fiDate = new Date(document.getElementById("fiInput").value);
-      const ffDate = new Date(document.getElementById("ffInput").value);
+      const fiDate = new Date(document.getElementById('fiInput').value);
+      const ffDate = new Date(document.getElementById('ffInput').value);
       const fi = Math.floor(fiDate.getTime() / 1000);
       const ff = Math.floor(ffDate.getTime() / 1000);
 
-      const suc = document.getElementById("sucInput").value;
-      const tp = document.getElementById("tpInput").value;
+      const suc = document.getElementById('sucInput').value;
+      const tp = document.getElementById('tpInput').value;
 
-      const Grupo = document.getElementById("Grupo").value;
+      const Grupo = document.getElementById('Grupo').value;
 
       const url = `${process.env.RUTA_API}/sirsi/web/BuscarFacturas?fi=${fi}&ff=${ff}&suc=${suc}&tp=${tp}&g=${Grupo}`;
       //const url = `http://ms.nucleodediagnostico.com/sirsi/web/BuscarFacturas?fi=1682143200&ff=1682316000&suc=0&tp=1&g=1`;
@@ -111,7 +119,7 @@ export default function TableFacturas() {
         const data = await response.json();
         setFacturas(data.data);
       } else {
-        alert("Datos no encontrados");
+        alert('Datos no encontrados');
       }
     } catch (error) {
       console.error(error);
@@ -119,27 +127,22 @@ export default function TableFacturas() {
   };
 
   const handleSendData = async () => {
-    const fi =
-      new Date(document.getElementById("fiInput").value).getTime() / 1000;
-    const ff =
-      new Date(document.getElementById("ffInput").value).getTime() / 1000;
+    const fi = new Date(document.getElementById('fiInput').value).getTime() / 1000;
+    const ff = new Date(document.getElementById('ffInput').value).getTime() / 1000;
     const dataToSend = {
       FechaInicio: fi,
       FechaFinal: ff,
-      DatosTabla: filteredData,
+      DatosTabla: filteredData
     };
 
     try {
-      const response = await fetch(
-        process.env.RUTA_API + "/sirsi/web/GenerarPDFFacturas",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        }
-      );
+      const response = await fetch(process.env.RUTA_API + '/sirsi/web/GenerarPDFFacturas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+      });
 
       console.log(response.status);
 
@@ -160,75 +163,72 @@ export default function TableFacturas() {
 
   const options = {
     selectableRows: true,
-    onRowSelected: handleRowSelected,
+    onRowSelected: handleRowSelected
   };
 
   const columns = [
     {
-      name: "Sucursal",
-      selector: "Sucursal",
-      sortable: true,
+      name: 'Sucursal',
+      selector: 'Sucursal',
+      sortable: true
     },
     {
-      name: "Folio",
-      selector: "Folio",
-      sortable: true,
+      name: 'Folio',
+      selector: 'Folio',
+      sortable: true
       // cell: (row) => <button className='btn  text-dark'>{row.Folio}</button>,
     },
     {
-      name: "Fecha",
-      selector: "Fecha",
-      sortable: true,
+      name: 'Fecha',
+      selector: 'Fecha',
+      sortable: true
     },
     {
-      name: "Monto",
-      selector: "Monto.Float64",
-      sortable: true,
+      name: 'Monto',
+      selector: 'Monto.Float64',
+      sortable: true
     },
     {
-      name: "Descuento",
-      selector: "Descuento.Float64",
-      sortable: true,
+      name: 'Descuento',
+      selector: 'Descuento.Float64',
+      sortable: true
     },
     {
-      name: "Total",
-      selector: "Total.Float64",
-      sortable: true,
+      name: 'Total',
+      selector: 'Total.Float64',
+      sortable: true
     },
     {
-      name: "Tipo de Pago",
-      selector: "TipoPago.String",
-      sortable: true,
+      name: 'Tipo de Pago',
+      selector: 'TipoPago.String',
+      sortable: true
     },
     {
-      name: "Factura",
-      selector: "Factura.String",
-      sortable: true,
+      name: 'Factura',
+      selector: 'Factura.String',
+      sortable: true
     },
     {
-      name: "Número de Factura",
-      selector: "NumeroFactura.String",
-      sortable: true,
-    },
+      name: 'Número de Factura',
+      selector: 'NumeroFactura.String',
+      sortable: true
+    }
   ];
 
   const tableData = {
     columns: columns,
     data: facturas,
-    fileName: "document",
+    fileName: 'document',
     export: true,
     print: true,
     filterHidden: true,
-    filterDigit: 1,
+    filterDigit: 1
   };
 
   const filteredData = facturas.filter((row) =>
     Object.values(row).some((value) => {
-      if (typeof value === "string" || typeof value === "number") {
-        return value
-          .toString()
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
+      if (typeof value === 'string' || typeof value === 'number') {
+        return value.toString().toLowerCase().includes(searchTerm.toLowerCase());
       }
       return false;
     })
@@ -236,23 +236,40 @@ export default function TableFacturas() {
 
   return (
     <>
-      <FiltrosFacturas getFacturas={getFacturas} />
-      <div className='btnPDF'>
-        <button className='text-end btn-hover btn p-1' onClick={handleSendData}>
-          <i className='bi bi-filetype-pdf color-icon fs-5'></i>
-        </button>
-      </div>
-      <DataTableExtensions {...tableData}>
-        <DataTable
-          columns={columns}
-          data={filteredData}
-          option={options}
-          responsive='true'
-          pagination
-          fixedHeader
-          fixedHeaderScrollHeight='auto'
-        />
-      </DataTableExtensions>
+      <Grid item xs={12}>
+        <Card sx={{ bgcolor: bgcolor || '', position: 'relative' }}>
+          <FiltrosFacturas getFacturas={getFacturas} />
+        </Card>
+      </Grid>
+
+      { filteredData-length !== 0 && 
+      <>
+      <Grid item xs={12}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12}>
+            <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '10px' }}>
+              <div className="btnPDF">
+                <button className="text-end btn-hover btn p-1" onClick={handleSendData}>
+                  <i className="bi bi-filetype-pdf color-icon fs-5"></i>
+                </button>
+              </div>
+              <DataTableExtensions {...tableData}>
+                <DataTable
+                  columns={columns}
+                  data={filteredData}
+                  option={options}
+                  responsive="true"
+                  pagination
+                  fixedHeader
+                  fixedHeaderScrollHeight="auto"
+                />
+              </DataTableExtensions>
+            </Card>
+          </Grid>
+        </Grid>
+      </Grid>
+</>
+    }
     </>
   );
 }
