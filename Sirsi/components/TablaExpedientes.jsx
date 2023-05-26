@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import FiltrosExpedientes from './FiltrosExpedientes';
 import DataTable from 'react-data-table-component';
 import GraficaExpedientes from './GraficaExpedientes';
+import GraficaDetalle from './GraficaDetalle';
+import GraficaModificada from './GraficaModificada';
+import GraficaCancelada from './GraficaCancelada';
 
 // material-ui
 
@@ -11,6 +14,7 @@ import { gridSpacing } from 'store/constant';
 
 export default function Expedientes({ iconPrimary, primary, secondary, secondarySub, color, bgcolor }) {
   const [expedientes, setExpedientes] = useState([]);
+  const [estatus, setEstatus] = useState('Activa');
 
   const theme = useTheme();
   const matchDownXs = useMediaQuery(theme.breakpoints.down('sm'));
@@ -50,33 +54,38 @@ export default function Expedientes({ iconPrimary, primary, secondary, secondary
     fechaActualEmpresa();
   }, []);
 
+  const filtroSelect = (event) => {
+    const selectedOptionId = event.target.value;
+    setEstatus(selectedOptionId);
+  };
+
   const columns = [
     {
       name: 'Sucursal',
-      selector: 'Sucursal'
+      selector: (row) => row.Sucursal
     },
     {
       name: 'Total',
-      selector: 'Total'
+      selector: (row) => row.Total
     }
   ];
 
   const columnsDetalle = [
     {
       name: 'Sucursal',
-      selector: 'Sucursal'
+      selector: (row) => row.Sucursal
     },
     {
       name: 'Activa',
-      selector: 'Activa'
+      selector: (row) => row.Activa
     },
     {
       name: 'Modificada',
-      selector: 'Modificada'
+      selector: (row) => row.Modificada
     },
     {
       name: 'Cancelada',
-      selector: 'Cancelada'
+      selector: (row) => row.Cancelada
     }
   ];
 
@@ -88,60 +97,91 @@ export default function Expedientes({ iconPrimary, primary, secondary, secondary
         </Card>
       </Grid>
 
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} lg={5} md={5}>
-            <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '20px', paddingBottom: '20px' }}>
-              <DataTable
-                columns={columns}
-                data={expedientes.ProductividadSucursalesExpedientes}
-                fixedHeader
-                responsive="true"
-                pagination
-                paginationPerPage={5}
-              />
-            </Card>
+      {expedientes.length !== 0 && (
+        <>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} lg={5} md={5}>
+                <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '20px', paddingBottom: '20px' }}>
+                  {expedientes.length !== 0 && (
+                    <p className="text-center">
+                      Total de Expedientes:{' '}
+                      <b>{expedientes.ProductividadSucursalesExpedientes.reduce((total, row) => total + row.Total, 0)}</b>
+                    </p>
+                  )}
+                  <DataTable
+                    columns={columns}
+                    data={expedientes.ProductividadSucursalesExpedientes}
+                    fixedHeader
+                    dense
+                    responsive="true"
+                    pagination
+                    paginationPerPage={5}
+                  />
+                </Card>
+              </Grid>
+              <Grid item xs={12} lg={7} md={7}>
+                <Card>
+                  <GraficaExpedientes expedientes={expedientes} />
+                </Card>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} lg={7} md={7}>
-            <Card>
-              <p>Grafica de Expedientes</p>
-              {/* <GraficaExpedientes data={expedientes} /> */}
-            </Card>
-          </Grid>
-        </Grid>
-      </Grid>
 
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} lg={6} md={6}>
-            <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '20px', paddingBottom: '20px' }}>
-              <DataTable
-                columns={columnsDetalle}
-                data={expedientes.DetalleProductividadExpediente}
-                fixedHeader
-                responsive="true"
-                pagination
-                paginationPerPage={5}
-              />
-            </Card>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} lg={6} md={6}>
+                <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '20px', paddingBottom: '20px' }}>
+                  <DataTable
+                    columns={columnsDetalle}
+                    data={expedientes.DetalleProductividadExpediente}
+                    fixedHeader
+                    dense
+                    responsive="true"
+                    pagination
+                    paginationPerPage={8}
+                  />
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} lg={6} md={6}>
+                <Card>
+                  <div className="row col-12 d-flex pt-2 justify-content-around">
+                    <div className="col-lg-4 col-sm-12 ms-2 mt-3 ">
+                      <div className="form-floating">
+                        <select className="form-select" id="sucInputExpedientes" onChange={filtroSelect} placeholder="estatus" required>
+                          <option value="Activa">Activa</option>
+                          <option value="Modificada">Modificada</option>
+                          <option value="Cancelada">Cancelada</option>
+                        </select>
+                        <label htmlFor="sucInputExpedientes">Estatus</label>
+                      </div>
+                    </div>
+                    <div className="col-lg-6 col-sm-12 pt-4 d-flex justify-content-center">
+                      {expedientes.length !== 0 && (
+                        <>
+                          <p className="mx-2 letra-chica text-success">
+                            Activa {expedientes.DetalleProductividadExpediente.reduce((total, row) => total + row.Activa, 0)}
+                          </p>
+                          <p className="mx-2 letra-chica text-primary">
+                            Modificada {expedientes.DetalleProductividadExpediente.reduce((total, row) => total + row.Modificada, 0)}
+                          </p>
+                          <p className="mx-2 letra-chica text-danger">
+                            Cancelada {expedientes.DetalleProductividadExpediente.reduce((total, row) => total + row.Cancelada, 0)}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {estatus === 'Activa' && <GraficaDetalle expedientes={expedientes} />}
+                  {estatus === 'Modificada' && <GraficaModificada expedientes={expedientes} />}
+                  {estatus === 'Cancelada' && <GraficaCancelada expedientes={expedientes} />}
+                </Card>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} lg={6} md={6}>
-            <Card>
-              <div className="col-md-3 col-sm-12 my-1 mx-1">
-                <div className="form-floating">
-                  <select className="form-select" id="sucInputDescuentos" placeholder="Username" required>
-                    <option id="0">Activa</option>
-                    <option id="0">Modificada</option>
-                    <option id="0">Cancelada</option>
-                  </select>
-                  <label htmlFor="sucInputBitacora">Estatus</label>
-                </div>
-              </div>
-              {/* <GraficaDetalle data={expedientes.DetalleProductividadExpediente} /> */}
-            </Card>
-          </Grid>
-        </Grid>
-      </Grid>
+        </>
+      )}
     </>
   );
 }
