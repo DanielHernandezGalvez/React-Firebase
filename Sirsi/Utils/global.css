@@ -439,4 +439,14 @@ a {
   .letra-chica{
     font-size: 13px;
   }
+
+  .table-dark{
+    background-color: #067DB2 !important;
+  }
+
+  @media screen and (max-width: 900px) {
+    .sumatorias-estudios{
+      padding: 1px !important;
+    }
+  }
   
