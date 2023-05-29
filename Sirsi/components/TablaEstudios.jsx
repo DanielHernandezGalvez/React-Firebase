@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FiltrosEstudios from './FiltrosEstudios';
 import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
@@ -8,78 +8,114 @@ import GraficaEstudios from './GraficaEstudios';
 import { useTheme } from '@mui/material/styles';
 import { Card, Grid, useMediaQuery } from '@mui/material';
 import { gridSpacing } from 'store/constant';
+import Totales from './Totales';
 
 export default function TablaEstudios({ iconPrimary, primary, secondary, secondarySub, color, bgcolor }) {
+  const [general, setGeneral] = useState([]);
+  const [detalle, setDetalle] = useState([]);
+
   const theme = useTheme();
   const matchDownXs = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const columns = [
+  const fechaActualDescuentos = () => {
+    const myDateInput = document.getElementById('fiInputEstudios');
+    const ffInputBitacora = document.getElementById('ffInputEstudios');
+    const fechaActual = new Date(new Date() - 6 * 60 * 60 * 1000).toISOString().split('T')[0];
+    myDateInput.value = fechaActual;
+    ffInputBitacora.value = fechaActual;
+  };
+
+  const getEstudios = async (event) => {
+    event.preventDefault();
+
+    const fiDate = new Date(document.getElementById('fiInputEstudios').value);
+    const ffDate = new Date(document.getElementById('ffInputEstudios').value);
+    const fi = Math.floor(fiDate.getTime() / 1000);
+    const ff = Math.floor(ffDate.getTime() / 1000);
+    const url = `${process.env.RUTA_API}/sirsi/web/ProductividadEstudios?Fi=${fi}&Ff=${ff}`;
+
+    try {
+      const response = await fetch(url);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log('click descuentos', data.data);
+        setGeneral(data.data.General);
+        setDetalle(data.data.Detalle);
+      }
+    } catch (error) {
+      alert(error, 'no se pudieron traer los datos');
+    }
+  };
+
+  useEffect(() => {
+    fechaActualDescuentos();
+  }, []);
+
+  const colEstudios = [
     {
-      name: 'Title',
-      selector: (row) => row.title
+      name: 'Sucursal',
+      selector: (row) => row.Sucursal
     },
     {
-      name: 'Year',
-      selector: (row) => row.year
+      name: 'Total',
+      selector: (row) => row.Total
     }
   ];
 
-  const data = [
+  const colDetalle = [
     {
-      id: 1,
-      title: 'AMERICAS',
-      year: 178
+      name: 'Sucursal',
+      selector: (row) => row.Sucursal
     },
     {
-      id: 2,
-      title: 'CIRCUNVALACION',
-      year: 291
+      name: 'Pendiente',
+      selector: (row) => row.Pendiente
     },
     {
-      id: 3,
-      title: 'COPERNICO',
-      year: 531
+      name: 'Tomas',
+      selector: (row) => row.Tomas
     },
     {
-      id: 4,
-      title: 'EMPRESARIAL',
-      year: 23
+      name: 'Proceso',
+      selector: (row) => row.Proceso
     },
     {
-      id: 5,
-      title: 'FEDERALISMO',
-      year: 657
+      name: 'RevisionFirma',
+      selector: (row) => row.RevisionFirma
     },
     {
-      id: 6,
-      title: 'LOPEZ_MATEOS',
-      year: 123
+      name: 'LiberadoLab',
+      selector: (row) => row.LiberadoLab
     },
     {
-      id: 7,
-      title: 'MEXICO',
-      year: 436
+      name: 'ProcesoAcabadoDental',
+      selector: (row) => row.ProcesoAcabadoDental
     },
     {
-      id: 8,
-      title: 'NACIONES UNIDAS',
-      year: 59
+      name: 'Interpretado',
+      selector: (row) => row.Interpretado
     },
     {
-      id: 9,
-      title: 'PATRIA',
-      year: 297
+      name: 'EnSalasRayosX',
+      selector: (row) => row.EnSalasRayosX
     },
     {
-      id: 10,
-      title: 'PORTATIL',
-      year: 8
+      name: 'LiberadoImg',
+      selector: (row) => row.LiberadoImg
+    },
+    {
+      name: 'Entregar',
+      selector: (row) => row.Entregar
+    },
+    {
+      name: 'Cancelado',
+      selector: (row) => row.Cancelado
     }
   ];
 
   const tableData = {
-    columns: columns,
-    data: data,
+    columns: colDetalle,
+    data: detalle,
     fileName: 'document',
     export: true,
     print: true,
@@ -91,94 +127,52 @@ export default function TablaEstudios({ iconPrimary, primary, secondary, seconda
     <>
       <Grid item xs={12}>
         <Card sx={{ bgcolor: bgcolor || '', position: 'relative' }}>
-          <FiltrosEstudios />
+          <FiltrosEstudios getEstudios={getEstudios} />
         </Card>
       </Grid>
 
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} lg={4} md={4}>
-            <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '10px' }}>
-              <div className="my-3">
-                <DataTable data={data} columns={columns} responsive="true" dense pagination paginationPerPage={5} fixedHeader />
-              </div>
-            </Card>
-          </Grid>
-          <Grid item xs={12} lg={8} md={8}>
-            <Card sx={{ bgcolor: bgcolor || '', position: 'relative' }}>
-              <GraficaEstudios data={data} />
-            </Card>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} lg={9} md={9}>
-            <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '10px' }}>
-              <DataTableExtensions {...tableData}>
-                <DataTable data={data} columns={columns} searchable responsive="true" dense pagination fixedHeader />
-              </DataTableExtensions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} lg={3} md={3}>
-            <Grid spacing={2}>
-              <Grid item>
-                <Card sx={{ bgcolor: '#067DB2' || '', position: 'relative', paddingTop: '10px' }}>
-                  <div className="sumatorias-estudios px-1 py-4">
-                    <h4 className="text-center text-white fw-bold">Resultados</h4>
-                    <table class="table text-white">
-                      <tbody>
-                        <tr>
-                          <td>Tomas</td>
-                          <td className="text-end me-3">666</td>
-                        </tr>
-                        <tr>
-                          <td>Proceso</td>
-                          <td className="text-end me-3">71</td>
-                        </tr>
-                        <tr>
-                          <td>Revisión para firma</td>
-                          <td className="text-end me-3">69</td>
-                        </tr>
-                        <tr>
-                          <td>Liberado en laboratorio</td>
-                          <td className="text-end me-3">54</td>
-                        </tr>
-                        <tr>
-                          <td>Acabados Dental</td>
-                          <td className="text-end me-3">41</td>
-                        </tr>
-                        <tr>
-                          <td>Interpretado</td>
-                          <td className="text-end me-3">4</td>
-                        </tr>
-                        <tr>
-                          <td>Sala de Rayos X</td>
-                          <td className="text-end me-3">5</td>
-                        </tr>
-                        <tr>
-                          <td>Liberado en Imagen</td>
-                          <td className="text-end me-3">5</td>
-                        </tr>
-                        <tr>
-                          <td>Para Entregar</td>
-                          <td className="text-end me-3">66</td>
-                        </tr>
-                        <tr>
-                          <td className="border-none">Cancelado</td>
-                          <td className="text-end me-3">7</td>
-                        </tr>
-                      </tbody>
-                    </table>
+      {general.length !== 0 && (
+        <>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} lg={4} md={4}>
+                <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '10px' }}>
+                  <div className="my-2">
+                    <DataTable data={general} columns={colEstudios} responsive="true" dense pagination paginationPerPage={6} fixedHeader />
                   </div>
+                </Card>
+              </Grid>
+              <Grid item xs={12} lg={8} md={8}>
+                <Card sx={{ bgcolor: bgcolor || '', position: 'relative' }}>
+                  <GraficaEstudios general={general} />
                 </Card>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} lg={9} md={9}>
+                <Card sx={{ bgcolor: bgcolor || '', position: 'relative', paddingTop: '10px' }}>
+                  <DataTableExtensions {...tableData}>
+                    <DataTable data={detalle} columns={colDetalle} searchable responsive="true" dense pagination fixedHeader />
+                  </DataTableExtensions>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} lg={3} md={3}>
+                <Grid  spacing={2}>
+                  <Grid item>
+                    <Card sx={{ bgcolor: '#067DB2' || '', position: 'relative', paddingTop: '10px' }}>
+                      <Totales detalle={detalle} />
+                    </Card>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </>
   );
 }
