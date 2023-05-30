@@ -463,6 +463,7 @@ a {
       margin-bottom: 10px; 
     }
   }
+  
   @media screen and (max-width: 300px) {
     .row-divider {
       font-size: 8px;
@@ -470,6 +471,7 @@ a {
    
     }
   }
+
   @media screen and (max-width: 200px) {
     .row-divider {
       font-size: 7px;
@@ -477,4 +479,8 @@ a {
    
     }
   }
+
+.color-excel{
+  color: #35ac9a !important;
+}
   
