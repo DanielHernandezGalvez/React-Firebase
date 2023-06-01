@@ -1,5 +1,4 @@
 import React from "react";
-
 export default function AccProduct() {
   return (
     <div className='accordion  border border-0' id='accordionExample2'>
