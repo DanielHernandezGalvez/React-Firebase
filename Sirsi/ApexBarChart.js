@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 
+// material-ui
 import { useTheme } from '@mui/material/styles';
 
+// third-party
 import dynamic from 'next/dynamic';
 
+// project import
 import useConfig from 'hooks/useConfig';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+// chart options
 const barChartOptions = {
   chart: {
     type: 'bar',
@@ -26,6 +30,8 @@ const barChartOptions = {
     categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany']
   }
 };
+
+// ==============================|| BAR CHART ||============================== //
 
 const ApexBarChart = () => {
   const theme = useTheme();
