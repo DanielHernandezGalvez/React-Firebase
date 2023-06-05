@@ -1,18 +1,6 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
-
-// next imports
-import { useRouter } from 'next/router';
-import NextLinkComposed from 'NextLinkComposed';
-
-// M-UI
-import MuiLink from '@mui/material/Link';
-import { styled } from '@mui/material/styles';
-
-// other
-import clsx from 'clsx';
-
-// =============================|| Custom Link Component ||============================= //
+Component ||============================= //
 
 const Anchor = styled('a')({});
 
