@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-
-// third-party
-import dynamic from 'next/dynamic';
+// materi
 
 // project import
 import useConfig from 'hooks/useConfig';
