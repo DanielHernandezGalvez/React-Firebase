@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 
-// next import
+// next imports
 import { useRouter } from 'next/router';
 import NextLinkComposed from 'NextLinkComposed';
 
