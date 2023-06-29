@@ -181,11 +181,6 @@ a {
   padding: -21px !important;
 }
 
-/* .btn {
-  --bs-btn-padding-x: 0 !important;
-  --bs-btn-padding-y: 0 !important;
-} */
-
 .offcanvas-bottom{
   height: 40vh !important;
   z-index: 9999 !important;
