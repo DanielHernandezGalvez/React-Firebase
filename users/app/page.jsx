@@ -10,7 +10,17 @@ export default async function Home() {
   return (
     <>
       <h1>Hola</h1>
-      <div>{JSON.stringify(users)}</div>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <div>
+              <h5>{user.id}</h5>
+              <p>{user.email}</p>
+            </div>
+            <img src={user.avatar} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 }
