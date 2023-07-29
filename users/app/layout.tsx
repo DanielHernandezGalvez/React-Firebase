@@ -1,15 +1,20 @@
+import React, { ReactNode } from "react";
 import Navibar from "@/components/Navibar";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
 export const metadata = {
   title: "Next Router",
   description: "Uso de las nuevas características de next",
 };
 
-export default function RootLayout({ children }) {
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <head>
@@ -24,4 +29,6 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

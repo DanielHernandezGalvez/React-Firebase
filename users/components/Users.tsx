@@ -1,13 +1,23 @@
-"use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
-export default function Users({ users }) {
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: string;
+}
+
+interface UsersProps {
+  users: User[];
+}
+
+const Users: React.FC<UsersProps> = ({ users }) => {
   const router = useRouter();
 
   return (
     <div>
-      {" "}
       <ul className="list-group">
         {users.map((user) => (
           <li
@@ -23,10 +33,16 @@ export default function Users({ users }) {
               </h5>
               <p>{user.email}</p>
             </div>
-            <img src={user.avatar} style={{ borderRadius: "50%" }} />
+            <img
+              src={user.avatar}
+              style={{ borderRadius: "50%" }}
+              alt={`Avatar of ${user.first_name} ${user.last_name}`}
+            />
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
+
+export default Users;
