@@ -3,7 +3,17 @@ const http = require("http");
 
 http.createServer((req, res) => {
 
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end("Holanga happy happy happy")
+    const {url} = req
+
+    if (url === "/characters") {
+        res.writeHead(200, {"Content-type": "text/plain"})
+        res.end("Estoy en /characters")
+    } else if (url  === "/location") {
+        res.writeHead(200, {"Content-type": "text/plain"})
+        res.end("Estoy en /location")
+    } else {
+        res.writeHead(404)
+        res.end()
+    }
 
 }).listen(3001, "localhost")
