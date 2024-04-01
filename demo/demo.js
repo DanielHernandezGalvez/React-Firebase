@@ -1,7 +1,12 @@
 // http es una librería que viene integrada con node
 const http = require("http");
+const fs = require("fs");
 
-const { sendCharacters } = require("./controllers");
+const {
+  sendCharacters,
+  sendLocations,
+  sendNotFound,
+} = require("./controllers");
 
 http
   .createServer((req, res) => {
@@ -22,13 +27,30 @@ http
       case "/characters":
         sendCharacters(res); // se tiene que mandar con res
         break;
+
       case "/location":
-        res.writeHead(200, { "Content-type": "text/plain" });
-        res.end("Estoy en /location");
+        sendLocations(res);
         break;
+
+      case "/html":
+        res.writeHead(200, { "Content-type": "text/html" });
+        const html = fs.readFileSync(__dirname + "/html/index.html");
+        res.end(html);
+        break;
+
+      case "/template":
+        res.writeHead(200, { "Content-type": "text/html" });
+        let template = fs.readFileSync(
+          __dirname + "/html/template.html",
+          "utf-8"
+        );
+        const nombre = "Agustín";
+        template = template.replace("{nombre}", nombre);
+        res.end(template);
+        break;
+
       default:
-        res.writeHead(404);
-        res.end();
+        sendNotFound(res);
         break;
     }
   })
