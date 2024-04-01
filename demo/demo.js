@@ -5,15 +5,30 @@ http.createServer((req, res) => {
 
     const {url} = req
 
-    if (url === "/characters") {
-        res.writeHead(200, {"Content-type": "text/plain"})
-        res.end("Estoy en /characters")
-    } else if (url  === "/location") {
-        res.writeHead(200, {"Content-type": "text/plain"})
-        res.end("Estoy en /location")
-    } else {
-        res.writeHead(404)
-        res.end()
-    }
+    // if (url === "/characters") {
+    //     res.writeHead(200, {"Content-type": "text/plain"})
+    //     res.end("Estoy en /characters")
+    // } else if (url  === "/location") {
+    //     res.writeHead(200, {"Content-type": "text/plain"})
+    //     res.end("Estoy en /location")
+    // } else {
+    //     res.writeHead(404)
+    //     res.end()
+    // }
+
+    switch (url) {
+        case "/characters":
+          res.writeHead(200, {"Content-type": "text/plain"});
+          res.end("Estoy en /characters");
+          break;
+        case "/location":
+          res.writeHead(200, {"Content-type": "text/plain"});
+          res.end("Estoy en /location");
+          break;
+        default:
+          res.writeHead(404);
+          res.end();
+          break;
+      }
 
 }).listen(3001, "localhost")
