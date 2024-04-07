@@ -24,8 +24,6 @@ const UseEffect = () => {
     };
   }, []);
 
-
-
   return (
     <div>
       <p>{count}</p>
