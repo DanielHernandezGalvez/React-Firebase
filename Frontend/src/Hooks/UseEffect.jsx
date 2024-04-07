@@ -20,13 +20,17 @@ const UseEffect = () => {
 
     return () => {
       console.log("adios componente");
+      // vcerramos conexioón a la api
     };
   }, []);
+
+
 
   return (
     <div>
       <p>{count}</p>
       <button onClick={() => setCount(count + 1)}>incrementar</button>
+      <button onClick={() => setCount(count - 1)}>decrementar</button>
     </div>
   );
 };
