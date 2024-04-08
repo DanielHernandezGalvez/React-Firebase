@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const Blog = () => {
     const [articulos, setArticulos] = useState([])
+    const [cargando, setCargando] = useState(true)
 
     useEffect(() => {
         setTimeout(() => {
@@ -17,6 +18,7 @@ const Blog = () => {
                     title: "tercero articulo"
                 }
             ])
+            setCargando(false)
         }, 3000)
     }, [])
 
@@ -25,13 +27,22 @@ const Blog = () => {
     return (
         <div>
             <h2>Blog</h2>
-            <div>
-                {articulos.map((articulo, key) => {
-                    return ( 
-                    <p key={articulo.id}>{articulo.title}</p>
-                )
-                })}
-            </div>
+
+            {cargando ? (<p>Cargando...</p>) : (
+
+                <div>
+                    {
+                        articulos.map((articulo, key) => {
+                            return (
+                                <p key={articulo.id}>{articulo.title}</p>
+                            )
+                        })
+                    }
+                </div>
+
+            )
+            }
+
         </div>
     )
 }
