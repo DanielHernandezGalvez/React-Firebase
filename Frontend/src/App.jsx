@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import UseEffect from './Hooks/UseEffect'
 import UseReducer from './Hooks/UseReducer'
+import Blog from './Hooks/Blog'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -31,7 +32,8 @@ function App() {
         Click on the Vite and React logos to learn more
       </p> */}
       {/* <UseEffect /> */}
-      <UseReducer />
+      {/* <UseReducer /> */}
+      <Blog />
     </>
   )
 }
