@@ -1,11 +1,12 @@
 import './App.css'
+import Header from './components/Header'
 
 const App = () => {
 
   return (
-    <>
-      <h1>App Notas</h1>
-    </>
+    <div className='contenedor'>
+      <Header />
+    </div>
   )
 }
 
