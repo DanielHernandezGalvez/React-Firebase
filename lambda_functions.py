@@ -6,3 +6,4 @@ def print_expenses(expenses):
         print(f'Amount: {expense["amount"]}, Category: {expense["category"]}')
 
 test = lambda x: x * 2
+print(test(3))
