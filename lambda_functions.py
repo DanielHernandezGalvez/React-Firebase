@@ -21,4 +21,4 @@ def main():
         choice = input('Enter your choice: ')
         
         if choice == '1':
-            amount = input()
+            amount = float(input('Enter amount: '))
