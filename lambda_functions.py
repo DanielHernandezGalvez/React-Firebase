@@ -6,4 +6,4 @@ def print_expenses(expenses):
         print(f'Amount: {expense["amount"]}, Category: {expense["category"]}')
 
 def filter_expenses_by_category(expenses, category):
-    pass
+    filter(lambda expense: expense['category'] == category, expenses)
