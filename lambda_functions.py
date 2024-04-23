@@ -7,6 +7,3 @@ def print_expenses(expenses):
 
 def filter_expenses_by_category(expenses, category):
     pass
-    
-test = lambda x: x * 2
-print(test(3))
