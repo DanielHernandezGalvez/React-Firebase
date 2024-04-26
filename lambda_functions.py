@@ -17,7 +17,6 @@ def main():
         print('3. Show total expenses')
         print('4. Filter expenses by category')
         print('5. Exit')
-        
         choice = input('Enter your choice: ')
         
         if choice == '1':
