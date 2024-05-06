@@ -25,3 +25,5 @@ const Boton = styled(Link)`
         fill: white;
     }
 `;
+
+export default Boton
