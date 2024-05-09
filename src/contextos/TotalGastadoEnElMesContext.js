@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext} from 'react';
 import useObtenerGastosDelMes from './../hooks/useObtenerGastosDelMes';
 
 const TotalGastadoContext = React.createContext();
-
 const useTotalDelMes = () => useContext(TotalGastadoContext);
 
 const TotalGastadoProvider = ({children}) => {
